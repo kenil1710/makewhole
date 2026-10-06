@@ -24,20 +24,21 @@ import typing
 #
 # A borrower that is a smart contract on Ethereum has no key on GenLayer, so
 # its refund is withheld (exclusion [X1] of the terms) until an appeal shows
-# which externally owned account controls it. That is the ONE place a model
-# is asked anything, and it answers only ELIGIBLE / NOT_ELIGIBLE plus the
-# clause it relied on. Code then checks the clause is verbatim in the frozen
-# terms and confirms the beneficiary by calling the wallet's owner() view on
-# Ethereum. Nothing the model writes is stored except that enum, the clause
-# id and its hash (taken from the frozen terms, not from the model), and the
-# code-confirmed address.
+# which externally owned account controls it. CODE decides the appeal from
+# bytecode every validator reads: a DSProxy or a known single-owner account
+# implementation whose owner() is an EOA -> ELIGIBLE [E4]; a Safe with more
+# than one key -> NOT_ELIGIBLE [X2]; no owner() -> NOT_ELIGIBLE [X1]; any other
+# contract -> INCONCLUSIVE (stake back, appealable again). The model reads the
+# same evidence and may only CONFIRM code's decision; if it does not, the
+# appeal is INCONCLUSIVE. It can never turn one decision into the other. (A
+# stability check showed the model alone gave the same wallet opposite
+# answers in different transactions.) Nothing the model writes is stored.
 #
 # WHERE THE LINE IS
-#   code    fetch, decode, every eligibility rule in [E1]-[E3]/[X3], the
-#           amount, duplicates, deadlines, pro-rata, every transfer, the
-#           verbatim-clause check, the owner() confirmation
-#   model   only: is this contract wallet a single user's wallet ([E4]) or
-#           a pooled vault / multi-key contract ([X2])?
+#   code    fetch (two-source quorum), decode, every eligibility rule, the
+#           amount, duplicates, deadlines, pro-rata and top-up, every
+#           transfer, the wallet type, the appeal decision, the payee
+#   model   only: confirm or withhold code's appeal decision
 #
 # RULES (each one a past rejection, written down)
 #   1. EVIDENCE IS FETCHED BY EVERY VALIDATOR. Receipts, contract code,
@@ -73,7 +74,7 @@ import typing
 #
 # The runner rejects the str replace method; slice around find() instead.
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 WAD = 10 ** 18
 BPS = 10000
@@ -131,6 +132,30 @@ MIN_QUOTE = 12
 EIP1167_PREFIX = "0x363d3d373d3d3d363d73"
 EIP1967_IMPL_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
 BLOCKSCOUT_SOURCE = "https://eth.blockscout.com/api/v2/smart-contracts/"
+# WALLET TYPES CODE RECOGNISES (stability check, docs/SEEDS.md). The model was
+# asked "is this a single user's wallet?" and gave different answers for the
+# same wallet in different transactions. So code now decides the wallet type
+# from bytecode the validators read; a type code cannot recognise is
+# INCONCLUSIVE (stake back), never ELIGIBLE or NOT_ELIGIBLE.
+#   runtime sha256 of a whole contract -> single-owner wallet
+PERSONAL_WALLET_CODE = {
+    "a87dce3f76457c07e081f24265e9f26c99443680d23dd8b203a25821866b55dc": "DSProxy (MakerDAO)",
+}
+#   implementation behind an EIP-1167 clone / EIP-1967 proxy -> single-owner wallet
+PERSONAL_WALLET_IMPLS = {
+    "0x3022cb392520e1786d05f2f43cdf9bafba3b4d0c": "Summer.fi DPM AccountImplementation",
+}
+#   Safe singletons (slot 0 of a Safe proxy)
+SAFE_SINGLETONS = {
+    "0x41675c099f32341bf84bfc5382af534df5c7461a": "Safe v1.4.1",
+    "0x29fcb43b46531bca003ddc8fcb67ffe91900c762": "SafeL2 v1.4.1",
+    "0xd9db270c1b5e3bd161e8c8503c55ceabee709552": "Safe v1.3.0",
+    "0x3e5c63644e683549055b9be8653de26e0b4cd36e": "SafeL2 v1.3.0",
+}
+SEL_GET_THRESHOLD = "0xe75235b8"
+SEL_GET_OWNERS = "0xa0e67e2b"
+SLOT0 = "0x0"
+
 # The only clause each decision may rest on (the terms must contain them).
 CLAUSES_FOR = {"ELIGIBLE": ("E4",), "NOT_ELIGIBLE": ("X1", "X2")}
 
@@ -291,9 +316,14 @@ _K256 = (
 
 
 def _sha256(text: typing.Any) -> str:
-    """SHA-256 of the UTF-8 bytes, hex, written out (FIPS 180-4) so every
-    validator - and anyone checking later - computes it the same way."""
-    data = bytearray(str(text).encode("utf-8"))
+    """SHA-256 of the UTF-8 bytes of text, hex."""
+    return _sha256_bytes(str(text).encode("utf-8"))
+
+
+def _sha256_bytes(raw: bytes) -> str:
+    """SHA-256, hex, written out (FIPS 180-4) so every validator - and anyone
+    checking later - computes it the same way."""
+    data = bytearray(raw)
     bits = len(data) * 8
     data.append(0x80)
     while len(data) % 64 != 56:
@@ -756,6 +786,8 @@ def gather_appeal(rpcs: list, chain_id: int, borrower: str,
         return {"ok": False, "why": "CODE_SOURCES_DISAGREE"}
     facts["borrower_code_kind"] = _code_kind(code["value"])
     facts["borrower_code_bytes"] = (len(code["value"]) - 2) // 2
+    hexcode = code["value"][2:]
+    facts["borrower_code_sha256"] = _sha256_bytes(bytes.fromhex(hexcode)) if len(hexcode) % 2 == 0 else ""
     # implementation: an EIP-1167 clone names it in its code; otherwise the
     # EIP-1967 implementation slot. Read by validators, never supplied.
     impl = ""
@@ -768,6 +800,22 @@ def gather_appeal(rpcs: list, chain_id: int, borrower: str,
             if cand != "0x" + "0" * 40:
                 impl = cand
     facts["implementation"] = impl
+    # A Safe proxy keeps its singleton in storage slot 0.
+    safe = ""
+    if not impl and facts["borrower_code_bytes"] <= 400:
+        s0 = onchain("eth_getStorageAt", [borrower, SLOT0, "latest"])
+        if s0["ok"] and s0["value"] != "REVERT" and len(s0["value"]) == 66:
+            cand = "0x" + s0["value"][26:]
+            if cand in SAFE_SINGLETONS:
+                safe = cand
+    facts["safe_singleton"] = safe
+    if safe:
+        th = onchain("eth_call", [{"to": borrower, "data": SEL_GET_THRESHOLD}, "latest"])
+        ow = onchain("eth_call", [{"to": borrower, "data": SEL_GET_OWNERS}, "latest"])
+        if not th["ok"] or not ow["ok"] or th["value"] == "REVERT" or ow["value"] == "REVERT":
+            return {"ok": False, "why": "SAFE_UNREADABLE"}
+        facts["safe_threshold"] = _as_int(th["value"], -1)
+        facts["safe_owners"] = _as_int("0x" + ow["value"][66:130], -1) if len(ow["value"]) >= 130 else -1
     owner = ""
     owner_kind = ""
     o = onchain("eth_call", [{"to": borrower, "data": VIEW_SELECTORS["owner()"]}, "latest"])
@@ -821,6 +869,64 @@ def gather_appeal(rpcs: list, chain_id: int, borrower: str,
         facts["evidence_ignored_not_part_of_this_case"] = ignored
     return {"ok": True, "facts": facts, "owner": owner, "owner_kind": owner_kind,
             "evidence": evidence}
+
+
+def classify_wallet(facts: dict, owner: str, owner_kind: str) -> dict:
+    """CODE decides the appeal from what validators read on chain. Returns
+    {wallet_type, decision, clause_id, beneficiary, view, code_check}. A
+    decision is only ever ELIGIBLE under E4, NOT_ELIGIBLE under X1/X2, or
+    INCONCLUSIVE when code cannot tell what the contract is."""
+    impl = str(facts.get("implementation", ""))
+    sha = str(facts.get("borrower_code_sha256", ""))
+    if sha in PERSONAL_WALLET_CODE:
+        wtype = PERSONAL_WALLET_CODE[sha]
+    elif impl in PERSONAL_WALLET_IMPLS:
+        wtype = PERSONAL_WALLET_IMPLS[impl]
+    elif facts.get("safe_singleton"):
+        wtype = SAFE_SINGLETONS[str(facts["safe_singleton"])]
+    else:
+        wtype = ""
+
+    def out(decision: str, clause: str, check: str, ben: str = "") -> dict:
+        return {"wallet_type": wtype or "UNRECOGNISED", "decision": decision,
+                "clause_id": clause, "beneficiary": ben,
+                "view": "owner()" if decision == D_ELIGIBLE else "", "code_check": check}
+
+    if facts.get("safe_singleton"):
+        if _as_int(facts.get("safe_threshold"), 0) > 1 or _as_int(facts.get("safe_owners"), 0) > 1:
+            return out(D_NOT_ELIGIBLE, "X2", "MULTI_KEY_SAFE")
+        return out(D_NOT_ELIGIBLE, "X1", "OWNER_VIEW_UNAVAILABLE")
+    if owner == "":
+        # E4 needs an owner() that returns an account; without one no appeal
+        # can establish a payee, whatever the contract is.
+        return out(D_NOT_ELIGIBLE, "X1", "OWNER_VIEW_UNAVAILABLE")
+    if wtype == "":
+        return out(D_INCONCLUSIVE, "", "WALLET_TYPE_NOT_RECOGNISED")
+    if owner_kind == K_CONTRACT:
+        return out(D_NOT_ELIGIBLE, "X1", "BENEFICIARY_IS_A_CONTRACT")
+    return out(D_ELIGIBLE, "E4", "OK", owner)
+
+
+def _wallet_label(v: typing.Any) -> str:
+    """Only names from the code's own registry (or UNRECOGNISED) are stored."""
+    t = str(v)
+    known = list(PERSONAL_WALLET_CODE.values()) + list(PERSONAL_WALLET_IMPLS.values()) \
+        + list(SAFE_SINGLETONS.values())
+    return t if t in known else "UNRECOGNISED"
+
+
+def combine(code: dict, model: dict) -> dict:
+    """The model can confirm code's decision or withhold it - never reverse it.
+    Same decision -> code's outcome (code's clause, code's payee). Otherwise
+    INCONCLUSIVE: stake back, the claim may be appealed again."""
+    if code["decision"] == D_INCONCLUSIVE:
+        return code
+    if model.get("decision") == code["decision"]:
+        return code
+    check = str(model.get("code_check", ""))
+    return {"wallet_type": code["wallet_type"], "decision": D_INCONCLUSIVE, "clause_id": "",
+            "beneficiary": "", "view": "",
+            "code_check": check if check not in ("", "OK") else "MODEL_DID_NOT_CONFIRM"}
 
 
 # =============================================================================
@@ -922,6 +1028,7 @@ class Appeal:
     argument_sha256: str
     evidence_n: u32
     filed_at: u64
+    wallet_type: str          # what CODE recognised from bytecode (a fixed registry name)
 
 
 @gl.storage.allow
@@ -1356,15 +1463,20 @@ class MakeWhole(gl.contract.Contract):
                 return {"decision": D_INCONCLUSIVE, "clause_id": "", "beneficiary": "",
                         "view": "", "code_check": str(g.get("why", "UNREADABLE")),
                         "owner": "", "owner_kind": ""}
-            try:
-                raw = gl.nondet.exec_prompt(
-                    appeal_prompt(terms, g["facts"], arg, g["evidence"], nonce),
-                    response_format="json")
-            except Exception:
-                return {"decision": D_INCONCLUSIVE, "clause_id": "", "beneficiary": "",
-                        "view": "", "code_check": "MODEL_UNAVAILABLE",
-                        "owner": g["owner"], "owner_kind": g["owner_kind"]}
-            out = check_model_answer(raw, clauses, g["owner"], g["owner_kind"])
+            code = classify_wallet(g["facts"], g["owner"], g["owner_kind"])
+            if code["decision"] == D_INCONCLUSIVE:
+                out = code
+            else:
+                facts = dict(g["facts"])
+                facts["wallet_type_by_code"] = code["wallet_type"]
+                try:
+                    raw = gl.nondet.exec_prompt(
+                        appeal_prompt(terms, facts, arg, g["evidence"], nonce),
+                        response_format="json")
+                    model = check_model_answer(raw, clauses, g["owner"], g["owner_kind"])
+                except Exception:
+                    model = {"decision": D_INCONCLUSIVE, "code_check": "MODEL_UNAVAILABLE"}
+                out = combine(code, model)
             out["owner"] = g["owner"]
             out["owner_kind"] = g["owner_kind"]
             return out
@@ -1379,7 +1491,7 @@ class MakeWhole(gl.contract.Contract):
             # The money-moving fields must be identical. The owner() answer
             # is part of that: a leader cannot name a beneficiary no
             # validator read from Ethereum.
-            for k in ("decision", "clause_id", "beneficiary", "view", "owner", "owner_kind"):
+            for k in ("decision", "clause_id", "beneficiary", "view", "owner", "owner_kind", "wallet_type"):
                 if str(theirs.get(k, "")) != str(mine.get(k, "")):
                     return False
             # code_check is compared only when both sides have a decision;
@@ -1406,7 +1518,8 @@ class MakeWhole(gl.contract.Contract):
             clause_sha256=cl_sha if decision != D_INCONCLUSIVE else "",
             beneficiary=ben, view=str(res.get("view", ""))[:20] if decision == D_ELIGIBLE else "",
             code_check=str(res.get("code_check", ""))[:40],
-            argument_sha256=_sha256(arg), evidence_n=u32(len(targets)), filed_at=u64(now))
+            argument_sha256=_sha256(arg), evidence_n=u32(len(targets)), filed_at=u64(now),
+            wallet_type=_wallet_label(res.get("wallet_type", "")))
         self.appeals_n = u32(aid)
         self.inc_appeals[str(int(inc.incident_id)) + ":" + str(int(inc.appeals_n))] = u32(aid)
         inc.appeals_n = u32(int(inc.appeals_n) + 1)
@@ -1430,6 +1543,7 @@ class MakeWhole(gl.contract.Contract):
             if inc.settled and int(c.inc_index) < int(inc.settle_cursor):
                 self._credit_claim(inc, c)
         return self._ok({"appeal_id": aid, "claim_id": cid, "decision": decision,
+                         "wallet_type": _wallet_label(res.get("wallet_type", "")),
                          "clause_id": cl_id if decision != D_INCONCLUSIVE else "",
                          "beneficiary": ben, "code_check": str(res.get("code_check", "")),
                          "stake": "returned" if decision != D_NOT_ELIGIBLE else "forfeited to the pool"})
@@ -1715,6 +1829,7 @@ class MakeWhole(gl.contract.Contract):
                 "clause_id": a.clause_id, "clause_sha256": a.clause_sha256,
                 "beneficiary": a.beneficiary, "view": a.view, "code_check": a.code_check,
                 "argument_sha256": a.argument_sha256, "evidence_links": int(a.evidence_n),
+                "wallet_type": a.wallet_type,
                 "filed_at": int(a.filed_at)}
 
     @gl.public.view

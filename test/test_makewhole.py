@@ -66,6 +66,10 @@ OSETH_TX, OSETH_LOG, OSETH_USER, _ = tx_of("0x1570c1a3")           # osETH debt
 EARLY_TX, EARLY_LOG, EARLY, _ = tx_of("0x531c2b3a")                # Mar 8: before the range
 LATE_TX, LATE_LOG, LATE, _ = tx_of("0x50a792e9")                   # Mar 14: after the range
 DSPROXY_OWNER = "0x08d49c032f268d3ac4265d1909c28dfaab440040"
+FLIP_A_TX, FLIP_A_LOG, FLIP_A, _ = tx_of("0x681dc889")             # unverified 16 KB contract with owner()
+FLIP_B_TX, FLIP_B_LOG, FLIP_B, _ = tx_of("0xbe6e072a")             # EIP-1167 clone of SelfManagedDefiiV4
+DPM_TX, DPM_LOG, DPM, _ = tx_of("0x9a982dfc")                      # EIP-1167 clone of Summer.fi AccountImplementation
+DPM_OWNER = "0x6fa6e54eaa65f94a878b25b0bd79b5c418f84d69"
 OWNER_SEL = "0x8da5cb5b"
 
 def word(addr):
@@ -84,6 +88,12 @@ def load_chain():
     for a, c in code.items():
         ETH.code[a] = c
     ETH.calls[(DSPROXY, OWNER_SEL)] = word(DSPROXY_OWNER)
+    facts = json.loads((HERE / "fixtures" / "chain_facts.json").read_text())
+    ETH.storage[(SAFE, "0x0")] = facts["safe_slot0"]
+    ETH.calls[(SAFE, "0xe75235b8")] = facts["safe_threshold"]
+    ETH.calls[(SAFE, "0xa0e67e2b")] = facts["safe_owners"]
+    for a in (FLIP_A, FLIP_B, DPM):
+        ETH.calls[(a, OWNER_SEL)] = facts["owner_" + a]
     ETH.calls[(SAFE, OWNER_SEL)] = "REVERT"
     ETH.calls[(CLONE, OWNER_SEL)] = "REVERT"
     ETH.code[CLONE] = "0x363d3d373d3d3d363d73fe02a32cbe0cb9ad9a945576a5bb53a3c123a3a35af43d82803e903d91602b57fd5bf3"
@@ -419,8 +429,11 @@ class T07_FakeBeneficiary(unittest.TestCase):
 
     def test_model_names_someone_else(self):
         out = self.w.appeal(self.cid, dict(ELIGIBLE_ANSWER, beneficiary=str(ATTACKER)))
-        self.assertEqual(out["decision"], "NOT_ELIGIBLE")
+        # v1.2: code decided ELIGIBLE for the real owner; a model that names
+        # anyone else only withholds (stake back) - it cannot reverse code.
+        self.assertEqual(out["decision"], "INCONCLUSIVE")
         self.assertEqual(out["code_check"], "BENEFICIARY_NOT_CONFIRMED")
+        self.assertEqual(int(self.w.c.claimable[str(APPELLANT)]), 10 ** 16)
         self.assertEqual(self.w.view("get_claim", self.cid)["beneficiary"], "")
 
     def test_owner_is_a_contract(self):
@@ -1095,6 +1108,65 @@ class AttackFixes(unittest.TestCase):
                 w.call(ANYONE, name, *args, value=GEN)
         self.assertEqual(int(w.c.balance_wei), int(5.1319 * GEN))
         self.assertEqual(int(w.c.claimable.get(str(ANYONE)) or 0), 0)
+
+
+class Stability(unittest.TestCase):
+    """Stability check (docs/SEEDS.md): the same real wallet got ELIGIBLE in one
+    transaction and NOT_ELIGIBLE in another when a model decided it. Code now
+    decides the wallet type from bytecode; the model can only confirm."""
+
+    def setUp(self):
+        self.w = World(); self.iid = self.w.incident()
+
+    def _run_twice_with_opposite_models(self, tx, log):
+        cid = self.w.file(self.iid, tx, log)["claim_id"]
+        outs = []
+        for answer in (ELIGIBLE_ANSWER, MULTISIG_ANSWER):
+            a = dict(answer)
+            if a["decision"] == "ELIGIBLE":
+                a["beneficiary"] = self.w.view("get_claim", cid)["borrower"]  # whatever; code checks it
+            MODEL.reset()
+            outs.append(self.w.appeal(cid, a))
+            if outs[-1]["decision"] == "ELIGIBLE":
+                break
+        return cid, outs
+
+    def test_unrecognised_owner_wallets_are_inconclusive_without_asking_the_model(self):
+        for tx, log in ((FLIP_A_TX, FLIP_A_LOG), (FLIP_B_TX, FLIP_B_LOG)):
+            cid, outs = self._run_twice_with_opposite_models(tx, log)
+            self.assertEqual([o["decision"] for o in outs], ["INCONCLUSIVE", "INCONCLUSIVE"], tx)
+            self.assertEqual({o["code_check"] for o in outs}, {"WALLET_TYPE_NOT_RECOGNISED"})
+            self.assertEqual(MODEL.prompts, [])                      # the model is never asked
+            self.assertEqual(self.w.view("get_claim", cid)["status"], "EXCLUDED_CONTRACT")  # appealable again
+        self.assertEqual(int(self.w.c.claimable[str(APPELLANT)]), 4 * 10 ** 16)        # every stake back
+
+    def test_recognised_wallet_never_flips_whatever_the_model_says(self):
+        """DSProxy: code says ELIGIBLE. A model saying NOT_ELIGIBLE only withholds."""
+        cid = self.w.file(self.iid, DSPROXY_TX, DSPROXY_LOG)["claim_id"]
+        no = self.w.appeal(cid, MULTISIG_ANSWER)
+        self.assertEqual((no["decision"], no["code_check"]), ("INCONCLUSIVE", "MODEL_DID_NOT_CONFIRM"))
+        yes = self.w.appeal(cid, ELIGIBLE_ANSWER)
+        self.assertEqual((yes["decision"], yes["clause_id"], yes["beneficiary"], yes["wallet_type"]),
+                         ("ELIGIBLE", "E4", DSPROXY_OWNER, "DSProxy (MakerDAO)"))
+
+    def test_summer_fi_account_is_recognised_from_its_implementation(self):
+        cid = self.w.file(self.iid, DPM_TX, DPM_LOG)["claim_id"]
+        out = self.w.appeal(cid, dict(ELIGIBLE_ANSWER, beneficiary=DPM_OWNER))
+        self.assertEqual((out["decision"], out["beneficiary"], out["wallet_type"]),
+                         ("ELIGIBLE", DPM_OWNER, "Summer.fi DPM AccountImplementation"))
+
+    def test_multi_key_safe_is_x2_by_code(self):
+        cid = self.w.file(self.iid, SAFE_TX, SAFE_LOG)["claim_id"]
+        out = self.w.appeal(cid, dict(MULTISIG_ANSWER, clause_id="X1", quote="has no key on the payout chain"))
+        self.assertEqual((out["decision"], out["clause_id"], out["wallet_type"]), ("NOT_ELIGIBLE", "X2", "Safe v1.4.1"))
+        a = self.w.view("get_appeal", out["appeal_id"])
+        clause = next(l.strip() for l in TERMS.split("\n") if l.startswith("[X2]"))
+        self.assertEqual(a["clause_sha256"], hashlib.sha256(clause.encode()).hexdigest())
+
+    def test_registry_hash_matches_the_real_dsproxy_runtime(self):
+        code = json.loads((HERE / "fixtures" / "code.json").read_text())
+        self.assertIn(hashlib.sha256(bytes.fromhex(code[DSPROXY][2:])).hexdigest(), MOD.PERSONAL_WALLET_CODE)
+        self.assertEqual(MOD._sha256_bytes(bytes.fromhex(code[FLIP_A][2:])), hashlib.sha256(bytes.fromhex(code[FLIP_A][2:])).hexdigest())
 
 
 # =============================================================================
