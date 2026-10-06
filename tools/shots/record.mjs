@@ -21,10 +21,10 @@ await scroll(await yOf("#try", 120)); await wait(3500); await scroll(0); await w
 await p.click("nav >> text=Incidents"); await p.waitForSelector("text=The real incident", { timeout: 90000 }); await wait(2500);
 await p.click("text=Aave wstETH CAPO incident (the real one)"); await p.waitForSelector("#acc", { timeout: 90000 }); await wait(2500);
 for (const id of ["#rep", "#when", "#pool", "#acc"]) { await scroll(await yOf(id)); await wait(id === "#acc" ? 2600 : 2300); }
-// 3. the DSProxy account and its appeal decision
-await p.goto(BASE + "/incident/c-1/account/0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f", { waitUntil: "networkidle" }); await p.waitForSelector("#liq", { timeout: 90000 }); await wait(2500);
+// 3. a smart-wallet account and its appeal decision
+await p.goto(BASE + "/incident/c-1/account/0x9a982dfcd22159a059114eca54b5abaabdd627b4", { waitUntil: "networkidle" }); await p.waitForSelector("#liq", { timeout: 90000 }); await wait(2500);
 await scroll(await yOf("#liq", 40)); await wait(4500);
-await p.goto(BASE + "/incident/c-1/claim/1?appeal=1", { waitUntil: "networkidle" }); await p.waitForSelector("#dec", { timeout: 90000 }); await wait(1500);
+await p.goto(BASE + "/incident/c-1/claim/11?appeal=3", { waitUntil: "networkidle" }); await p.waitForSelector("#dec", { timeout: 90000 }); await wait(1500);
 await scroll(await yOf("#dec", 40)); await wait(4500);
 // 4. File a claim: the real incident is complete; preview one on a demo scenario
 await p.goto(BASE + "/file?incident=c-1", { waitUntil: "networkidle" }); await wait(4500);

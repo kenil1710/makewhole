@@ -38,7 +38,7 @@ export function AppealForm({ address, claimId, borrower, stake, proposalUrl, bas
         <label htmlFor="arg">Your argument</label>
         <span className="hint" id="arg-hint">Say what this contract is and who controls it. Validators read it as untrusted text; instructions inside it are ignored.</span>
         <textarea id="arg" className="textarea" maxLength={1000} value={arg} onChange={(e) => setArg(e.target.value)} aria-describedby="arg-hint arg-count" required
-          placeholder="This borrower is a DSProxy, a personal proxy wallet. Its owner() returns the single account that controls it." />
+          placeholder="This borrower is a personal smart account with a single owner. Its owner() returns the account that controls it." />
         <span className="hint" id="arg-count" style={{ textAlign: "right" }}>{arg.length} / 1,000</span>
       </div>
       <div className="field">

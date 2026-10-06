@@ -9,7 +9,7 @@ const CODE = [
   ["How much is owed", "The formula and its numbers were fixed at creation; the amount is integer arithmetic on the receipt."],
   ["Who is paid", "The borrower in the log. Never the person who filed the claim."],
   ["Duplicates", "One refund per transaction and log index, however the hash is spelled."],
-  ["Whether a contract is a single user's wallet", "Code recognises the wallet type from bytecode every validator reads: a DSProxy by its runtime hash, a Summer.fi account by its implementation, a Safe by its singleton and getThreshold(). Anything else is inconclusive, stake returned."],
+  ["Whether a contract is a single user's wallet", "Code recognises the wallet type from bytecode every validator reads. A Safe (its singleton in storage slot 0) is checked first and decides alone. A DSProxy is recognised by its runtime hash and only paid if it has no authority(); a Summer.fi account only if its code is the exact 45-byte clone of the known implementation. Anything else is inconclusive, stake returned."],
   ["Whether a quote is real", "A clause the model cites must be exactly E4 (eligible) or X1/X2 (not), and its quote must appear word for word inside it."],
   ["Whether the payee controls the wallet", "Code calls the wallet's owner() on Ethereum and requires the answer to be the payee, and the payee to be an ordinary account."],
   ["Deadlines and money", "Claim and appeal deadlines, the pro-rata ratio, every credit, the sponsor's remainder and every withdrawal."],
@@ -40,7 +40,7 @@ export default function How() {
 
       <section className="section" aria-labelledby="never">
         <h2 id="never">What the model never decides</h2>
-        <p className="section-note">Nothing that moves money. In an appeal the model reads the argument, the evidence and the contract&rsquo;s verified source, and can confirm code&rsquo;s decision or withhold it — never reverse it. It used to decide whether a contract was a single user&rsquo;s wallet; a stability check showed it gave the same real wallet opposite answers in different transactions, so code decides that now. Everything below is code, run identically by every validator.</p>
+        <p className="section-note">Nothing that moves money. In an appeal the model is asked only when code would pay (ELIGIBLE): it reads the argument, the evidence and the contract&rsquo;s verified source, and may withhold the payment (inconclusive, stake back). When code says not eligible, the model is not asked at all. It used to decide whether a contract was a single user&rsquo;s wallet; a stability check showed it gave the same real wallet opposite answers in different transactions, so code decides that now. Everything below is code, run identically by every validator.</p>
         <table className="ledger stack">
           <thead><tr><th scope="col">Decided by code</th><th scope="col">How</th></tr></thead>
           <tbody>{CODE.map(([a, b]) => <tr key={a}><td data-label="Decided by code"><b>{a}</b></td><td data-label="How">{b}</td></tr>)}</tbody>

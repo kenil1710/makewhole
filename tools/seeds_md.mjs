@@ -121,28 +121,29 @@ ${(() => {
   return out.join("\n");
 })()}
 
-### Stability check: the two wallets that flipped
+### The five real smart-wallet appeals, version by version
 
 ${(() => {
-  const st = existsSync(root + "docs/stability.json") ? JSON.parse(readFileSync(root + "docs/stability.json", "utf8")) : {};
-  const v11 = JSON.parse(readFileSync(root + "docs/superseded/v1.1/stability.json", "utf8"));
-  const W = { "0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd": "unverified 16 KB contract, owner() = EOA", "0xbe6e072a92224cdebcb5a171451a6ebd1e380e62": "EIP-1167 clone of SelfManagedDefiiV4, owner() = EOA" };
-  const fmt = (r) => !r ? "—" : r.result ? `${r.result.decision}${r.result.clause_id ? " [" + r.result.clause_id + "]" : ""}${r.result.code_check && r.result.code_check !== "OK" ? " (" + r.result.code_check + ")" : ""}` : (r.status || "—");
-  const can = Object.fromEntries(appeals.map((x) => [claims.find((c) => c.claim_id === x.claim_id)?.borrower, x]));
-  const rows = Object.entries(W).map(([w, what]) => `| \`${w}\` (${what}) | ${w.startsWith("0x681d") ? "NOT_ELIGIBLE [X1]" : "ELIGIBLE [E4]"} | ${w.startsWith("0x681d") ? "ELIGIBLE [E4]" : "NOT_ELIGIBLE [X1]"} | ${fmt(v11["run1_" + w])} | ${fmt(v11["run2_" + w])} | ${can[w] ? can[w].decision + (can[w].code_check !== "OK" ? " (" + can[w].code_check + ")" : "") : "—"} | ${fmt(st["run1_" + w])} | ${fmt(st["run2_" + w])} |`);
-  return `The canonical appeals for \`0x681d…\` and \`0xbe6e…\` changed between v1 and v1.1, so both were run again, twice each,
-on the v1.1 demo contract. **0xbe6e… flipped within v1.1** (NOT_ELIGIBLE on canonical, ELIGIBLE twice on demo — same code,
-same evidence) and 0x681d… once failed to reach consensus at all. The model was not a stable judge of "is this a single
-user's wallet", so v1.2 decides that **from bytecode**: DSProxy by its runtime sha256, Summer.fi DPM accounts by their
-EIP-1167 implementation, Safes by their singleton and getThreshold()/getOwners(). Neither of these two wallets is a
-recognised type, so both are now **INCONCLUSIVE by code** (stake returned, appealable again; if never approved, their reserve
-tops up the other claims at close). The model can still confirm or withhold code's decision, never reverse it.
-
-| wallet | v1 canonical | v1.1 canonical | v1.1 demo run 1 | v1.1 demo run 2 | v1.2 canonical | v1.2 demo run 1 | v1.2 demo run 2 |
-|---|---|---|---|---|---|---|---|
+  const rd = (f) => existsSync(root + f) ? JSON.parse(readFileSync(root + f, "utf8")) : {};
+  const v11s = rd("docs/superseded/v1.1/stability.json"), v12s = rd("docs/superseded/v1.2/stability.json");
+  const canOf = (f) => Object.fromEntries(Object.values(rd(f).appeals ?? {}).map((a) => [a.borrower, a.result]));
+  const v1 = canOf("docs/superseded/v1/seed-canonical.json"), v11 = canOf("docs/superseded/v1.1/seed-canonical.json"), v12 = canOf("docs/superseded/v1.2/seed-canonical.json");
+  const now = Object.fromEntries(appeals.map((x) => [claims.find((c) => c.claim_id === x.claim_id)?.borrower, x]));
+  const f = (r0) => { const r = r0 && r0.result !== undefined ? (r0.result ?? { decision: r0.status }) : r0; return !r ? "—" : r.decision ? `${r.decision}${r.clause_id ? " [" + r.clause_id + "]" : ""}${r.code_check && r.code_check !== "OK" ? " (" + r.code_check + ")" : ""}` : "—"; };
+  const W = [["0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f", "DSProxy, authority() = DSGuard"], ["0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de", "DSProxy, authority() = DSGuard"],
+    ["0x9a982dfcd22159a059114eca54b5abaabdd627b4", "Summer.fi DPM account (exact EIP-1167 clone)"], ["0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd", "unverified 16 KB contract"],
+    ["0xbe6e072a92224cdebcb5a171451a6ebd1e380e62", "EIP-1167 clone of SelfManagedDefiiV4"]];
+  const rows = W.map(([w, what]) => `| \`${w}\` (${what}) | ${f(v1[w])} | ${f(v11[w])} | ${[v11s["run1_" + w], v11s["run2_" + w]].map(f).join(" / ")} | ${f(v12[w])} | ${[v12s["run1_" + w], v12s["run2_" + w]].map(f).join(" / ")} | **${f(now[w])}** |`);
+  return `| wallet | v1 canonical | v1.1 canonical | v1.1 demo ×2 | v1.2 canonical | v1.2 demo ×2 | v1.3 canonical (current) |
+|---|---|---|---|---|---|---|
 ${rows.join("\n")}
 
-The v1.1 records are in [superseded/v1.1](superseded/v1.1/README.md); the v1.2 runs in \`docs/stability.json\`.`;
+- **v1 → v1.1:** the model decided the wallet type; 0x681d… and 0xbe6e… swapped answers.
+- **v1.1 stability check:** 0xbe6e… flipped *within* v1.1 and 0x681d… once could not reach consensus → v1.2 moved the wallet
+  type to code (bytecode); both became INCONCLUSIVE on every run.
+- **v1.2 → v1.3 (attack round v1.2):** a DSProxy's \`authority()\` is now read; both real DSProxies have a **DSGuard**, so
+  both are INCONCLUSIVE — callers other than owner() can operate them. Only the Summer.fi account is paid by appeal.
+  Records: [v1](superseded/v1/README.md), [v1.1](superseded/v1.1/README.md), [v1.2](superseded/v1.2/README.md).`;
 })()}
 
 ### Top-up at close (incident 3, attack-round fix 6)

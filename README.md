@@ -9,14 +9,14 @@ cases, pull payouts — on GenLayer.
 |---|---|
 | **Live app** | https://makewhole-ledger.vercel.app |
 | **Network** | GenLayer Studio Dev, chain `61997` — [explorer](https://explorer-studio-dev.genlayer.com/) |
-| **MakeWhole — canonical** (the real incident; 30-day claim window, 14-day appeal window) | `0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab` |
-| **MakeWhole — demo** (same source; windows of minutes) | `0x7c0c0C3536B943026d7E28012FA084dDffB8b549` |
-| **RecoveryLedger** (read-only consumer; no payable method) | `0xF2A600B03BEf05fC978Cd4835A36Fb6ED1Fd9D5b` |
-| **Commit deployed** | `dd73edef73f7dba1d9b1dde8075361bb17d7a3de` — sha256 of `contracts/MakeWhole.py`: `44e250da69e778f54c3aee0aa99dc6e94d1e6afc1df8a459e00128e68e391a8f` |
-| **Offline tests** | `python3 test/test_makewhole.py` (stdlib only, 95 tests, including the attack round and the stability check) |
+| **MakeWhole — canonical** (the real incident; 30-day claim window, 14-day appeal window) | `0x721aec66070f54082164B58fB8E2e6f1E6A085BA` |
+| **MakeWhole — demo** (same source; windows of minutes) | `0x3265AfB9e1f311698f85f7AF4FD890303Cd39Ad1` |
+| **RecoveryLedger** (read-only consumer; no payable method) | `0x59941E298EF8b3C4BcDdE0674a19EdC55DD1362B` |
+| **Commit deployed** | `4d7a293bc47241643b6c6c40286562324e412a76` — sha256 of `contracts/MakeWhole.py`: `7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed` |
+| **Offline tests** | `python3 test/test_makewhole.py` (stdlib only, 117 tests, including both attack rounds and the stability check) |
 | **Demo video** | [`docs/demo/makewhole-demo.mp4`](docs/demo/makewhole-demo.mp4) (82 s) |
 
-More: [research](docs/RESEARCH.md) · [threat model](docs/THREAT_MODEL.md) · [seeds](docs/SEEDS.md) · [addresses](ADDRESSES.md) · [tasks](docs/TASKS.md) · superseded [v1](docs/superseded/v1/README.md), [v1.1](docs/superseded/v1.1/README.md)
+More: [research](docs/RESEARCH.md) · [threat model](docs/THREAT_MODEL.md) · [seeds](docs/SEEDS.md) · [addresses](ADDRESSES.md) · [tasks](docs/TASKS.md) · superseded [v1](docs/superseded/v1/README.md), [v1.1](docs/superseded/v1.1/README.md), [v1.2](docs/superseded/v1.2/README.md)
 
 ## The problem
 
@@ -71,12 +71,16 @@ post-mortem — not published by the Aave DAO.
    (tx, log), whatever the spelling.
 3. **Appeal (anyone, small stake).** A borrower that is a smart contract on Ethereum has no key on GenLayer, so its refund is
    withheld (clause X1). An appeal argues who controls it (≤ 1,000 characters, no fence markers, up to three
-   Etherscan/Blockscout address pages or the proposal URL). **Code decides** from bytecode every validator reads through the
-   two-source quorum: a DSProxy (runtime sha256) or a Summer.fi DPM account (EIP-1167 implementation) whose `owner()` is an
-   EOA → ELIGIBLE under [E4], paid to that `owner()`; a Safe with more than one key → NOT_ELIGIBLE under [X2]; no `owner()`
-   → NOT_ELIGIBLE under [X1]; **anything else → INCONCLUSIVE**, stake back, appealable again. The model reads the argument,
-   the evidence (bound to the borrower, its implementation and its `owner()`) and the verified source, and can only
-   **confirm** code's decision or withhold it (→ INCONCLUSIVE). It can never turn one decision into the other.
+   Etherscan/Blockscout address pages or the proposal URL). **Code decides** from what every validator reads through the
+   two-source quorum, in this order:
+   - a **Safe** (its singleton in storage slot 0 — checked first, and final) with more than one key → NOT_ELIGIBLE [X2];
+   - no `owner()` returning an account, or an owner that is a contract → NOT_ELIGIBLE [X1];
+   - a **DSProxy** (runtime sha256) with **no `authority()`**, or an **exact 45-byte EIP-1167 clone** of the Summer.fi DPM
+     implementation, whose `owner()` is an EOA → ELIGIBLE [E4], paid to that `owner()`;
+   - anything else (including a DSProxy with an authority) → **INCONCLUSIVE**, stake back, appealable again.
+
+   The model is asked **only** when code would pay: it reads the argument, the evidence and the verified source and may
+   withhold the payment (→ INCONCLUSIVE). A NOT_ELIGIBLE is code's alone and the stake is forfeited.
 4. **Settle (anyone, after the claim deadline; paginated).** If more is owed than the pool holds, each claim gets
    `floor(owed × pool / total)`; withheld claims are reserved at full value until the appeal deadline. No claim cap: the
    block range is capped at 50,000 blocks and settlement runs 50 claims per call.
@@ -95,13 +99,13 @@ a deadline and a permissionless exit.
 | Whether a liquidation counts | pool, event, collateral, block range, tx status, priced debt asset |
 | How much | the frozen formula, integer math on the receipt |
 | Who is paid | the borrower in the log; on appeal, whatever `owner()` returns on Ethereum (must be an EOA) |
-| **Whether a contract is a single user's wallet** | bytecode: DSProxy runtime hash, known single-owner implementations, Safe singleton + `getThreshold()`/`getOwners()`; unrecognised → INCONCLUSIVE |
+| **Whether a contract is a single user's wallet** | bytecode and state read by validators: Safe singleton in slot 0 first (+ `getThreshold()`/`getOwners()`), DSProxy runtime hash + `authority()`, exact 45-byte EIP-1167 clone of a known implementation; anything else → INCONCLUSIVE |
 | Which clause an appeal rests on | E4, X1 or X2, chosen by code; its sha256 is taken from the frozen terms |
 | Duplicates, deadlines, pro-rata, top-up, every credit and transfer | code |
 
-**The model decides nothing that moves money.** In an appeal it reads the same facts plus the appellant's argument and
-evidence, and must independently reach code's decision with a verbatim quote from an allowed clause; if it does not, the
-appeal is INCONCLUSIVE and the stake goes back. Originally the model decided "single user's wallet or not". A stability
+**The model decides nothing that moves money.** It is asked only when code would pay an appeal (ELIGIBLE); it reads the
+same facts plus the appellant's argument and evidence and must independently reach ELIGIBLE with a verbatim quote from
+[E4]; if it does not, the appeal is INCONCLUSIVE and the stake goes back. It is never asked about a NOT_ELIGIBLE. Originally the model decided "single user's wallet or not". A stability
 check showed it gave the same real wallet opposite answers in different transactions, so that question moved to code
 ([details](#stability-check)). Nothing the model writes is stored.
 
@@ -114,8 +118,10 @@ The two real appeals whose outcome had changed between v1 and v1.1 were run agai
 | `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` — unverified 16 KB contract | NOT_ELIGIBLE [X1] | ELIGIBLE [E4] | ELIGIBLE, then **UNDETERMINED** | INCONCLUSIVE ×3 (wallet type not recognised) |
 | `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` — clone of SelfManagedDefiiV4 | ELIGIBLE [E4] | NOT_ELIGIBLE [X1] | **ELIGIBLE ×2** (flip within v1.1) | INCONCLUSIVE ×3 (wallet type not recognised) |
 
-So v1.1 was replaced by v1.2 ([v1.1 record](docs/superseded/v1.1/README.md)). Recognised types are stable: the DSProxy is
-ELIGIBLE [E4] with the same payee, and the 2-of-11 Safe NOT_ELIGIBLE [X2], on every run.
+So v1.1 was replaced by v1.2 ([v1.1 record](docs/superseded/v1.1/README.md)). Recognised types were stable on every run.
+v1.3 (attack round v1.2, below) additionally reads a DSProxy's `authority()`: both real DSProxies in this incident have a
+**DSGuard** authority, so they are now INCONCLUSIVE too — including the largest account (249.48 ETH). That is the honest
+answer: callers other than `owner()` can operate those proxies, and code can't tell from chain state who is meant to be paid.
 
 ## Attack round 1
 
@@ -125,6 +131,16 @@ reserve went back to the sponsor while claimants were cut; a 400-claim cap could
 didn't say the rate came from the DAO's payout. All eight are fixed in v1.1, the ten tests now live in the main suite and
 pass, and the v1 deployment is archived in [`docs/superseded/v1/`](docs/superseded/v1/README.md). Details:
 [threat model](docs/THREAT_MODEL.md#attack-round-1-independent-review).
+
+## Attack round v1.2
+
+A second independent attacker found four issues in v1.2's bytecode-based appeal logic: (1, HIGH) the implementation was also
+read from the EIP-1967 slot, which any contract can write, so a multi-key Safe or an unrecognised contract could pose as a
+Summer.fi account; (2) EIP-1167 was matched by prefix only; (3) a model answer could turn a code-certain NOT_ELIGIBLE into a
+free retry; (4) a DSProxy's `authority()` can authorise other callers. v1.3 reads implementations only from an exact
+45-byte clone, runs the Safe check first and fails closed if slot 0 is unreadable, never consults the model on NOT_ELIGIBLE,
+and treats a non-zero DSProxy authority as INCONCLUSIVE. All six findings and nine held-up attacks are in the main suite.
+v1.2 is archived in [`docs/superseded/v1.2/`](docs/superseded/v1.2/README.md).
 
 ## Seeds
 
@@ -136,9 +152,9 @@ so the pool is 5.1319 GEN for the DAO's 513.19 ETH. Full detail and every demo p
 
 | # | account | ours (ETH) | DAO paid (ETH) | match | status |
 |---|---|---|---|---|---|
-| 1 | `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` | 249.4787941017 | 249.4787941000 | MATCH | approved on appeal |
+| 1 | `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` | 249.4787941017 | 249.4787941000 | MATCH | withheld (contract) |
 | 2 | `0x4bacce55f0991cfc4d919f7f50edb8be028e37df` | 87.7714041174 | 87.7714041200 | MATCH | owed (EOA) |
-| 3 | `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` | 54.0697851180 | 54.0697851300 | MATCH | approved on appeal |
+| 3 | `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` | 54.0697851180 | 54.0697851300 | MATCH | withheld (contract) |
 | 4 | `0x6c92cd38db2074379aa6e68257f28207a8f7585e` | 44.2929241088 | 44.2929241100 | MATCH | withheld (contract) |
 | 5 | `0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5` | 37.0960444279 | 37.0960444300 | MATCH | owed (EOA) |
 | 6 | `0x6cc243d26eb6b79b70d94af4fd6f145b297e728b` | 11.2603274252 | 11.2603274300 | MATCH | withheld (contract) |
@@ -172,7 +188,7 @@ so the pool is 5.1319 GEN for the DAO's 513.19 ETH. Full detail and every demo p
 | 34 | `0x7f821b5058c362088c88952fd7735a6965e0bc98` | 0.0001392513 | 0.0001392513 | MATCH | withheld (contract) |
 | 35 | `0x1570c1a39779cd31906a2ba854738b7d58fdb367` | 0.0000373356 | 0.0000373370 | within 0.01% | owed (EOA) |
 
-Real appeals on canonical (decided by code from bytecode): `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` eligible under [E4]; `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` eligible under [E4]; `0x9a982dfcd22159a059114eca54b5abaabdd627b4` eligible under [E4]; `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` inconclusive (wallet type not recognised by code; stake returned); `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` inconclusive (wallet type not recognised by code; stake returned); `0x4bacce55f0991cfc4d919f7f50edb8be028e37df` accepted under [877714041173915609]; `0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5` accepted under [370960444279445638]; `0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab` accepted under [74157890633479479]; `0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2` accepted under [19111633805819072]; `0x5cede91b3c5783d093b2f6c29cb2571a11204b27` excluded contract under [58856395463189586]. On the demo contract the 2-of-11 Safe was NOT_ELIGIBLE under [X2] (code: multi-key Safe) on both runs and the DSProxy ELIGIBLE under [E4] with the same payee on every run. See the [stability check](#stability-check).
+Real appeals on canonical (v1.3, decided by code): `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` and `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` (DSProxy, `authority()` = DSGuard) INCONCLUSIVE; `0x9a982dfcd22159a059114eca54b5abaabdd627b4` (Summer.fi DPM account) ELIGIBLE under [E4], paid to `0x6fa6e54eaa65f94a878b25b0bd79b5c418f84d69`; `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` and `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` INCONCLUSIVE (wallet type not recognised). On the demo contract the 2-of-11 Safe was NOT_ELIGIBLE under [X2] on both runs and the Summer.fi account ELIGIBLE with the same payee on all three runs. History: [SEEDS.md](docs/SEEDS.md#the-five-real-smart-wallet-appeals-version-by-version).
 
 The demo contract runs every other path on chain: a NOT_ELIGIBLE Safe (11 owners, threshold 2) run twice, the eligible
 DSProxy case run again, a prompt-injection appeal, a duplicate in another spelling, a real out-of-range liquidation, an
@@ -221,10 +237,15 @@ borrower withdrawing its own refund on a clearly labelled synthetic test chain (
 - **RPC trust.** Each value needs two identical answers from the five frozen providers and no disagreement. One lying
   endpoint can block a claim (INCONCLUSIVE until the deadline) but not change a payout; two colluding endpoints while the
   others are down could. The demo's synthetic test chain has two endpoints that are the same app; its terms say so.
-- **`owner()` is read at `latest`**, not at the liquidation block, and it is the only beneficiary view. 17 of the 22 contract borrowers
-  (EIP-1167 clones, proxies, one Safe) have no `owner()` and stay withheld; their reserve returns to the sponsor.
+- **`owner()` is read at the latest block, not at the liquidation block.** Ownership transferred since March pays the
+  current owner.
 - **Rate limits make claims INCONCLUSIVE sometimes.** If fewer than two endpoints answer a validator, nothing is stored and
   the claim is filed again; the deadline still runs.
+- **Summer.fi AccountGuard permits are not enumerated.** A DPM account's `owner()` comes from its AccountGuard, which can
+  also permit other operators; those permits can't be listed from chain state, so code pays `owner()` and does not consider
+  other permitted operators.
+- **DSProxies with a DSGuard are not paid by appeal.** Both real DSProxies here have one, so they stay withheld and their
+  reserve tops up the other claims at close.
 - **The wallet-type registry is small.** Code recognises DSProxy, Summer.fi DPM accounts and Safe; every other contract
   borrower (here: InstaDapp accounts, Morpho/Euler-style beacon proxies, 0x681d…, 0xbe6e…) is INCONCLUSIVE on appeal and
   its reserve tops up the other claims at close. Adding a type means adding its runtime hash or implementation to the

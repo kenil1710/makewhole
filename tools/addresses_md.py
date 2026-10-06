@@ -10,7 +10,7 @@ DESC = {"MakeWhole": "MakeWhole — canonical (`CANONICAL`, windows ≥ 7 days; 
         "RecoveryLedger": "RecoveryLedger — read-only consumer of the canonical (no payable method, no transfer, no owner)"}
 out = ["# Addresses", "",
        "GenLayer **Studio Dev** — RPC `https://studio-dev.genlayer.com/api`, chain **61997**, explorer " + X + "/", "",
-       "## Current (v1.2, after the stability check)", ""]
+       "## Current (v1.3, after attack round v1.2)", ""]
 for k in ("MakeWhole", "MakeWholeDemo", "RecoveryLedger"):
     v = d[k]
     out += [f"### {DESC[k]}", "",
@@ -28,10 +28,11 @@ out += ["Copy-paste:", "", "```",
         "Check that the chain holds exactly what HEAD holds: `node tools/verify_source.mjs`.", "",
         "## Superseded", "",
         "Still on chain, no longer used by the app. v1 was replaced after an independent attack round "
-        "([details](docs/superseded/v1/README.md)); v1.1 after the stability check ([details](docs/superseded/v1.1/README.md)).", "",
+        "([details](docs/superseded/v1/README.md)); v1.1 after the stability check ([details](docs/superseded/v1.1/README.md)); v1.2 after attack round v1.2 ([details](docs/superseded/v1.2/README.md)).", "",
         "| contract | address | replaced by |", "|---|---|---|"]
 for s in doc.get("superseded", []):
-    ver = "v1.1" if s.get("commit", "").startswith("9340b6b") else "v1"
+    c = s.get("commit", "")
+    ver = "v1.1" if c.startswith("9340b6b") else "v1.2" if c.startswith("dd73ede") else "v1"
     out.append(f"| {s['name']} ({ver}, commit `{s.get('commit','')}`) | `{s['address']}` | `{s['superseded_by']}` |")
 (ROOT / "ADDRESSES.md").write_text("\n".join(out) + "\n")
 print("wrote ADDRESSES.md")

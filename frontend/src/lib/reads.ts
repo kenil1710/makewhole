@@ -40,7 +40,9 @@ async function callLive<T>(address: string, fn: string, args: unknown[] = []): P
       last = e;
       const msg = String((e as Error)?.message ?? e);
       if (/no (incident|claim|appeal) #/i.test(msg)) throw new NotFound(msg);
-      await new Promise((r) => setTimeout(r, 1500 * (i + 1)));
+      // Studio meters 30 requests a minute per IP and says how long to wait.
+      const limited = /rate limit|-32029|Server busy|execution slots/i.test(msg);
+      await new Promise((r) => setTimeout(r, limited ? 14000 : 1500 * (i + 1)));
     }
   }
   throw last;

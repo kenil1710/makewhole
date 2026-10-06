@@ -23,7 +23,10 @@ const CHECK: Record<string, string> = {
   OWNER_VIEW_UNAVAILABLE: "The contract has no owner() that returns an account, so no payee could be confirmed.",
   BENEFICIARY_IS_A_CONTRACT: "owner() returns another contract, which also has no key on GenLayer.",
   MODEL_UNAVAILABLE: "The model didn't answer. The stake was returned; the appeal can be sent again.",
-  WALLET_TYPE_NOT_RECOGNISED: "Code could not tell from the contract's bytecode what kind of wallet this is (it is not a DSProxy, a known single-owner account or a Safe). The stake was returned and the claim can be appealed again; if it is never approved, its reserve tops up other claims at close.",
+  WALLET_TYPE_NOT_RECOGNISED: "Code could not tell from the contract's bytecode what kind of wallet this is (it is not a Safe, a DSProxy or an exact clone of a known single-owner account). The stake was returned and the claim can be appealed again; if it is never approved, its reserve tops up other claims at close.",
+  DSPROXY_HAS_AUTHORITY: "This is a DSProxy, but its authority() is set (a DSGuard), so callers other than owner() can control it. Paying owner() alone isn't safe, so the appeal is inconclusive and the stake was returned.",
+  SLOT0_UNREADABLE: "Ethereum couldn't be read for the Safe check. The stake was returned; appeal again.",
+  AUTHORITY_UNREADABLE: "Ethereum couldn't be read for the DSProxy authority check. The stake was returned; appeal again.",
   MULTI_KEY_SAFE: "The contract is a Safe controlled by more than one key, read from its own getThreshold() and getOwners().",
   MODEL_DID_NOT_CONFIRM: "Code decided, but the model reading the same evidence did not confirm it. The model can only confirm or withhold, so the appeal is inconclusive: stake returned, appeal again.",
   CLAUSE_DOES_NOT_FIT_DECISION: "The model cited a clause that can't support that decision (only E4 for eligible, X1 or X2 for not). Stake returned.",
@@ -100,7 +103,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
           <h2 id="ap">Appeal for a payee</h2>
           {open ? (
             <>
-              <p className="section-note">Every validator reads the contract&rsquo;s bytecode from at least two Ethereum endpoints. Code decides: a DSProxy or a known single-owner account whose <span className="mono">owner()</span> is an ordinary account is eligible under E4 and that account is paid; a Safe with several keys is not eligible under X2; no <span className="mono">owner()</span> is not eligible under X1; anything else is inconclusive and your stake comes back. The model reads your argument and evidence too, but can only confirm code&rsquo;s decision or withhold it.</p>
+              <p className="section-note">Every validator reads the contract&rsquo;s bytecode from at least two Ethereum endpoints. Code decides. A Safe with several keys is not eligible under X2 (checked first). No <span className="mono">owner()</span>, or an owner that is a contract, is not eligible under X1. A DSProxy with no <span className="mono">authority()</span>, or an exact clone of a known single-owner account, whose <span className="mono">owner()</span> is an ordinary account is eligible under E4 and that account is paid. Anything else is inconclusive and your stake comes back. Only when code would pay does the model read your argument and evidence, and it can only withhold.</p>
               <AppealForm address={DEPLOYMENTS[p.dep].address} claimId={c.claim_id} borrower={c.borrower} stake={inc.appeal_stake} proposalUrl={inc.proposal_url} base={base} />
             </>
           ) : <p className="notice">The appeal deadline has passed. This refund returns to the sponsor when the incident closes.</p>}

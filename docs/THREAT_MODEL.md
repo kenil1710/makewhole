@@ -24,7 +24,7 @@ Two properties are checked on **every** call of every test by `World.call`, not 
 | 10 | **Oversubscribed pool math; reserve handed back while claimants are cut** | `settle()` fixes `num/den = pool / (accepted + withheld)`; each credit `floor(owed × num / den)` in incident order; an appeal approved later is credited from its reserve at the same ratio. At `close()`, before anything returns to the sponsor, under-credited claims are **topped up** from unused reserves: `U = pool − credited`, `S = Σ(owed − credited)`; full if `S ≤ U`, else `floor(shortfall × U / S)` each, in incident order. Only then does the rest go to the sponsor | `T10_OversubscribedPool` (3), `A06_ShortPoolReserveToSponsor`, `AttackFixes` |
 | 11 | **Sponsor withdraws early** | The pool is never on the sponsor's balance. There's no owner, setter or pause. Only `close()`, permissionless and only after the appeal deadline, returns what nobody is owed | `T11_SponsorEarlyWithdraw` (4) |
 | 12 | **Withdraw twice** | `withdraw()` zeroes the balance before posting the transfer; `settle()` and `close()` refuse a second run | `T12_WithdrawTwice` (2) |
-| 13d | **An unstable judge** — the same wallet gets opposite appeal outcomes in different transactions | Code decides the wallet type from bytecode read through the quorum (DSProxy runtime sha256, known single-owner implementations, Safe singleton + `getThreshold()`/`getOwners()`); unrecognised → INCONCLUSIVE, stake back. The model can only confirm code's decision or withhold it; it can never reverse it. Found by a stability check on the real wallets 0x681d… and 0xbe6e… ([v1.1 record](superseded/v1.1/README.md)) | `Stability` (5) |
+| 13d | **An unstable judge** — the same wallet gets opposite appeal outcomes in different transactions | Code decides the wallet type from bytecode and state read through the quorum: Safe singleton in slot 0 first (fail closed), DSProxy runtime sha256 + zero `authority()`, exact 45-byte EIP-1167 clone of a known implementation; anything else → INCONCLUSIVE, stake back. The model is asked only about an ELIGIBLE and may only withhold it; NOT_ELIGIBLE is code's alone. Found by a stability check on the real wallets 0x681d… and 0xbe6e… ([v1.1 record](superseded/v1.1/README.md)) | `Stability` (5), `V12_Findings` (6), `V12_HeldUp` (9), `V13_Mechanics` (7) |
 | 13b | **A hard cap locks valid claims out** | No per-incident claim cap. The block range is capped at 50,000 blocks at creation, and `settle()`/`close()` are paginated (50 claims per call, permissionless, resumable), so any number of valid claims can be filed and settled | `A07_HardClaimCap`, `AttackFixes` |
 | 13c | **Value sent to a non-payable method** | Only `create_incident`, `fund` and `appeal` are payable (AST-checked); the runtime rejects value elsewhere. The stub models that rejection and the test checks the books are untouched | `AttackFixes`, `T11` |
 | 13 | **Ledger invariant after every path** | Asserted after every call (above), plus one world that runs every path (two incidents, top-up, approved / forfeited / inconclusive / refused appeals, settle, close, refused top-up) and drains to exactly zero | `T13_LedgerAfterEveryPath` |
@@ -63,3 +63,18 @@ An independent attacker wrote ten failing tests (eight findings). All ten now li
 7. **400-claim cap** → removed; 50,000-block span cap; paginated settlement (row 13b).
 8. **fitted rate presented as reproduction** → every match score now says the rate was taken from the DAO's own payout and
    that the raw chain gap matches 0 of 35.
+
+## Attack round v1.2 (independent review of the bytecode-based appeal logic)
+
+Six failing tests (four findings) and nine attacks that held up, all now in `test/test_makewhole.py`:
+
+1. **HIGH — implementation from the EIP-1967 slot.** Any contract can write any slot, so a multi-key Safe or an
+   unrecognised contract could pose as a Summer.fi account. → The slot is never read; only an exact 45-byte EIP-1167 clone
+   names an implementation; the Safe check (slot 0) runs first, is final, and fails closed if unreadable.
+2. **MEDIUM — EIP-1167 by prefix.** → Exact 45 bytes: prefix + address + `5af43d82803e903d91602b57fd5bf3`.
+3. **MEDIUM — the model could free a code-certain NOT_ELIGIBLE.** → NOT_ELIGIBLE never consults the model; the stake is
+   forfeited. (This supersedes attack round 1's X3 test, which now asserts the clause is code's [X2].)
+4. **LOW — DSProxy `authority()`.** → Read through the quorum; non-zero → INCONCLUSIVE. Both real DSProxies have a DSGuard.
+
+Remaining, documented: Summer.fi AccountGuard permits can't be enumerated (owner() is paid; other permitted operators aren't
+considered); `owner()` is read at the latest block, not the liquidation block.

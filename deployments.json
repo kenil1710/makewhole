@@ -4,48 +4,48 @@
   "explorer": "https://explorer-studio-dev.genlayer.com/",
   "contracts": {
     "MakeWholeDemo": {
-      "address": "0x7c0c0C3536B943026d7E28012FA084dDffB8b549",
-      "deploy_tx": "0xac169c9c2930a01145fca507122dff509fac6514fac8126a630f8b0bf5ce39dd",
+      "address": "0x3265AfB9e1f311698f85f7AF4FD890303Cd39Ad1",
+      "deploy_tx": "0x064cfb10c1363a511f4b24d462013b39d6660217dddffc0d44c4be8437afe8b5",
       "file": "contracts/MakeWhole.py",
-      "commit": "dd73edef73f7dba1d9b1dde8075361bb17d7a3de",
-      "bytes": 87808,
-      "sha256": "44e250da69e778f54c3aee0aa99dc6e94d1e6afc1df8a459e00128e68e391a8f",
+      "commit": "4d7a293bc47241643b6c6c40286562324e412a76",
+      "bytes": 89288,
+      "sha256": "7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed",
       "constructor_args": [
         "DEMO",
         60
       ],
       "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
-      "deployed_at": "2026-10-06T10:15:31.444Z",
+      "deployed_at": "2026-10-06T12:09:43.581Z",
       "mode": "DEMO"
     },
     "MakeWhole": {
-      "address": "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab",
-      "deploy_tx": "0x1d3370c59f76c89f5a595cec80cd79d609b397758fb7720b14f59b8f2a442051",
+      "address": "0x721aec66070f54082164B58fB8E2e6f1E6A085BA",
+      "deploy_tx": "0xe64f959c68943cc794d3cbca953006bac39ed5aa23c31c1a261e3a026933bf93",
       "file": "contracts/MakeWhole.py",
-      "commit": "dd73edef73f7dba1d9b1dde8075361bb17d7a3de",
-      "bytes": 87808,
-      "sha256": "44e250da69e778f54c3aee0aa99dc6e94d1e6afc1df8a459e00128e68e391a8f",
+      "commit": "4d7a293bc47241643b6c6c40286562324e412a76",
+      "bytes": 89288,
+      "sha256": "7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed",
       "constructor_args": [
         "CANONICAL",
         604800
       ],
       "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
-      "deployed_at": "2026-10-06T10:15:24.411Z",
+      "deployed_at": "2026-10-06T12:09:32.475Z",
       "mode": "CANONICAL"
     },
     "RecoveryLedger": {
-      "address": "0xF2A600B03BEf05fC978Cd4835A36Fb6ED1Fd9D5b",
-      "deploy_tx": "0x8b764f5c8d039ef9fa18895fbc071979e099da85bca822fe9d78e7af9328616a",
+      "address": "0x59941E298EF8b3C4BcDdE0674a19EdC55DD1362B",
+      "deploy_tx": "0x173fed5bedf81b45a7dac16ee26e0fb41fcce447884c3e1c83203b16fc075f3e",
       "file": "contracts/RecoveryLedger.py",
-      "commit": "dd73edef73f7dba1d9b1dde8075361bb17d7a3de",
+      "commit": "4d7a293bc47241643b6c6c40286562324e412a76",
       "bytes": 3378,
       "sha256": "bd3684c745a52ced82c37b6371e26a581b4a04b66ebb6df51e26c95cfa860cee",
       "constructor_args": [
-        "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab"
+        "0x721aec66070f54082164B58fB8E2e6f1E6A085BA"
       ],
       "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
-      "deployed_at": "2026-10-06T10:15:46.921Z",
-      "reads": "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab"
+      "deployed_at": "2026-10-06T12:09:49.759Z",
+      "reads": "0x721aec66070f54082164B58fB8E2e6f1E6A085BA"
     }
   },
   "superseded": [
@@ -153,6 +153,59 @@
       "deployed_at": "2026-10-06T09:03:30.572Z",
       "reads": "0xe43638c41966F8501B8710710d50D16E261ba210",
       "superseded_by": "0xF2A600B03BEf05fC978Cd4835A36Fb6ED1Fd9D5b",
+      "why": "reads the new canonical"
+    },
+    {
+      "name": "MakeWhole",
+      "address": "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab",
+      "deploy_tx": "0x1d3370c59f76c89f5a595cec80cd79d609b397758fb7720b14f59b8f2a442051",
+      "file": "contracts/MakeWhole.py",
+      "commit": "dd73edef73f7dba1d9b1dde8075361bb17d7a3de",
+      "bytes": 87808,
+      "sha256": "44e250da69e778f54c3aee0aa99dc6e94d1e6afc1df8a459e00128e68e391a8f",
+      "constructor_args": [
+        "CANONICAL",
+        604800
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T10:15:24.411Z",
+      "mode": "CANONICAL",
+      "superseded_by": "0x721aec66070f54082164B58fB8E2e6f1E6A085BA",
+      "why": "attack round v1.2 (docs/superseded/v1.2/README.md)"
+    },
+    {
+      "name": "MakeWholeDemo",
+      "address": "0x7c0c0C3536B943026d7E28012FA084dDffB8b549",
+      "deploy_tx": "0xac169c9c2930a01145fca507122dff509fac6514fac8126a630f8b0bf5ce39dd",
+      "file": "contracts/MakeWhole.py",
+      "commit": "dd73edef73f7dba1d9b1dde8075361bb17d7a3de",
+      "bytes": 87808,
+      "sha256": "44e250da69e778f54c3aee0aa99dc6e94d1e6afc1df8a459e00128e68e391a8f",
+      "constructor_args": [
+        "DEMO",
+        60
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T10:15:31.444Z",
+      "mode": "DEMO",
+      "superseded_by": "0x3265AfB9e1f311698f85f7AF4FD890303Cd39Ad1",
+      "why": "attack round v1.2 (docs/superseded/v1.2/README.md)"
+    },
+    {
+      "name": "RecoveryLedger",
+      "address": "0xF2A600B03BEf05fC978Cd4835A36Fb6ED1Fd9D5b",
+      "deploy_tx": "0x8b764f5c8d039ef9fa18895fbc071979e099da85bca822fe9d78e7af9328616a",
+      "file": "contracts/RecoveryLedger.py",
+      "commit": "dd73edef73f7dba1d9b1dde8075361bb17d7a3de",
+      "bytes": 3378,
+      "sha256": "bd3684c745a52ced82c37b6371e26a581b4a04b66ebb6df51e26c95cfa860cee",
+      "constructor_args": [
+        "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab"
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T10:15:46.921Z",
+      "reads": "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab",
+      "superseded_by": "0x59941E298EF8b3C4BcDdE0674a19EdC55DD1362B",
       "why": "reads the new canonical"
     }
   ]
