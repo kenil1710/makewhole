@@ -762,6 +762,9 @@ class Misc(unittest.TestCase):
         src = (ROOT / "contracts/MakeWhole.py").read_text()
         self.assertNotIn(".replace(", src)
         self.assertNotIn("web.render", src)
+        # storage types are spelled gl.storage.* on this runner (bare TreeMap is a NameError at deploy)
+        for kind in ("TreeMap[", "DynArray["):
+            self.assertEqual(src.count(kind), src.count("gl.storage." + kind), kind)
 
     def test_no_undefined_names(self):
         for f in ("MakeWhole.py", "RecoveryLedger.py"):

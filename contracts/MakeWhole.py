@@ -816,20 +816,20 @@ class Account:
 class MakeWhole(gl.contract.Contract):
     mode: str
     min_window_s: u64
-    incidents: TreeMap[u32, Incident]
+    incidents: gl.storage.TreeMap[u32, Incident]
     incidents_n: u32
-    claims: TreeMap[u32, Claim]
+    claims: gl.storage.TreeMap[u32, Claim]
     claims_n: u32
-    appeals: TreeMap[u32, Appeal]
+    appeals: gl.storage.TreeMap[u32, Appeal]
     appeals_n: u32
-    claim_keys: TreeMap[str, u32]        # "incident:tx:log" -> claim id
-    inc_claims: TreeMap[str, u32]        # "incident:n" -> claim id
-    inc_appeals: TreeMap[str, u32]       # "incident:n" -> appeal id
-    accounts: TreeMap[str, Account]      # "incident:borrower"
-    inc_accounts: TreeMap[str, str]      # "incident:n" -> borrower
-    claimable: TreeMap[str, u256]        # GenLayer address -> withdrawable
-    withdrawn: TreeMap[str, u256]
-    last_result: TreeMap[str, str]       # sender -> code-written JSON
+    claim_keys: gl.storage.TreeMap[str, u32]        # "incident:tx:log" -> claim id
+    inc_claims: gl.storage.TreeMap[str, u32]        # "incident:n" -> claim id
+    inc_appeals: gl.storage.TreeMap[str, u32]       # "incident:n" -> appeal id
+    accounts: gl.storage.TreeMap[str, Account]      # "incident:borrower"
+    inc_accounts: gl.storage.TreeMap[str, str]      # "incident:n" -> borrower
+    claimable: gl.storage.TreeMap[str, u256]        # GenLayer address -> withdrawable
+    withdrawn: gl.storage.TreeMap[str, u256]
+    last_result: gl.storage.TreeMap[str, str]       # sender -> code-written JSON
     balance_wei: u256
     open_stakes_wei: u256
     claimable_wei: u256

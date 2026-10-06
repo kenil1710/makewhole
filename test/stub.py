@@ -534,7 +534,7 @@ def undefined_names(path: Path) -> list:
     tree = ast.parse(path.read_text(encoding="utf8"))
     module_names = _bound_names(tree) | {
         "gl", "u8", "u16", "u32", "u64", "u128", "u256", "i8", "i16", "i32",
-        "i64", "Address", "TreeMap", "DynArray", "bigint", "Array", "self"}
+        "i64", "Address", "bigint", "self"}
     builtin_names = set(dir(builtins))
     problems = []
 
