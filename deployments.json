@@ -1,0 +1,22 @@
+{
+  "network": "studiodev",
+  "chain_id": 61997,
+  "explorer": "https://explorer-studio-dev.genlayer.com/",
+  "contracts": {
+    "MakeWholeDemo": {
+      "address": "0x0AD9C95Fdaa40514126613c8F67Bc96f614b5845",
+      "deploy_tx": "0x3f84bdff31da4d45eb306eecf95ffeaf5fb3f033b5236e30a8ddfda3eececb3c",
+      "file": "contracts/MakeWhole.py",
+      "commit": "0e58b5b073d48e11029d69de7f9ee67463805d5d",
+      "bytes": 71645,
+      "sha256": "c763db7dd993687ebb9c5b11afa43dd2209f9bc9dfcd14764d9c13d7a1cf24ec",
+      "constructor_args": [
+        "DEMO",
+        60
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T05:09:36.616Z",
+      "mode": "DEMO"
+    }
+  }
+}
