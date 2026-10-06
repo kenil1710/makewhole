@@ -24,7 +24,11 @@ import { studioDevnet } from "genlayer-js/chains";
 import { transactionsStatusNumberToName } from "genlayer-js/types";
 import { readFileSync } from "node:fs";
 
-export const CHAINS = { studiodev: studioDevnet };
+/** STUDIO_RPC=<url> routes every request through a relay (e.g. the app's /api/rpc) — Studio meters per IP. */
+const relay = process.env.STUDIO_RPC;
+export const CHAINS = {
+  studiodev: relay ? { ...studioDevnet, rpcUrls: { ...studioDevnet.rpcUrls, default: { ...studioDevnet.rpcUrls.default, http: [relay] } } } : studioDevnet,
+};
 
 /** States that genuinely END a transaction. Not DECIDED_STATES — an
  *  UNDETERMINED transaction is finished as far as a caller is concerned even

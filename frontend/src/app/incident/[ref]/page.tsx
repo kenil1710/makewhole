@@ -15,6 +15,8 @@ import { AccountsTable } from "@/components/AccountsTable";
 import { ActionButton } from "@/components/ActionButton";
 
 export const revalidate = 60;
+export const dynamicParams = true;
+export async function generateStaticParams() { return [{ ref: "c-1" }]; }
 
 export async function generateMetadata({ params }: { params: Promise<{ ref: string }> }): Promise<Metadata> {
   const { ref } = await params;

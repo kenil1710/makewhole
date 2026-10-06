@@ -35,8 +35,8 @@ export default async function Home() {
               <ul className="legend">
                 <li><span className="mark match" /> matches</li>
                 <li><span className="mark close" /> within 0.01%</li>
-                <li><span className="mark differs" /> differs</li>
-                <li><span className="mark pending" /> not yet claimed</li>
+                {s.differs > 0 && <li><span className="mark differs" /> differs</li>}
+                {data!.rows.length < daoN && <li><span className="mark pending" /> not yet claimed</li>}
               </ul>
               <p className="small muted" style={{ marginTop: 16, maxWidth: "52ch" }}>
                 Compared with the DAO&rsquo;s own payout, <a href={ethtx(AFC_TX)} target="_blank" rel="noreferrer">Ethereum transaction 0x687f…0f3f</a>.

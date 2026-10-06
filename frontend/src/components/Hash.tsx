@@ -7,7 +7,7 @@ export function Hash({ value, href, full = false, label }: { value: string; href
   return (
     <span className="hash">
       {href ? (
-        <a className="mono" href={href} target="_blank" rel="noreferrer" title={value} aria-label={`${label ?? "Open"} ${value} in explorer`}>{text}</a>
+        <a className="mono" href={href} target="_blank" rel="noreferrer" title={value}>{text}</a>
       ) : (
         <span className="mono" title={value}>{text}</span>
       )}

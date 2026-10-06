@@ -1,0 +1,28 @@
+TEST INCIDENT ON A SYNTHETIC CHAIN. NOT ETHEREUM. The receipts this incident reads are served by https://makewhole-ledger.vercel.app/api/testchain and name throwaway test keys as borrowers, so that a borrower withdrawing their own refund can be demonstrated. The rules below are the real incident's rules, unchanged.
+
+MakeWhole refund terms: Aave V3 wstETH CAPO oracle incident, Ethereum, 10 March 2026
+
+PART A. The Aave DAO proposal, quoted verbatim.
+Source: https://governance.aave.com/t/direct-to-aip-wsteth-capo-oracle-incident-user-reimbursement/24275 and the AIP payload aave-dao/aave-proposals-v3 commit a93ce7ec2ed3a2df946f6add33b9951bb022d9dc.
+
+"This proposal refunds users who were erroneously liquidated during the wstETH CAPO oracle misconfiguration incident on Ethereum Core and Prime instances. The total refund amounts to 513.19 ETH, with a net cost to the DAO of 358.56 ETH after recoveries, a figure that should decrease as more recoveries are processed."
+
+"A configuration misalignment between the `snapshotRatio` and `snapshotTimestamp` parameters in the wstETH CAPO risk oracle caused the reported wstETH/stETH exchange rate cap to fall approximately 2.85% below the actual market rate. This triggered erroneous liquidations across 34 accounts on the Ethereum Core and Prime instances, totaling ~10,938 wstETH liquidated."
+
+"The affected users bear no responsibility for these liquidations, which were the direct result of a protocol-level configuration error. Making these users whole is a straightforward decision for the DAO and reinforces the trust that underpins Aave's position as the leading lending protocol."
+
+Loss Breakdown table as published (ETH): Oracle profit (loss to users) 382.76; Liquidation bonus (loss to users) 129.72; Goodwill allowance 1; Total loss 513.19; Recovered from Titan Builder (141.60); Recovered liquidation fees (13.32); Net cost to the DAO 358.56.
+
+"Upon AIP execution, the AFC will distribute the appropriate refund amount to each affected user address."
+
+PART B. How this pool applies it. Written by the sponsor of this MakeWhole incident from the proposal and the Aave Finance Committee's actual payouts (Ethereum transaction 0x687f2a608fbc48c2f90130fd6f3620835770b03424ed497a5002f095d1c00f3f). Not part of the Aave proposal.
+
+[E1] Eligible: each LiquidationCall event emitted by the Aave V3 Ethereum Core pool 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2 or Prime pool 0x4e033931ad43597d96D6bcc25c280717730B58B1, with wstETH 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 as the collateral, in a successful transaction mined in Ethereum blocks 24626860 to 24628088 inclusive, the blocks in which the capped wstETH price was in force.
+[E2] Amount: for each eligible event the refund is the wstETH seized multiplied by 0.034991439125 ETH per wstETH, plus 1% of the debt repaid valued in ETH (WETH at 1, cbETH at 1.124931903010748, osETH at 1.067241394153283 ETH per token).
+[E3] Payee: the refund is owed to the liquidated borrower address recorded in the event, and is paid to that same address on the payout chain.
+[E4] Smart contract wallets: where the borrower address is a single user's own smart contract wallet, such as a DSProxy, whose owner() view returns one externally owned account, the refund is paid to that externally owned account.
+[X1] Withheld until shown otherwise: a borrower address that holds contract code on Ethereum, other than an EIP-7702 delegated account, has no key on the payout chain, so its refund is withheld unless an appeal establishes a payee under [E4].
+[X2] Excluded: pooled vaults that hold several users' positions, and contracts controlled by more than one key, such as a multisig that needs several signatures, are not a single user's wallet; their refunds are not paid and return to the sponsor.
+[X3] Excluded: events outside the block range in [E1], on other pools or chains, with other collateral, in failed transactions, or with a debt asset not priced in [E2]. Each event is refunded once.
+[P1] Payment: refunds are paid in GEN at 1 ETH = 0.01 GEN. If the refunds owed exceed the pool, every refund is reduced in the same proportion.
+[P2] Deadlines: claims close at the claim deadline and appeals at the appeal deadline recorded with these terms. Whatever is not owed to anyone then returns to the sponsor.

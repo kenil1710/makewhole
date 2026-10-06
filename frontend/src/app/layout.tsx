@@ -10,7 +10,7 @@ const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader
 const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-public-sans", display: "swap", weight: ["400", "600", "700"] });
 const plexMono = IBM_Plex_Mono({ subsets: ["latin"], variable: "--font-plex-mono", display: "swap", weight: ["400", "500"] });
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://makewhole.vercel.app";
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://makewhole-ledger.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

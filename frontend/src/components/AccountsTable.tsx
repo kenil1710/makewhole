@@ -31,7 +31,7 @@ export function AccountsTable({ rows, base, showDao }: { rows: Row[]; base: stri
           return (
             <tr key={r.borrower}>
               <td data-label="Account">
-                <span className="hash"><Link className="mono" href={`${base}/account/${r.borrower}`} aria-label={`Open account ${r.borrower}`}>{short(r.borrower)}</Link><CopyButton value={r.borrower} label="Copy address" /></span>
+                <span className="hash"><Link className="mono" href={`${base}/account/${r.borrower}`} title={r.borrower}>{short(r.borrower)}</Link><CopyButton value={r.borrower} label="Copy address" /></span>
                 {r.claims > 1 && <span className="small muted"> · {r.claims} events</span>}
               </td>
               <td data-label="Our refund" className="r num">{fixed(r.owed_src, 6)}</td>

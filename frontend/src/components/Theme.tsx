@@ -9,7 +9,7 @@ export function ThemeToggle() {
     const dark = t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
     setTheme(dark ? "dark" : "light");
   }, []);
-  if (!theme) return <span style={{ width: 36 }} />;
+  if (!theme) return <span style={{ width: 36, height: 36, display: "inline-block" }} />;
   const next = theme === "dark" ? "light" : "dark";
   return (
     <button type="button" className="copy" style={{ width: 36, height: 36 }} aria-label={`Switch to ${next} theme`}

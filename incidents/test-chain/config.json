@@ -1,0 +1,35 @@
+{
+  "title": "TEST CHAIN (synthetic): withdraw path for a test borrower",
+  "chain_id": 32343,
+  "rpcs": [
+    "https://makewhole-ledger.vercel.app/api/testchain"
+  ],
+  "pools": [
+    "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+    "0x4e033931ad43597d96d6bcc25c280717730b58b1"
+  ],
+  "event_topic0": "0xe413a321e8681d831f4dbccbca790d2952b56f977908e45be37335533e005286",
+  "collateral_assets": [
+    "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+  ],
+  "from_block": 24626860,
+  "to_block": 24628088,
+  "faulty_oracle": "",
+  "formula": "ORACLE_GAP_PLUS_DEBT_BPS",
+  "formula_param": "34991439125000000",
+  "bonus_bps": 100,
+  "debt_rates": {
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": "1000000000000000000",
+    "0xbe9895146f7af43049ca1c1ae358b0541ea49704": "1124931903010748000",
+    "0xf1c9acdc66974dfb6decb12aa385b9cd01190e38": "1067241394153283000"
+  },
+  "scale_num": "1",
+  "scale_den": "100",
+  "proposal_url": "https://governance.aave.com/t/direct-to-aip-wsteth-capo-oracle-incident-user-reimbursement/24275",
+  "proposal_text_url": "https://governance.aave.com/raw/24275",
+  "published_total_src_wei": "0",
+  "published_accounts": 0,
+  "claim_window_s": 2592000,
+  "appeal_window_s": 1209600,
+  "appeal_stake_wei": "10000000000000000"
+}

@@ -10,6 +10,8 @@ import { Hash } from "@/components/Hash";
 import type { Claim } from "@/lib/types";
 
 export const revalidate = 60;
+export const dynamicParams = true;
+export async function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: { params: Promise<{ addr: string }> }): Promise<Metadata> {
   const { addr } = await params;
