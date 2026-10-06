@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { parseRef, DEPLOYMENTS, gladdr, ethaddr, POOL_NAMES, ASSET_NAMES, AFC_TX, ethtx } from "@/lib/config";
+import { parseRef, DEPLOYMENTS, gladdr, ethaddr, POOL_NAMES, ASSET_NAMES, AFC_TX, ethtx, proposalLabel } from "@/lib/config";
 import { incidentBundle } from "@/lib/bundle";
 import { getTerms, getAppeals, NotFound } from "@/lib/reads";
 import { daoPayouts } from "@/lib/dao";
@@ -15,6 +15,9 @@ import { AccountsTable } from "@/components/AccountsTable";
 import { ActionButton } from "@/components/ActionButton";
 
 export const revalidate = 60;
+
+const RATE_NOTE = "Rate 0.034991439125 ETH per wstETH was taken from the DAO's own payout tx (the proposal published no formula); with the raw chain price gap alone, 0 of 35 match.";
+const FINDING = "The AIP said 34 accounts; the AFC payout paid 35.";
 export const dynamicParams = true;
 export async function generateStaticParams() { return [{ ref: "c-1" }]; }
 
@@ -69,31 +72,33 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
             <div><dt>Collateral</dt><dd>{inc.collateral_assets.map((x) => <div key={x}>{ASSET_NAMES[x] ?? "Asset"} <Hash value={x} href={ethaddr(x)} label="asset" /></div>)}</dd></div>
             {inc.faulty_oracle && <div><dt>Faulty oracle</dt><dd><Hash value={inc.faulty_oracle} href={ethaddr(inc.faulty_oracle)} label="oracle" /></dd></div>}
             <div><dt>Evidence read from</dt><dd className="mono small">{inc.rpcs.map((u) => <div key={u}>{u.replace("https://", "")}</div>)}</dd></div>
-            <div><dt>Proposal</dt><dd><a href={inc.proposal_url} target="_blank" rel="noreferrer">Aave governance forum</a></dd></div>
+            <div><dt>Proposal</dt><dd><a href={inc.proposal_url} target="_blank" rel="noreferrer">{proposalLabel(inc.proposal_url)}</a></dd></div>
           </dl>
         </aside>
       </div>
 
-      {isAave && rep.accounts_found < rep.published_accounts && (
+      {!isAave && (
         <section className="section" aria-labelledby="rep">
           <h2 id="rep">Reproduction</h2>
-          <p className="section-note">This demo incident files only {claims.length} of the 49 real liquidations, to show one path. Its total isn&rsquo;t compared with the DAO&rsquo;s; each account below still is. The full reproduction is on <Link href="/incident/c-1">the canonical incident</Link>.</p>
+          <p className="section-note">Amounts are compared with the Aave DAO&rsquo;s payout only on <Link href="/incident/c-1">the canonical incident</Link>. This one is {p.dep === "d" ? "a demo of one path, on the demo deployment" : "not that incident"}, so no comparison is shown.</p>
         </section>
       )}
-      {isAave && rep.accounts_found >= rep.published_accounts && (
+      {isAave && (
         <section className="section" aria-labelledby="rep">
           <h2 id="rep">Reproduction</h2>
           <p className="section-note">Every amount below was computed by the contract from the liquidation receipt with the frozen formula, then compared with the DAO&rsquo;s actual payout in <a href={ethtx(AFC_TX)} target="_blank" rel="noreferrer">0x687f…0f3f</a>.</p>
           <div className="record">
             <div>
               <p className="score" style={{ fontSize: "clamp(2.75rem, 8vw, 4.5rem)" }}>{score.matched} of {score.daoAccounts}<small>accounts match the DAO{score.close ? `, ${score.close} within 0.01%` : ""}{score.differs ? `, ${score.differs} differ` : ""}.</small></p>
+              <p className="rate-note" style={{ marginTop: 14 }}>{RATE_NOTE}</p>
+              <p className="finding" style={{ marginTop: 12 }}>{FINDING}</p>
               <div style={{ marginTop: 20 }}><Marks rows={rows} daoAll={dao} /></div>
             </div>
             <dl className="margin" style={{ display: "grid", gap: 14, margin: 0 }}>
               <div><dt>Our total</dt><dd className="num">{fixed(rep.computed_total_src_wei, 9)} ETH</dd></div>
               <div><dt>DAO paid</dt><dd className="num">{fixed(rep.published_total_src_wei, 9)} ETH</dd></div>
               <div><dt>Difference</dt><dd className="num">{fixed(diffEth.toString(), 9)} ETH</dd></div>
-              <div><dt>Accounts</dt><dd>{rep.accounts_found} on chain; the proposal says {rep.published_accounts}</dd></div>
+              <div><dt>Accounts</dt><dd>{rep.accounts_found} found on chain and paid by the AFC; the AIP said {rep.published_accounts}</dd></div>
             </dl>
           </div>
         </section>

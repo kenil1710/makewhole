@@ -7,6 +7,9 @@ import { units } from "@/lib/format";
 
 export const revalidate = 60;
 
+const RATE_NOTE = "Rate 0.034991439125 ETH per wstETH was taken from the DAO's own payout tx (the proposal published no formula); with the raw chain price gap alone, 0 of 35 match.";
+const FINDING = "The AIP said 34 accounts; the AFC payout paid 35.";
+
 export default async function Home() {
   let data: Awaited<ReturnType<typeof incidentBundle>> | null = null;
   let dao: Record<string, string> = {};
@@ -38,10 +41,11 @@ export default async function Home() {
                 {s.differs > 0 && <li><span className="mark differs" /> differs</li>}
                 {data!.rows.length < daoN && <li><span className="mark pending" /> not yet claimed</li>}
               </ul>
-              <p className="small muted" style={{ marginTop: 16, maxWidth: "52ch" }}>
-                Compared with the DAO&rsquo;s own payout, <a href={ethtx(AFC_TX)} target="_blank" rel="noreferrer">Ethereum transaction 0x687f…0f3f</a>.
-                The proposal counted 34 accounts; the chain and that payout show 35.
+              <p className="rate-note" style={{ marginTop: 16, maxWidth: "56ch" }}>{RATE_NOTE}</p>
+              <p className="small muted" style={{ marginTop: 10, maxWidth: "56ch" }}>
+                Compared with the DAO&rsquo;s payout, <a href={ethtx(AFC_TX)} target="_blank" rel="noreferrer">Ethereum transaction 0x687f…0f3f</a>.
               </p>
+              <p className="finding" style={{ marginTop: 14 }}>{FINDING}</p>
             </>
           ) : (
             <p className="notice amber">The ledger couldn&rsquo;t be read from GenLayer just now (Studio Dev may be rate-limiting). Reload in a minute.</p>

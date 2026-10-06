@@ -259,3 +259,7 @@ select.input { appearance: auto; }
 .clause.relied.red { background: var(--red-wash); box-shadow: inset 3px 0 0 var(--red); }
 .clause.relied.red .relied-note { color: var(--red); }
 .relied-quote.excl { background: var(--red-wash); border-left-color: var(--red); }
+
+.rate-note { font-size: 0.875rem; color: var(--ink-2); border-left: 3px solid var(--amber); padding: 6px 0 6px 12px; max-width: 64ch; margin-bottom: 0; }
+.finding { font-family: var(--serif); font-size: 1.125rem; margin-bottom: 0; }
+.finding::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 8px; background: var(--red); margin-right: 10px; vertical-align: middle; }

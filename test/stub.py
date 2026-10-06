@@ -312,6 +312,8 @@ class _Eth:
         self.down = set()       # rpc urls that fail at transport level
         self.null_receipts = set()  # rpc urls that answer null (pruned)
         self.pages = {}         # other GET urls -> (status, text)
+        self.chain_ids = {}     # rpc url -> chain id it reports (default 1)
+        self.storage = {}       # (address, slot) -> hex word
         self.log = []
 
     def rpc(self, url, body):
@@ -320,6 +322,10 @@ class _Eth:
             raise RuntimeError("connection refused")
         req = json.loads(body)
         m, p = req["method"], req["params"]
+        if m == "eth_chainId":
+            return {"jsonrpc": "2.0", "id": 1, "result": hex(self.chain_ids.get(url, 1))}
+        if m == "eth_getStorageAt":
+            return {"jsonrpc": "2.0", "id": 1, "result": self.storage.get((p[0].lower(), p[1]), "0x" + "0" * 64)}
         if m == "eth_getTransactionReceipt":
             if url in self.null_receipts:
                 return {"jsonrpc": "2.0", "id": 1, "result": None}
@@ -435,7 +441,11 @@ def _install_stub():
     public = types.SimpleNamespace()
     public.view = lambda fn: fn
     write = lambda fn: fn
-    write.payable = lambda fn: fn
+
+    def _payable(fn):
+        fn._payable = True
+        return fn
+    write.payable = _payable
     public.write = write
     evm = types.SimpleNamespace(contract_interface=_evm_contract_interface)
     storage = types.SimpleNamespace(TreeMap=_TreeMap, DynArray=_DynArray,

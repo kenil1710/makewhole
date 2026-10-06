@@ -80,6 +80,8 @@ class Probe(gl.contract.Contract):
             for url in urls.split(","):
                 r = _rpc(url, "eth_getTransactionReceipt", [tx_hash])
                 row = {"receipt_http": r.get("http"), "receipt_err": r.get("err", "")}
+                cid = _rpc(url, "eth_chainId", [])
+                row["chain_id"] = str(cid.get("result", cid.get("err", "")))
                 if "result" in r:
                     row["decoded"] = _decode(r["result"], log_index)
                 g = _rpc(url, "eth_getLogs", [{"address": pool, "fromBlock": hex(block), "toBlock": hex(block),
@@ -94,7 +96,9 @@ class Probe(gl.contract.Contract):
             return json.dumps(out, sort_keys=True)
 
         def validator(res: gl.vm.Result) -> bool:
-            return isinstance(res, gl.vm.Return) and res.calldata == run()
+            # lenient: record what the leader saw (per-endpoint status varies
+            # between validators under rate limits; see probe 3)
+            return isinstance(res, gl.vm.Return)
 
         self.last = gl.vm.run_nondet(run, validator)
 

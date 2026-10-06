@@ -42,3 +42,17 @@ export const ASSET_NAMES: Record<string, string> = {
   [WSTETH]: "wstETH",
 };
 export const REPO = "https://github.com/kenil1710/makewhole";
+
+/**
+ * The ONE incident presented as the Aave incident and compared with the DAO's
+ * payout: canonical deployment, incident 1, and it must also say chain 1.
+ * Never decided from a sponsor-supplied chain id alone (attack round 1, #1).
+ */
+export const AAVE_REF = { dep: "c" as Deployment, id: 1 };
+export function isAaveIncident(dep: Deployment, id: number, chainId: number): boolean {
+  return dep === AAVE_REF.dep && id === AAVE_REF.id && chainId === 1;
+}
+/** A proposal link labelled with its own host, never a hard-coded name. */
+export function proposalLabel(url: string): string {
+  try { return new URL(url).host.replace(/^www\./, ""); } catch { return "Proposal"; }
+}

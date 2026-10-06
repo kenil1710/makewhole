@@ -1,0 +1,51 @@
+{
+  "network": "studiodev",
+  "chain_id": 61997,
+  "explorer": "https://explorer-studio-dev.genlayer.com/",
+  "contracts": {
+    "MakeWholeDemo": {
+      "address": "0x0AD9C95Fdaa40514126613c8F67Bc96f614b5845",
+      "deploy_tx": "0x3f84bdff31da4d45eb306eecf95ffeaf5fb3f033b5236e30a8ddfda3eececb3c",
+      "file": "contracts/MakeWhole.py",
+      "commit": "0e58b5b073d48e11029d69de7f9ee67463805d5d",
+      "bytes": 71645,
+      "sha256": "c763db7dd993687ebb9c5b11afa43dd2209f9bc9dfcd14764d9c13d7a1cf24ec",
+      "constructor_args": [
+        "DEMO",
+        60
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T05:09:36.616Z",
+      "mode": "DEMO"
+    },
+    "MakeWhole": {
+      "address": "0x6058b16009007E067660Ef28bF4741dD6A396581",
+      "deploy_tx": "0xa0a366bef2179335199ea8665d4d13619868b4480e18c7f988fa12262bb0c933",
+      "file": "contracts/MakeWhole.py",
+      "commit": "031e18e965359831bd77514814604487cc51004b",
+      "bytes": 71645,
+      "sha256": "c763db7dd993687ebb9c5b11afa43dd2209f9bc9dfcd14764d9c13d7a1cf24ec",
+      "constructor_args": [
+        "CANONICAL",
+        604800
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T05:12:16.360Z",
+      "mode": "CANONICAL"
+    },
+    "RecoveryLedger": {
+      "address": "0xe71B42174c597C8e14680A85ECE9dCff901B900B",
+      "deploy_tx": "0xa9459757d8a1a93b4794057f69464e6cc7388508aaec94c7c281d52161faf2e9",
+      "file": "contracts/RecoveryLedger.py",
+      "commit": "031e18e965359831bd77514814604487cc51004b",
+      "bytes": 3378,
+      "sha256": "bd3684c745a52ced82c37b6371e26a581b4a04b66ebb6df51e26c95cfa860cee",
+      "constructor_args": [
+        "0x6058b16009007E067660Ef28bF4741dD6A396581"
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T05:12:28.465Z",
+      "reads": "0x6058b16009007E067660Ef28bF4741dD6A396581"
+    }
+  }
+}

@@ -1,10 +1,21 @@
 {
   "title": "Aave V3 wstETH CAPO oracle incident, Ethereum, 10 March 2026",
   "chain_id": 1,
-  "rpcs": ["https://eth.drpc.org", "https://eth.blockscout.com/api/eth-rpc", "https://ethereum-rpc.publicnode.com"],
-  "pools": ["0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2", "0x4e033931ad43597d96d6bcc25c280717730b58b1"],
+  "rpcs": [
+    "https://eth.drpc.org",
+    "https://rpc.mevblocker.io",
+    "https://gateway.tenderly.co/public/mainnet",
+    "https://eth-mainnet.public.blastapi.io",
+    "https://eth-pokt.nodies.app"
+  ],
+  "pools": [
+    "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+    "0x4e033931ad43597d96d6bcc25c280717730b58b1"
+  ],
   "event_topic0": "0xe413a321e8681d831f4dbccbca790d2952b56f977908e45be37335533e005286",
-  "collateral_assets": ["0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"],
+  "collateral_assets": [
+    "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0"
+  ],
   "from_block": 24626860,
   "to_block": 24628088,
   "faulty_oracle": "0xe1d97bf61901b075e9626c8a2340a7de385861ef",

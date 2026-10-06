@@ -1,6 +1,6 @@
 import { compare, daoPayouts, type Match } from "./dao";
 import { getAccounts, getIncident, getPool, getReproduction, getClaims } from "./reads";
-import type { Deployment } from "./config";
+import { isAaveIncident, type Deployment } from "./config";
 import type { Account, Claim } from "./types";
 
 export type Row = Account & { dao: string | null; match: Match; status: "PAYABLE" | "WITHHELD" | "PART" };
@@ -10,7 +10,7 @@ export async function incidentBundle(dep: Deployment, id: number) {
   const [inc, pool, rep, accounts, claims] = await Promise.all([
     getIncident(dep, id), getPool(dep, id), getReproduction(dep, id), getAccounts(dep, id), getClaims(dep, id),
   ]);
-  const isAave = inc.chain_id === 1;
+  const isAave = isAaveIncident(dep, id, inc.chain_id);
   const dao = isAave ? await daoPayouts() : {};
   const rows: Row[] = accounts.map((a) => {
     const d = dao[a.borrower] ?? null;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { parseRef, DEPLOYMENTS, ethtx, ethaddr, gladdr, POOL_NAMES, ASSET_NAMES, ethblock } from "@/lib/config";
+import { parseRef, DEPLOYMENTS, ethtx, ethaddr, gladdr, POOL_NAMES, ASSET_NAMES, ethblock, isAaveIncident } from "@/lib/config";
 import { getAccount, getClaim, getIncident, getAppeals, NotFound } from "@/lib/reads";
 import { daoPayouts, compare } from "@/lib/dao";
 import { ratesAt } from "@/lib/ethereum";
@@ -10,6 +10,8 @@ import { Hash } from "@/components/Hash";
 import type { Claim } from "@/lib/types";
 
 export const revalidate = 60;
+
+const RATE_NOTE = "Rate 0.034991439125 ETH per wstETH was taken from the DAO's own payout tx (the proposal published no formula); with the raw chain price gap alone, 0 of 35 match.";
 export const dynamicParams = true;
 export async function generateStaticParams() { return []; }
 
@@ -41,8 +43,8 @@ async function Liquidation({ c, formulaParam, bonusBps, rate, isAave, base }: { 
         {rates && <div><dt>Real exchange rate</dt><dd className="num" style={{ color: "var(--green)" }}>{fixed(rates.trueRate.toString(), 6)} ETH <span className="small muted">({pct(rates.capped, rates.trueRate)}%)</span></dd></div>}
       </dl>
       <div className="formula" aria-label="The refund formula with this liquidation's numbers">
-        <div className="f-row"><span className="mono">{fixed(c.collateral, 6)} wstETH × {fixed(formulaParam, 12)}</span><span className="num">{fixed(part1.toString(), 9)}</span><span className="small muted">oracle gap</span></div>
-        <div className="f-row"><span className="mono">+ {bonusBps / 100}% × {fixed(debtEth.toString(), 6)} ETH of debt</span><span className="num">{fixed(part2.toString(), 9)}</span><span className="small muted">liquidation bonus</span></div>
+        <div className="f-row"><span className="mono">{fixed(c.collateral, 6)} wstETH × {fixed(formulaParam, 12)}</span><span className="num">{fixed(part1.toString(), 9)}</span><span className="small muted">per-wstETH rate (from DAO payout)</span></div>
+        <div className="f-row"><span className="mono">+ {bonusBps / 100}% × {fixed(debtEth.toString(), 6)} ETH of debt</span><span className="num">{fixed(part2.toString(), 9)}</span><span className="small muted">1% of debt repaid (from DAO payout)</span></div>
         <div className="f-row total"><span>Refund for this event</span><span className="num">{fixed(c.owed_src, 9)} ETH</span><span className="small muted">= {fixed(c.owed_gen, 9)} GEN</span></div>
       </div>
     </article>
@@ -58,13 +60,13 @@ export default async function AccountPage({ params }: { params: Promise<{ ref: s
   try {
     [inc, acc, appeals] = await Promise.all([getIncident(p.dep, p.id), getAccount(p.dep, p.id, a), getAppeals(p.dep, p.id)]);
     claims = await Promise.all((acc.claim_ids ?? []).map((id) => getClaim(p.dep, id)));
-    if (inc.chain_id === 1) dao = await daoPayouts();
+    if (isAaveIncident(p.dep, p.id, inc.chain_id)) dao = await daoPayouts();
   } catch (e) {
     if (e instanceof NotFound) notFound();
     return <div className="wrap section"><p className="notice amber">This account couldn&rsquo;t be read from GenLayer just now. Reload in a minute.</p></div>;
   }
   const base = `/incident/${ref}`;
-  const isAave = inc.chain_id === 1;
+  const isAave = isAaveIncident(p.dep, p.id, inc.chain_id);
   const daoAmt = dao[a] ?? null;
   const m = isAave && acc.claims ? compare(BigInt(acc.owed_src), daoAmt ? BigInt(daoAmt) : null) : null;
   const withheld = BigInt(acc.withheld_gen) > 0n;
@@ -106,6 +108,7 @@ export default async function AccountPage({ params }: { params: Promise<{ ref: s
             <div><dt>Credited (GEN)</dt><dd className="num">{fixed(acc.credited_gen, 6)}</dd></div>
             <div><dt>Withdrawn by payee (GEN)</dt><dd className="num">{fixed(acc.beneficiary_withdrawn, 6)}</dd></div>
           </dl>
+          {m && <p className="rate-note" style={{ marginTop: 14 }}>{RATE_NOTE}</p>}
           {m && <p style={{ marginTop: 14 }}>{m === "MATCH" ? <span className="tag green">Matches the DAO&rsquo;s payment</span> : m === "CLOSE" ? <span className="tag amber">Within 0.01% of the DAO&rsquo;s payment</span> : m === "DIFFERS" ? <span className="tag red">Differs from the DAO&rsquo;s payment</span> : <span className="tag plain">The DAO made no payment to this account</span>}</p>}
         </section>
       )}

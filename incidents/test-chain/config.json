@@ -1,8 +1,9 @@
 {
-  "title": "TEST CHAIN (synthetic): withdraw path for a test borrower",
+  "title": "TEST CHAIN (synthetic, chain 32343): withdraw path for a test borrower",
   "chain_id": 32343,
   "rpcs": [
-    "https://makewhole-ledger.vercel.app/api/testchain"
+    "https://makewhole-ledger.vercel.app/api/testchain",
+    "https://makewhole-ledger.vercel.app/api/testchain/b"
   ],
   "pools": [
     "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",

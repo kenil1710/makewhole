@@ -1,4 +1,4 @@
-TEST INCIDENT ON A SYNTHETIC CHAIN. NOT ETHEREUM. The receipts this incident reads are served by https://makewhole-ledger.vercel.app/api/testchain and name throwaway test keys as borrowers, so that a borrower withdrawing their own refund can be demonstrated. The rules below are the real incident's rules, unchanged.
+TEST INCIDENT ON A SYNTHETIC CHAIN (chain id 32343). NOT ETHEREUM. The receipts this incident reads are served by https://makewhole-ledger.vercel.app/api/testchain and /api/testchain/b, two routes of this project's own app, and name throwaway test keys as borrowers, so that a borrower withdrawing their own refund can be demonstrated. The two routes are not independent of each other. The rules below are the real incident's rules, unchanged.
 
 MakeWhole refund terms: Aave V3 wstETH CAPO oracle incident, Ethereum, 10 March 2026
 
@@ -15,10 +15,10 @@ Loss Breakdown table as published (ETH): Oracle profit (loss to users) 382.76; L
 
 "Upon AIP execution, the AFC will distribute the appropriate refund amount to each affected user address."
 
-PART B. How this pool applies it. Written by the sponsor of this MakeWhole incident from the proposal and the Aave Finance Committee's actual payouts (Ethereum transaction 0x687f2a608fbc48c2f90130fd6f3620835770b03424ed497a5002f095d1c00f3f). Not part of the Aave proposal.
+PART B. How this pool applies it: drafted for MakeWhole from the post-mortem — not published by the Aave DAO. The proposal published no per-account formula; the per-wstETH rate and the 1% in [E2] were taken from the Aave Finance Committee's own payout transaction 0x687f2a608fbc48c2f90130fd6f3620835770b03424ed497a5002f095d1c00f3f, which paid 35 accounts although the AIP said 34.
 
 [E1] Eligible: each LiquidationCall event emitted by the Aave V3 Ethereum Core pool 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2 or Prime pool 0x4e033931ad43597d96D6bcc25c280717730B58B1, with wstETH 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 as the collateral, in a successful transaction mined in Ethereum blocks 24626860 to 24628088 inclusive, the blocks in which the capped wstETH price was in force.
-[E2] Amount: for each eligible event the refund is the wstETH seized multiplied by 0.034991439125 ETH per wstETH, plus 1% of the debt repaid valued in ETH (WETH at 1, cbETH at 1.124931903010748, osETH at 1.067241394153283 ETH per token).
+[E2] Amount: for each eligible event the refund is the wstETH seized multiplied by 0.034991439125 ETH per wstETH (a rate taken from the DAO's payout transaction), plus 1% of the debt repaid valued in ETH (WETH at 1, cbETH at 1.124931903010748, osETH at 1.067241394153283 ETH per token).
 [E3] Payee: the refund is owed to the liquidated borrower address recorded in the event, and is paid to that same address on the payout chain.
 [E4] Smart contract wallets: where the borrower address is a single user's own smart contract wallet, such as a DSProxy, whose owner() view returns one externally owned account, the refund is paid to that externally owned account.
 [X1] Withheld until shown otherwise: a borrower address that holds contract code on Ethereum, other than an EIP-7702 delegated account, has no key on the payout chain, so its refund is withheld unless an appeal establishes a payee under [E4].
