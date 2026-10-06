@@ -1,0 +1,39 @@
+{
+  "address": "0x46a7144c0b11813bE8C7571138b1c35EcEca1E64",
+  "tx": "0xe3c3e6eec217db8ecafc6d6e7680221a00ab6bc41a5171ee478ebb3ec4b2ff89",
+  "status": "ACCEPTED",
+  "seconds": 33.181,
+  "result": {
+    "https://eth.blockscout.com/address/0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f?tab=contract": {
+      "get_head": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\" data-next-head=\"\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=",
+      "get_http": 200,
+      "get_len": 94265,
+      "render_dsproxy_at": -1,
+      "render_head": "",
+      "render_len": 0
+    },
+    "https://eth.blockscout.com/api/v2/smart-contracts/0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f": {
+      "get_head": "{\"file_path\":\".sol\",\"creation_status\":\"success\",\"source_code\":\"// proxy.sol - execute actions atomically through the proxy's identity\\r\\n\\r\\n// Copyright (C) 20",
+      "get_http": 200,
+      "get_len": 20260,
+      "render_dsproxy_at": 2468,
+      "render_head": "{\"file_path\":\".sol\",\"creation_status\":\"success\",\"source_code\":\"// proxy.sol - execute actions atomically through the proxy's identity\\r\\n\\r\\n// Copyright (C) 20",
+      "render_len": 19332
+    },
+    "https://etherscan.io/address/0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f#code": {
+      "get_head": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA",
+      "get_http": 403,
+      "get_len": 5536,
+      "render_err": "WEBPAGE_LOAD_FAILED"
+    },
+    "https://governance.aave.com/raw/24275": {
+      "get_head": "TokenLogic | 2026-03-11 20:27:19 UTC | #1\n\n## [Direct To AIP] **wstETH CAPO Oracle Incident User Reimbursement**\n**Author:** TokenLogic\n**Created:** 2026-03-11\n",
+      "get_http": 200,
+      "get_len": 10405,
+      "render_dsproxy_at": -1,
+      "render_head": "TokenLogic | 2026-03-11 20:27:19 UTC | #1\n\n## [Direct To AIP] **wstETH CAPO Oracle Incident User Reimbursement**\n**Author:** TokenLogic\n**Created:** 2026-03-11\n",
+      "render_len": 10400
+    },
+    "model": "{'ok': True}"
+  }
+}
