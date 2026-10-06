@@ -17,13 +17,13 @@ const scroll = async (to, steps = 30) => { const from = await p.evaluate(() => s
 await p.goto(BASE + "/", { waitUntil: "networkidle" }); await wait(5000);
 await scroll(700); await wait(3500); await scroll(0); await wait(800);
 // 2. incident: reproduction, blocks, pool, accounts, terms
-await p.click("text=View the incident"); await p.waitForLoadState("networkidle"); await wait(3500);
+await p.click("text=View the incident"); await p.waitForSelector("#acc", { timeout: 90000 }); await wait(3500);
 for (const id of ["rep", "when", "pool", "acc"]) { const y = await p.evaluate((i) => document.getElementById(i).getBoundingClientRect().top + scrollY - 80, id); await scroll(y); await wait(id === "acc" ? 3000 : 2500); }
 // 3. one account: the DSProxy, the formula, the appeal that found its owner
-await p.goto(BASE + "/incident/c-1/account/0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f", { waitUntil: "networkidle" }); await wait(3500);
+await p.goto(BASE + "/incident/c-1/account/0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f", { waitUntil: "networkidle" }); await p.waitForSelector("#liq", { timeout: 90000 }); await wait(3500);
 const y3 = await p.evaluate(() => document.getElementById("liq").getBoundingClientRect().top + scrollY - 60); await scroll(y3); await wait(5000);
 await scroll(y3 + 500); await wait(3000);
-await p.goto(BASE + "/incident/c-1/claim/1?appeal=1", { waitUntil: "networkidle" }); await wait(2500);
+await p.goto(BASE + "/incident/c-1/claim/1?appeal=1", { waitUntil: "networkidle" }); await p.waitForSelector("#dec", { timeout: 90000 }); await wait(2500);
 const y4 = await p.evaluate(() => document.getElementById("dec").getBoundingClientRect().top + scrollY - 60); await scroll(y4); await wait(5000);
 // 4. file a claim: paste a real tx, watch the code's checks fill in
 await p.goto(BASE + "/file", { waitUntil: "networkidle" }); await wait(2000);

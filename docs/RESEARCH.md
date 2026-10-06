@@ -82,8 +82,31 @@ Decoded from GenVM for tx `0xd1ac5af3…eb78` log 459: user `0x3aac9362…6c72`,
 43,103,238,790,725,097 WETH, block 24,626,861, Core pool — byte-equal to the offline decode. Consensus: ACCEPTED (strict equality).
 
 Conclusion for the contract: `eth_getLogs` is not available keyless for old blocks, so claims **name the tx + log index** and
-validators read the **receipt**. RPC list frozen per incident, tried in order: dRPC → Blockscout eth-rpc → publicnode. A
-`null` receipt is "this node doesn't have it", not "doesn't exist" — the next endpoint is tried.
+validators read the **receipt**. (v1 tried a frozen list in order and took the first answer; the attack round showed that
+lets one endpoint decide. v1.1 asks every frozen endpoint — see probes 3 and 4 below.) A `null` receipt is "this node
+doesn't have it", not "doesn't exist".
+
+### Probes 3 and 4 (attack round 1): enough independent sources?
+
+After the attack round required **two independent sources per claim**, the candidates were re-probed. Offline (one request
+each) 14 keyless endpoints served the March receipt, including publicnode (which had returned `null` in probe 1 — its
+backends differ in pruning). From GenVM ([`research/probe_4.json`](research/probe_4.json), leader's view, eight endpoints,
+receipt + `eth_chainId` + `eth_getCode` + `owner()`):
+
+| endpoint | chain id | receipt (Mar 2026) | code / owner() |
+|---|---|---|---|
+| `eth.drpc.org` | 1 | decoded | yes |
+| `rpc.mevblocker.io` | 1 | decoded | yes |
+| `gateway.tenderly.co/public/mainnet` | 1 | decoded | yes |
+| `eth-mainnet.public.blastapi.io` | 1 | decoded | yes |
+| `eth-pokt.nodies.app` | 1 | decoded | yes |
+| `ethereum-rpc.publicnode.com` | 1 | `null` | yes |
+| `api.zan.top/eth-mainnet` | rate-limited | decoded | rate-limited |
+| `eth.meowrpc.com` | 1 | decoded | no answer |
+
+Probe 3 ran the same eight with a strict vote on the per-endpoint results and went **UNDETERMINED**: which endpoint is
+rate-limited differs between validators. That is why the contract votes on the *agreed value* (≥ 2 identical answers, no
+disagreement), never on which endpoints answered. The canonical incident freezes the first five rows.
 
 Evidence pages for appeals (probe 2):
 
@@ -125,6 +148,10 @@ anyone files.
 ### Result
 
 **33 of 35 match** (agree to 9 significant digits, or within 0.0000000001 ETH for dust), **2 within 0.004%**, **0 differ**.
+
+> Rate 0.034991439125 ETH per wstETH was taken from the DAO's own payout tx (the proposal published no formula); with the raw chain price gap alone, 0 of 35 match.
+>
+> The AIP said 34 accounts; the AFC payout paid 35.
 
 - The 2 near-misses are the two accounts whose debt was cbETH and osETH. Our bonus leg uses Aave's oracle in the liquidation
   block; the DAO evidently used a slightly different price (0.0000000027 and 0.0000000014 ETH apart).

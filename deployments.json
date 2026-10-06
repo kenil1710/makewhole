@@ -4,21 +4,53 @@
   "explorer": "https://explorer-studio-dev.genlayer.com/",
   "contracts": {
     "MakeWholeDemo": {
-      "address": "0x0AD9C95Fdaa40514126613c8F67Bc96f614b5845",
-      "deploy_tx": "0x3f84bdff31da4d45eb306eecf95ffeaf5fb3f033b5236e30a8ddfda3eececb3c",
+      "address": "0xB15e4437dfd5a1AF45C4EF0bFdeF4120cB00CbFa",
+      "deploy_tx": "0xaf9401a9db8db78860ad04c951641b3ed719a19244b6c4b925e1be7a3094425a",
       "file": "contracts/MakeWhole.py",
-      "commit": "0e58b5b073d48e11029d69de7f9ee67463805d5d",
-      "bytes": 71645,
-      "sha256": "c763db7dd993687ebb9c5b11afa43dd2209f9bc9dfcd14764d9c13d7a1cf24ec",
+      "commit": "9340b6b9e424778b07320fb36b4e45c68470f509",
+      "bytes": 82067,
+      "sha256": "7205d323b1d6ad2f7c2c8572243fbdf4af41517728df51bb8cd45d1a90336ad9",
       "constructor_args": [
         "DEMO",
         60
       ],
       "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
-      "deployed_at": "2026-10-06T05:09:36.616Z",
+      "deployed_at": "2026-10-06T09:03:17.818Z",
       "mode": "DEMO"
     },
     "MakeWhole": {
+      "address": "0xe43638c41966F8501B8710710d50D16E261ba210",
+      "deploy_tx": "0x40e57b0e0729b982c85e9abc39b8d342d198b181a6271c580cdaa899bb18cda2",
+      "file": "contracts/MakeWhole.py",
+      "commit": "9340b6b9e424778b07320fb36b4e45c68470f509",
+      "bytes": 82067,
+      "sha256": "7205d323b1d6ad2f7c2c8572243fbdf4af41517728df51bb8cd45d1a90336ad9",
+      "constructor_args": [
+        "CANONICAL",
+        604800
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T09:03:07.112Z",
+      "mode": "CANONICAL"
+    },
+    "RecoveryLedger": {
+      "address": "0xcC13f189F337Dd0fAe4fB1a614EA8d6a5D445c49",
+      "deploy_tx": "0x2a2ab26a97fe8af645c7fb0e4903d0705fed667e993a5cd9c3190cca2b4ca6b7",
+      "file": "contracts/RecoveryLedger.py",
+      "commit": "9340b6b9e424778b07320fb36b4e45c68470f509",
+      "bytes": 3378,
+      "sha256": "bd3684c745a52ced82c37b6371e26a581b4a04b66ebb6df51e26c95cfa860cee",
+      "constructor_args": [
+        "0xe43638c41966F8501B8710710d50D16E261ba210"
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T09:03:30.572Z",
+      "reads": "0xe43638c41966F8501B8710710d50D16E261ba210"
+    }
+  },
+  "superseded": [
+    {
+      "name": "MakeWhole",
       "address": "0x6058b16009007E067660Ef28bF4741dD6A396581",
       "deploy_tx": "0xa0a366bef2179335199ea8665d4d13619868b4480e18c7f988fa12262bb0c933",
       "file": "contracts/MakeWhole.py",
@@ -31,9 +63,30 @@
       ],
       "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
       "deployed_at": "2026-10-06T05:12:16.360Z",
-      "mode": "CANONICAL"
+      "mode": "CANONICAL",
+      "superseded_by": "0xe43638c41966F8501B8710710d50D16E261ba210",
+      "why": "attack round 1: eight findings fixed (docs/THREAT_MODEL.md)"
     },
-    "RecoveryLedger": {
+    {
+      "name": "MakeWholeDemo",
+      "address": "0x0AD9C95Fdaa40514126613c8F67Bc96f614b5845",
+      "deploy_tx": "0x3f84bdff31da4d45eb306eecf95ffeaf5fb3f033b5236e30a8ddfda3eececb3c",
+      "file": "contracts/MakeWhole.py",
+      "commit": "0e58b5b073d48e11029d69de7f9ee67463805d5d",
+      "bytes": 71645,
+      "sha256": "c763db7dd993687ebb9c5b11afa43dd2209f9bc9dfcd14764d9c13d7a1cf24ec",
+      "constructor_args": [
+        "DEMO",
+        60
+      ],
+      "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+      "deployed_at": "2026-10-06T05:09:36.616Z",
+      "mode": "DEMO",
+      "superseded_by": "0xB15e4437dfd5a1AF45C4EF0bFdeF4120cB00CbFa",
+      "why": "attack round 1: eight findings fixed (docs/THREAT_MODEL.md)"
+    },
+    {
+      "name": "RecoveryLedger",
       "address": "0xe71B42174c597C8e14680A85ECE9dCff901B900B",
       "deploy_tx": "0xa9459757d8a1a93b4794057f69464e6cc7388508aaec94c7c281d52161faf2e9",
       "file": "contracts/RecoveryLedger.py",
@@ -45,7 +98,9 @@
       ],
       "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
       "deployed_at": "2026-10-06T05:12:28.465Z",
-      "reads": "0x6058b16009007E067660Ef28bF4741dD6A396581"
+      "reads": "0x6058b16009007E067660Ef28bF4741dD6A396581",
+      "superseded_by": "0xcC13f189F337Dd0fAe4fB1a614EA8d6a5D445c49",
+      "why": "reads the new canonical"
     }
-  }
+  ]
 }

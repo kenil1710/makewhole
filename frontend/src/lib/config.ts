@@ -1,7 +1,7 @@
 /** Deployment addresses and the facts of the one real incident this app presents. */
-export const CANONICAL = (process.env.NEXT_PUBLIC_MAKEWHOLE ?? "0x6058b16009007E067660Ef28bF4741dD6A396581") as `0x${string}`;
-export const DEMO = (process.env.NEXT_PUBLIC_MAKEWHOLE_DEMO ?? "0x0AD9C95Fdaa40514126613c8F67Bc96f614b5845") as `0x${string}`;
-export const LEDGER = (process.env.NEXT_PUBLIC_RECOVERY_LEDGER ?? "0xe71B42174c597C8e14680A85ECE9dCff901B900B") as `0x${string}`;
+export const CANONICAL = (process.env.NEXT_PUBLIC_MAKEWHOLE ?? "0xe43638c41966F8501B8710710d50D16E261ba210") as `0x${string}`;
+export const DEMO = (process.env.NEXT_PUBLIC_MAKEWHOLE_DEMO ?? "0xB15e4437dfd5a1AF45C4EF0bFdeF4120cB00CbFa") as `0x${string}`;
+export const LEDGER = (process.env.NEXT_PUBLIC_RECOVERY_LEDGER ?? "0xcC13f189F337Dd0fAe4fB1a614EA8d6a5D445c49") as `0x${string}`;
 
 export type Deployment = "c" | "d";
 export const DEPLOYMENTS: Record<Deployment, { address: `0x${string}`; label: string; blurb: string }> = {

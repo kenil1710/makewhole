@@ -11,9 +11,8 @@ const RATE_NOTE = "Rate 0.034991439125 ETH per wstETH was taken from the DAO's o
 const FINDING = "The AIP said 34 accounts; the AFC payout paid 35.";
 
 export default async function Home() {
-  let data: Awaited<ReturnType<typeof incidentBundle>> | null = null;
-  let dao: Record<string, string> = {};
-  try { [data, dao] = await Promise.all([incidentBundle("c", 1), daoPayouts()]); } catch { /* shown below */ }
+  // A failed read is rethrown so ISR never caches a page without the ledger.
+  const [data, dao] = await Promise.all([incidentBundle("c", 1), daoPayouts()]);
   const daoN = Object.keys(dao).length;
   const s = data?.score;
   return (

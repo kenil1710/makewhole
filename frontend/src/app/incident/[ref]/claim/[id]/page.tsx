@@ -39,7 +39,9 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
     [inc, t, appeals] = await Promise.all([getIncident(p.dep, p.id), getTerms(p.dep, p.id), getAppeals(p.dep, p.id)]);
   } catch (e) {
     if (e instanceof NotFound) notFound();
-    return <div className="wrap section"><p className="notice amber">This claim couldn&rsquo;t be read from GenLayer just now. Reload in a minute.</p></div>;
+    // Rethrow: an error must never be cached by ISR as if it were the page.
+    // Next keeps serving the last good render and shows app/error.tsx otherwise.
+    throw e;
   }
   const mine = appeals.filter((a) => a.claim_id === c.claim_id);
   const shown = mine.find((a) => String(a.appeal_id) === focus) ?? mine.find((a) => a.decision === "ELIGIBLE") ?? mine[mine.length - 1];

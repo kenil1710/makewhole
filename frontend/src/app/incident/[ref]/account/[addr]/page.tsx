@@ -63,7 +63,9 @@ export default async function AccountPage({ params }: { params: Promise<{ ref: s
     if (isAaveIncident(p.dep, p.id, inc.chain_id)) dao = await daoPayouts();
   } catch (e) {
     if (e instanceof NotFound) notFound();
-    return <div className="wrap section"><p className="notice amber">This account couldn&rsquo;t be read from GenLayer just now. Reload in a minute.</p></div>;
+    // Rethrow: an error must never be cached by ISR as if it were the page.
+    // Next keeps serving the last good render and shows app/error.tsx otherwise.
+    throw e;
   }
   const base = `/incident/${ref}`;
   const isAave = isAaveIncident(p.dep, p.id, inc.chain_id);

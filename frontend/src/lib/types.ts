@@ -10,7 +10,7 @@ export type Claim = {
   claim_id: number; incident_id: number; tx_hash: string; log_index: number; block: number; pool: string;
   borrower: string; code_kind: string; debt_asset: string; collateral: string; debt: string; owed_src: string;
   owed_gen: string; status: "ACCEPTED" | "EXCLUDED_CONTRACT" | "APPROVED_ON_APPEAL"; beneficiary: string;
-  credited_gen: string; filer: string; filed_at: number; appeals: number;
+  credited_gen: string; topup_gen?: string; filer: string; filed_at: number; appeals: number;
 };
 export type Account = {
   borrower: string; claims: number; owed_src: string; owed_gen: string; withheld_gen: string; credited_gen: string;
@@ -24,7 +24,7 @@ export type Appeal = {
 export type Pool = {
   pool_wei: string; owed_accepted_wei: string; owed_withheld_wei: string; owed_total_wei: string; oversubscribed: boolean;
   settled: boolean; ratio_num: string; ratio_den: string; credited_wei: string; closed: boolean;
-  returned_to_sponsor_wei: string; undistributed_wei: string;
+  returned_to_sponsor_wei: string; undistributed_wei: string; shortfall_wei?: string; topped_up_wei?: string;
 };
 export type Reproduction = {
   computed_total_src_wei: string; published_total_src_wei: string; difference_src_wei: string; difference_ppm: string;

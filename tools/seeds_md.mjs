@@ -33,8 +33,9 @@ const rows = accounts.map((a, i) => {
 const demo = existsSync(root + "docs/seed-demo.json") ? JSON.parse(readFileSync(root + "docs/seed-demo.json", "utf8")) : {};
 const gl = (h) => h ? `[\`${h.slice(0, 10)}…\`](https://explorer-studio-dev.genlayer.com/tx/${h})` : "";
 const DEMO = [
+  ["i1_appeal_dsproxy", "Appeal: DSProxy 0x4f96…, run 2 of the eligible case", "model"],
   ["i1_late_claim_refused", "Expiry: claim after the claim deadline", "refused"],
-  ["i1_settle", "Settle incident 1 (permissionless)", "credited in full, ratio 1/1"],
+  ["i1_settle", "Settle incident 1 (permissionless, paginated)", "credited in full, ratio 1/1"],
   ["i1_close", "Close after the appeal deadline", "remainder returned to the sponsor"],
   ["i1_sponsor_withdraw", "Sponsor withdraws the remainder", "paid"],
   ["i1_sponsor_withdraw_again_refused", "Withdraw twice", "refused"],
@@ -42,12 +43,12 @@ const DEMO = [
   ["i2_out_of_range_refused", "Out of range: real liquidation of 8 March (block 24,613,580)", "refused"],
   ["i2_appeal_safe_run1", "Appeal: Safe 0xf07e… (11 owners, threshold 2), run 1", "model"],
   ["i2_appeal_safe_run2", "Appeal: same Safe, run 2", "model"],
-  ["i2_appeal_dsproxy", "Appeal: DSProxy 0x4f96…, second run of the eligible case", "model"],
+  ["i2_appeal_dsproxy", "Appeal: DSProxy 0x4f96…, run 3 of the eligible case", "model"],
   ["i2_appeal_injection", "Appeal with a prompt-injection argument (EIP-1167 clone 0x3aac…)", "model + code"],
-  ["i3_settle_pro_rata", "Oversubscribed pool (1 GEN) settles pro-rata", "pro-rata"],
+  ["i3_settle_pro_rata", "Underfunded pool (1 GEN) settles pro-rata, withheld contract reserved", "pro-rata"],
   ["i3_late_appeal_refused", "Expiry: appeal after the appeal deadline", "refused"],
-  ["i3_close", "Close: unappealed reserve + dust return to the sponsor", "returned"],
-  ["i4_settle", "TEST CHAIN incident settles", "credited"],
+  ["i3_close_topup", "Close: accepted claims topped up from the unused reserve, then the rest to the sponsor", "top-up"],
+  ["i4_settle", "TEST CHAIN (32343) incident settles", "credited"],
   ["i4_b1_withdraw", "Test borrower 1 withdraws its own refund", "paid"],
   ["i4_b1_withdraw_twice_refused", "Test borrower withdraws twice", "refused"],
 ];
@@ -73,6 +74,10 @@ GEN payout. The pool is 5.1319 GEN = the DAO's 513.19 ETH approval at that scale
 - ${rep.claims} liquidation logs filed, ${rep.accounts_found} accounts (the proposal says ${rep.published_accounts}).
 - Our total **${fx(rep.computed_total_src_wei, 9)} ETH**; the DAO's AFC paid **${fx(rep.published_total_src_wei, 9)} ETH** ([\`0x687f…0f3f\`](https://etherscan.io/tx/${AFC_TX})).
 - **${n.MATCH} of ${accounts.length} match**, ${n["within 0.01%"]} within 0.01%, ${n.DIFFERS} differ. Rule: agree to 9 significant digits, or within 0.0000000001 ETH for dust.
+
+> Rate 0.034991439125 ETH per wstETH was taken from the DAO's own payout tx (the proposal published no formula); with the raw chain price gap alone, 0 of 35 match.
+>
+> The AIP said 34 accounts; the AFC payout paid 35.
 - Pool: ${fx(pool.pool_wei, 4)} GEN (includes ${appeals.filter((a) => a.decision === "NOT_ELIGIBLE").length} forfeited appeal stake), owed ${fx(pool.owed_total_wei, 4)} GEN, of which ${fx(pool.owed_withheld_wei, 4)} GEN withheld for contract borrowers.
 
 | # | account | liquidation tx · log | ours (ETH) | DAO paid (ETH) | match | status |
@@ -85,11 +90,13 @@ ${rows.join("\n")}
 |---|---|---|---|---|---|
 ${appeals.map((a) => { const c = claims.find((x) => x.claim_id === a.claim_id); return `| #${a.claim_id} | \`${c.borrower}\` | ${a.decision} | ${a.clause_id} | ${a.beneficiary ? "`" + a.beneficiary + "`" : "—"} | ${a.code_check} |`; }).join("\n")}
 
-The two DSProxy wallets (the largest account, 249.48 ETH, and 0xf82d…, 54.07 ETH) and two other owner() wallets were found
-ELIGIBLE under [E4]. 0x681d… (owner() returns an EOA) was found NOT_ELIGIBLE under [X1]: validators did not accept it as a
-single user's wallet from its source. Of the 35 borrowers, 22 are contracts on Ethereum (2 more are EIP-7702 EOAs, paid
-directly); the other 17 contracts have no owner() view (EIP-1167 clones, proxies, one Safe) and stay withheld until the
-appeal deadline, when their reserve returns to the sponsor.
+${(() => {
+  const el = appeals.filter((x) => x.decision === "ELIGIBLE").length, ne = appeals.filter((x) => x.decision === "NOT_ELIGIBLE").length, inc = appeals.filter((x) => x.decision === "INCONCLUSIVE").length;
+  const kinds = {}; for (const c of claims) kinds[c.borrower] = c.code_kind;
+  const contracts = Object.values(kinds).filter((k) => k === "CONTRACT").length, d7702 = Object.values(kinds).filter((k) => k === "EIP7702_EOA").length;
+  const appealed = new Set(appeals.map((x) => claims.find((c) => c.claim_id === x.claim_id)?.borrower)).size;
+  return `${appeals.length} real appeals for the contract borrowers whose owner() returns an address: ${el} ELIGIBLE, ${ne} NOT_ELIGIBLE, ${inc} INCONCLUSIVE. Of the 35 borrowers, ${contracts} are contracts on Ethereum (${d7702} more are EIP-7702 EOAs, paid directly); the other ${contracts - appealed} contracts have no owner() view (EIP-1167 clones, proxies, one Safe) and stay withheld until the appeal deadline, when close() uses their reserve to top up anyone under-credited and returns the rest to the sponsor.`;
+})()}
 
 ## Demo — every other path
 
@@ -104,12 +111,27 @@ ${demoRows.join("\n")}
 ${(() => {
   const out = [];
   const e1 = JSON.parse(readFileSync(root + "docs/seed-canonical.json", "utf8")).appeals?.["1"]?.result;
-  const e2 = demo.i2_appeal_dsproxy?.result;
-  if (e2) out.push(`- **DSProxy 0x4f96… (ELIGIBLE case)**: canonical appeal #1 → ${e1?.decision} [${e1?.clause_id}] payee ${e1?.beneficiary}; demo incident 2 → ${e2.decision} [${e2.clause_id}] payee ${e2.beneficiary}; and demo incident 1 (smoke run) → ELIGIBLE [E4] 0x08d49c…0040. **${e2.decision === e1?.decision && e2.clause_id === e1?.clause_id && e2.beneficiary === e1?.beneficiary ? "Agree" : "Disagree"}.**`);
+  const e2 = demo.i1_appeal_dsproxy?.result, e3 = demo.i2_appeal_dsproxy?.result;
+  const same = (x, y) => x && y && x.decision === y.decision && x.clause_id === y.clause_id && x.beneficiary === y.beneficiary;
+  if (e2 && e3) out.push(`- **DSProxy 0x4f96… (ELIGIBLE case), three runs**: canonical → ${e1?.decision} [${e1?.clause_id}] payee ${e1?.beneficiary}; demo incident 1 → ${e2.decision} [${e2.clause_id}] payee ${e2.beneficiary}; demo incident 2 → ${e3.decision} [${e3.clause_id}] payee ${e3.beneficiary}. **${same(e1, e2) && same(e2, e3) ? "All three agree" : "They disagree"}.**`);
   const s1 = demo.i2_appeal_safe_run1?.result, s2 = demo.i2_appeal_safe_run2?.result;
   if (s1 && s2) out.push(`- **Safe 0xf07e… (NOT_ELIGIBLE case)**: run 1 → ${s1.decision} [${s1.clause_id}] (${s1.code_check}); run 2 → ${s2.decision} [${s2.clause_id}] (${s2.code_check}). **${s1.decision === s2.decision ? "Agree on the decision" : "Disagree"}${s1.clause_id === s2.clause_id ? " and the clause" : `; clauses differ (${s1.clause_id} vs ${s2.clause_id})`}.**`);
   return out.join("\n");
 })()}
+
+### The same real appeals in v1 and v1.1
+
+The five canonical owner() appeals were also run on the superseded v1 contract ([v1 SEEDS](superseded/v1/SEEDS.md)), with
+a different prompt (v1.1 adds nonce fences, case-bound evidence and exact-clause rules). Three decisions were identical
+(both DSProxy wallets and \`0x9a98…\`: ELIGIBLE, same payee). **Two flipped**: \`0x681d…\` (a 16 KB contract) was
+NOT_ELIGIBLE [X1] in v1 and ELIGIBLE [E4] in v1.1; \`0xbe6e…\` (an EIP-1167 clone) was ELIGIBLE [E4] in v1 and NOT_ELIGIBLE
+[X1] in v1.1. Neither is a DSProxy; both sit on the line between "a single user's wallet" and "controller cannot be
+shown". In both versions code confirmed that any payee named was the wallet's real owner(), so a flip changes *whether*
+the owner is paid, never *who*. This is the residual model risk the threat model names.
+
+### Top-up at close (incident 3, attack-round fix 6)
+
+${(demo.i3_claims_after_close?.claims ?? []).length ? "| claim | borrower | status | owed (GEN wei) | credited (GEN wei) | of which top-up at close |\n|---|---|---|---|---|---|\n" + demo.i3_claims_after_close.claims.map((c) => `| #${c.claim_id} | \`${c.borrower}\` | ${c.status} | ${c.owed_gen} | ${c.credited_gen} | ${c.topup_gen} |`).join("\n") + `\n\nPool 1 GEN. settle() reserved the withheld contract claim at full value, so the accepted claims were paid pro-rata; nobody appealed it, so close() used that reserve to top the accepted claims up before returning ${demo.i3_close_topup?.result?.returned_to_sponsor_wei ?? "?"} wei to the sponsor.` : "(not run yet)"}
 `;
 writeFileSync(root + "docs/SEEDS.md", md);
 console.log(`wrote docs/SEEDS.md: ${n.MATCH} match, ${n["within 0.01%"]} close, ${n.DIFFERS} differ`);

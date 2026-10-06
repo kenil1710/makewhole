@@ -38,7 +38,9 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
     if (b.isAave) dao = await daoPayouts();
   } catch (e) {
     if (e instanceof NotFound) notFound();
-    return <div className="wrap section"><h1>Incident {ref}</h1><p className="notice amber">This incident couldn&rsquo;t be read from GenLayer just now. Studio Dev may be rate-limiting; reload in a minute.</p></div>;
+    // Rethrow: an error must never be cached by ISR as if it were the page.
+    // Next keeps serving the last good render and shows app/error.tsx otherwise.
+    throw e;
   }
   const { inc, pool, rep, rows, claims, score, isAave } = b;
   const dep = DEPLOYMENTS[p.dep];

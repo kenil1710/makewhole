@@ -30,7 +30,21 @@
 - [x] Logo (SVG + 512 px PNG), favicon, OG image 1200×630 — `brand/`
 - [x] Screenshots at 1440 px and 390 px — `docs/screenshots/`
 - [x] "How to use" in five steps — README
-- [x] 86 s demo recording of flows 1→4 + script — `docs/demo/`
+- [x] 81 s demo recording of flows 1→4 + script — `docs/demo/`
 
 ## Finish
 - [x] README, repository public, Vercel deployed
+
+## Attack round 1 (v1.1)
+- [x] 1. `eth_chainId` from every endpoint in the agreed value; refused unless it equals the incident's chain id; demo test chain uses chain 32343; UI shows Aave framing / DAO comparison only for canonical incident 1 on chain 1; proposal link labelled from the incident's own URL
+- [x] 2. Quorum: ≥ 2 frozen endpoints identical, none disagreeing, else INCONCLUSIVE (nothing stored, deadline running); ≥ 2 RPCs required at creation; canonical freezes five providers (probe 4); threat-model sentence corrected
+- [x] 3. ELIGIBLE only under E4, NOT_ELIGIBLE only under X1/X2, verbatim within that clause; else INCONCLUSIVE, stake back
+- [x] 4. Fence markers refused in arguments and links; nonce-tagged fences; fence markers and nonce stripped from fetched pages
+- [x] 5. Evidence fetched only for the borrower, its implementation (EIP-1167 code / EIP-1967 slot) and its owner(), all read by validators
+- [x] 6. close() tops up under-credited claims from unused reserves before returning the rest; T10 updated
+- [x] 7. Block range ≤ 50,000 at creation; settle()/close() paginated (50 per call); no claim cap
+- [x] 8. Disclosure sentence beside every match score (UI, README, RESEARCH, SEEDS, OG image); labels renamed; Part B labelled "drafted for MakeWhole from the post-mortem — not published by the Aave DAO"; "The AIP said 34 accounts; the AFC payout paid 35." highlighted
+- [x] Ten attack tests moved into `test/test_makewhole.py`; value-to-non-payable test added; 90 tests pass
+- [x] One redeploy (CANONICAL, DEMO, RecoveryLedger from `9340b6b`); full reseed; model cases run twice/three times; `verify_source` identical
+- [x] v1 addresses and seed records → `docs/superseded/v1/`
+- [x] Vercel redeployed, screenshots and demo video re-taken
