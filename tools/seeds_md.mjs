@@ -33,7 +33,7 @@ const rows = accounts.map((a, i) => {
 const demo = existsSync(root + "docs/seed-demo.json") ? JSON.parse(readFileSync(root + "docs/seed-demo.json", "utf8")) : {};
 const gl = (h) => h ? `[\`${h.slice(0, 10)}…\`](https://explorer-studio-dev.genlayer.com/tx/${h})` : "";
 const DEMO = [
-  ["i1_appeal_dsproxy", "Appeal: DSProxy 0x4f96…, run 2 of the eligible case", "model"],
+  ["i1_appeal_dpm", "Appeal: Summer.fi DPM account 0x9a98…, run 2 of the eligible case", "code + model confirms"],
   ["i1_late_claim_refused", "Expiry: claim after the claim deadline", "refused"],
   ["i1_settle", "Settle incident 1 (permissionless, paginated)", "credited in full, ratio 1/1"],
   ["i1_close", "Close after the appeal deadline", "remainder returned to the sponsor"],
@@ -43,7 +43,8 @@ const DEMO = [
   ["i2_out_of_range_refused", "Out of range: real liquidation of 8 March (block 24,613,580)", "refused"],
   ["i2_appeal_safe_run1", "Appeal: Safe 0xf07e… (11 owners, threshold 2), run 1", "model"],
   ["i2_appeal_safe_run2", "Appeal: same Safe, run 2", "model"],
-  ["i2_appeal_dsproxy", "Appeal: DSProxy 0x4f96…, run 3 of the eligible case", "model"],
+  ["i2_appeal_dsproxy", "Appeal: DSProxy 0x4f96… (authority() is a DSGuard)", "code"],
+  ["i2_appeal_dpm", "Appeal: Summer.fi DPM account 0x9a98…, run 3 of the eligible case", "code + model confirms"],
   ["i2_appeal_injection", "Appeal with a prompt-injection argument (EIP-1167 clone 0x3aac…)", "model + code"],
   ["i3_settle_pro_rata", "Underfunded pool (1 GEN) settles pro-rata, withheld contract reserved", "pro-rata"],
   ["i3_late_appeal_refused", "Expiry: appeal after the appeal deadline", "refused"],
@@ -110,10 +111,11 @@ ${demoRows.join("\n")}
 
 ${(() => {
   const out = [];
-  const e1 = JSON.parse(readFileSync(root + "docs/seed-canonical.json", "utf8")).appeals?.["1"]?.result;
-  const e2 = demo.i1_appeal_dsproxy?.result, e3 = demo.i2_appeal_dsproxy?.result;
+  const canAp = JSON.parse(readFileSync(root + "docs/seed-canonical.json", "utf8")).appeals ?? {};
+  const e1 = Object.values(canAp).find((x) => x.borrower === "0x9a982dfcd22159a059114eca54b5abaabdd627b4")?.result;
+  const e2 = demo.i1_appeal_dpm?.result, e3 = demo.i2_appeal_dpm?.result;
   const same = (x, y) => x && y && x.decision === y.decision && x.clause_id === y.clause_id && x.beneficiary === y.beneficiary;
-  if (e2 && e3) out.push(`- **DSProxy 0x4f96… (ELIGIBLE case), three runs**: canonical → ${e1?.decision} [${e1?.clause_id}] payee ${e1?.beneficiary}; demo incident 1 → ${e2.decision} [${e2.clause_id}] payee ${e2.beneficiary}; demo incident 2 → ${e3.decision} [${e3.clause_id}] payee ${e3.beneficiary}. **${same(e1, e2) && same(e2, e3) ? "All three agree" : "They disagree"}.**`);
+  if (e2 && e3) out.push(`- **Summer.fi DPM account 0x9a98… (ELIGIBLE case), three runs**: canonical → ${e1?.decision} [${e1?.clause_id}] payee ${e1?.beneficiary}; demo incident 1 → ${e2.decision} [${e2.clause_id}] payee ${e2.beneficiary}; demo incident 2 → ${e3.decision} [${e3.clause_id}] payee ${e3.beneficiary}. **${same(e1, e2) && same(e2, e3) ? "All three agree" : "They disagree"}.**`);
   const s1 = demo.i2_appeal_safe_run1?.result, s2 = demo.i2_appeal_safe_run2?.result;
   if (s1 && s2) out.push(`- **Safe 0xf07e… (NOT_ELIGIBLE case)**: run 1 → ${s1.decision} [${s1.clause_id}] (${s1.code_check}); run 2 → ${s2.decision} [${s2.clause_id}] (${s2.code_check}). **${s1.decision === s2.decision ? "Agree on the decision" : "Disagree"}${s1.clause_id === s2.clause_id ? " and the clause" : `; clauses differ (${s1.clause_id} vs ${s2.clause_id})`}.**`);
   return out.join("\n");

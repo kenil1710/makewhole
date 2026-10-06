@@ -26,11 +26,12 @@ import typing
 # its refund is withheld (exclusion [X1] of the terms) until an appeal shows
 # which externally owned account controls it. CODE decides the appeal from
 # bytecode every validator reads: a DSProxy or a known single-owner account
-# implementation whose owner() is an EOA -> ELIGIBLE [E4]; a Safe with more
-# than one key -> NOT_ELIGIBLE [X2]; no owner() -> NOT_ELIGIBLE [X1]; any other
-# contract -> INCONCLUSIVE (stake back, appealable again). The model reads the
-# same evidence and may only CONFIRM code's decision; if it does not, the
-# appeal is INCONCLUSIVE. It can never turn one decision into the other. (A
+# implementation (exact 45-byte EIP-1167 clone) whose owner() is an EOA, and,
+# for a DSProxy, no authority() -> ELIGIBLE [E4]; a Safe (checked first, from
+# slot 0) with more than one key -> NOT_ELIGIBLE [X2]; no owner() or an owner
+# that is a contract -> NOT_ELIGIBLE [X1]; anything else -> INCONCLUSIVE (stake
+# back, appealable again). The model is asked only about an ELIGIBLE, and may
+# only withhold it (INCONCLUSIVE). It never touches NOT_ELIGIBLE. (A
 # stability check showed the model alone gave the same wallet opposite
 # answers in different transactions.) Nothing the model writes is stored.
 #
@@ -74,7 +75,7 @@ import typing
 #
 # The runner rejects the str replace method; slice around find() instead.
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 WAD = 10 ** 18
 BPS = 10000
@@ -129,7 +130,14 @@ EVIDENCE_CAP = 3500
 SOURCE_CAP = 3500
 MIN_QUOTE = 12
 
+# An EIP-1167 minimal proxy is EXACTLY 45 bytes: prefix + implementation + suffix.
+# Only that exact shape names an implementation; no storage slot ever does
+# (any contract can write any slot - attack round v1.2, finding 1).
 EIP1167_PREFIX = "0x363d3d373d3d3d363d73"
+EIP1167_SUFFIX = "5af43d82803e903d91602b57fd5bf3"
+SEL_AUTHORITY = "0xbf7e214f"           # DSAuth.authority()
+# The EIP-1967 implementation slot is deliberately NEVER read (see above); the
+# constant stays only so tests can prove that writing it changes nothing.
 EIP1967_IMPL_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
 BLOCKSCOUT_SOURCE = "https://eth.blockscout.com/api/v2/smart-contracts/"
 # WALLET TYPES CODE RECOGNISES (stability check, docs/SEEDS.md). The model was
@@ -788,27 +796,28 @@ def gather_appeal(rpcs: list, chain_id: int, borrower: str,
     facts["borrower_code_bytes"] = (len(code["value"]) - 2) // 2
     hexcode = code["value"][2:]
     facts["borrower_code_sha256"] = _sha256_bytes(bytes.fromhex(hexcode)) if len(hexcode) % 2 == 0 else ""
-    # implementation: an EIP-1167 clone names it in its code; otherwise the
-    # EIP-1967 implementation slot. Read by validators, never supplied.
-    impl = ""
-    if code["value"].startswith(EIP1167_PREFIX) and len(code["value"]) >= 62:
-        impl = _addr("0x" + code["value"][22:62])
-    else:
-        slot = onchain("eth_getStorageAt", [borrower, EIP1967_IMPL_SLOT, "latest"])
-        if slot["ok"] and slot["value"] != "REVERT" and len(slot["value"]) == 66:
-            cand = "0x" + slot["value"][26:]
-            if cand != "0x" + "0" * 40:
-                impl = cand
+    # implementation: ONLY from an exact 45-byte EIP-1167 clone. Read by
+    # validators, never supplied, never from storage.
+    impl = eip1167_implementation(code["value"])
     facts["implementation"] = impl
-    # A Safe proxy keeps its singleton in storage slot 0.
+    # The Safe check ALWAYS runs first, for every contract: a Safe singleton in
+    # slot 0 means the Safe path and nothing else, whatever any other slot says.
     safe = ""
-    if not impl and facts["borrower_code_bytes"] <= 400:
-        s0 = onchain("eth_getStorageAt", [borrower, SLOT0, "latest"])
-        if s0["ok"] and s0["value"] != "REVERT" and len(s0["value"]) == 66:
-            cand = "0x" + s0["value"][26:]
-            if cand in SAFE_SINGLETONS:
-                safe = cand
+    s0 = onchain("eth_getStorageAt", [borrower, SLOT0, "latest"])
+    if not s0["ok"] or s0["value"] == "REVERT" or len(s0["value"]) != 66:
+        # Fail closed: an unreadable slot 0 must never skip the Safe check.
+        return {"ok": False, "why": "SLOT0_UNREADABLE"}
+    cand = "0x" + s0["value"][26:]
+    if cand in SAFE_SINGLETONS:
+        safe = cand
     facts["safe_singleton"] = safe
+    if not safe and facts["borrower_code_sha256"] in PERSONAL_WALLET_CODE:
+        # DSProxy.execute is `auth`: owner OR authority.canCall(...). A
+        # non-zero authority means keys other than owner() may control it.
+        au = onchain("eth_call", [{"to": borrower, "data": SEL_AUTHORITY}, "latest"])
+        if not au["ok"] or au["value"] == "REVERT" or len(au["value"]) != 66 or au["value"][2:26] != "0" * 24:
+            return {"ok": False, "why": "AUTHORITY_UNREADABLE"}
+        facts["dsproxy_authority"] = "0x" + au["value"][26:]
     if safe:
         th = onchain("eth_call", [{"to": borrower, "data": SEL_GET_THRESHOLD}, "latest"])
         ow = onchain("eth_call", [{"to": borrower, "data": SEL_GET_OWNERS}, "latest"])
@@ -871,19 +880,26 @@ def gather_appeal(rpcs: list, chain_id: int, borrower: str,
             "evidence": evidence}
 
 
+def eip1167_implementation(code: str) -> str:
+    """The implementation of an EXACT 45-byte EIP-1167 clone, else ""."""
+    c = str(code).lower()
+    if len(c) != 92 or not c.startswith(EIP1167_PREFIX) or not c.endswith(EIP1167_SUFFIX):
+        return ""
+    return _addr("0x" + c[22:62])
+
+
 def classify_wallet(facts: dict, owner: str, owner_kind: str) -> dict:
     """CODE decides the appeal from what validators read on chain. Returns
     {wallet_type, decision, clause_id, beneficiary, view, code_check}. A
     decision is only ever ELIGIBLE under E4, NOT_ELIGIBLE under X1/X2, or
-    INCONCLUSIVE when code cannot tell what the contract is."""
-    impl = str(facts.get("implementation", ""))
-    sha = str(facts.get("borrower_code_sha256", ""))
-    if sha in PERSONAL_WALLET_CODE:
-        wtype = PERSONAL_WALLET_CODE[sha]
-    elif impl in PERSONAL_WALLET_IMPLS:
-        wtype = PERSONAL_WALLET_IMPLS[impl]
-    elif facts.get("safe_singleton"):
+    INCONCLUSIVE when code cannot tell what the contract is or who controls it.
+    Order matters: the Safe check comes first and is final."""
+    if facts.get("safe_singleton"):
         wtype = SAFE_SINGLETONS[str(facts["safe_singleton"])]
+    elif str(facts.get("borrower_code_sha256", "")) in PERSONAL_WALLET_CODE:
+        wtype = PERSONAL_WALLET_CODE[str(facts["borrower_code_sha256"])]
+    elif str(facts.get("implementation", "")) in PERSONAL_WALLET_IMPLS:
+        wtype = PERSONAL_WALLET_IMPLS[str(facts["implementation"])]
     else:
         wtype = ""
 
@@ -904,6 +920,9 @@ def classify_wallet(facts: dict, owner: str, owner_kind: str) -> dict:
         return out(D_INCONCLUSIVE, "", "WALLET_TYPE_NOT_RECOGNISED")
     if owner_kind == K_CONTRACT:
         return out(D_NOT_ELIGIBLE, "X1", "BENEFICIARY_IS_A_CONTRACT")
+    au = str(facts.get("dsproxy_authority", "0x" + "0" * 40))
+    if au != "0x" + "0" * 40:
+        return out(D_INCONCLUSIVE, "", "DSPROXY_HAS_AUTHORITY")
     return out(D_ELIGIBLE, "E4", "OK", owner)
 
 
@@ -916,10 +935,9 @@ def _wallet_label(v: typing.Any) -> str:
 
 
 def combine(code: dict, model: dict) -> dict:
-    """The model can confirm code's decision or withhold it - never reverse it.
-    Same decision -> code's outcome (code's clause, code's payee). Otherwise
-    INCONCLUSIVE: stake back, the claim may be appealed again."""
-    if code["decision"] == D_INCONCLUSIVE:
+    """The model may only withhold an ELIGIBLE (-> INCONCLUSIVE, stake back). It
+    is never asked about NOT_ELIGIBLE or INCONCLUSIVE, which are code's alone."""
+    if code["decision"] != D_ELIGIBLE:
         return code
     if model.get("decision") == code["decision"]:
         return code
@@ -1464,7 +1482,9 @@ class MakeWhole(gl.contract.Contract):
                         "view": "", "code_check": str(g.get("why", "UNREADABLE")),
                         "owner": "", "owner_kind": ""}
             code = classify_wallet(g["facts"], g["owner"], g["owner_kind"])
-            if code["decision"] == D_INCONCLUSIVE:
+            if code["decision"] != D_ELIGIBLE:
+                # NOT_ELIGIBLE and INCONCLUSIVE are code's alone: the model is
+                # not asked (it may only withhold an ELIGIBLE).
                 out = code
             else:
                 facts = dict(g["facts"])
