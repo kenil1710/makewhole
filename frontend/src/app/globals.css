@@ -256,3 +256,6 @@ select.input { appearance: auto; }
 }
 .terms-body.open { max-height: none; }
 .relied-quote { margin: 20px 0 0; padding: 14px 18px; background: var(--green-wash); border-left: 3px solid var(--green); font-family: var(--serif); font-size: 1.125rem; line-height: 1.55; max-width: 72ch; }
+.clause.relied.red { background: var(--red-wash); box-shadow: inset 3px 0 0 var(--red); }
+.clause.relied.red .relied-note { color: var(--red); }
+.relied-quote.excl { background: var(--red-wash); border-left-color: var(--red); }

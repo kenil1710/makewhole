@@ -59,3 +59,36 @@ i3_file_0x3ee505ba                 {"tx":"0x71f6152ba14b9f199a17dc6c4fe9d648a5e4
 i3_file_0x718e7b7e                 {"tx":"0x67ed130e33966bf9532e28a87732068636f3d3f85cae05ab8676873c4deb2518","status":"ACCEPTED","ok":true,"result":{"borrower":"0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2","claim_id":10,"code_kind":"EOA","owed_gen_wei":"19111633805819072","owed_src_wei":"1911163380581907280","status":"OK"},"refusal":
 i3_file_0x5cede91b                 {"tx":"0x69e603b02424baebdd7e3675b14a1a4d4842be0560ab3919b8e78c6513dcfa26","status":"ACCEPTED","ok":true,"result":{"borrower":"0x5cede91b3c5783d093b2f6c29cb2571a11204b27","claim_id":11,"code_kind":"CONTRACT","owed_gen_wei":"58856395463189586","owed_src_wei":"5885639546318958636","status":"OK"},"refu
 waiting 815s for incident 3 claim window
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for settle (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+i3_settle_pro_rata                 {"tx":"0xb5bb8b441bd74d25f7f7804f726bfbe09b814fda7067800b8d8aef6b8be13724","status":"ACCEPTED","ok":true,"result":{"credited_wei":"957983738983686168","incident_id":3,"ratio":"1000000000000000000/1400800405355849384","status":"OK"},"refusal":null,"pool":{"closed":false,"credited_wei":"95798373898368
+waiting 265s for incident 3 appeal window
+i3_late_appeal_refused             {"claim_id":11,"tx":"0xd94289900ce1dabc372d4a4c28ab10a5d6a63e3267758e42da3df858705ff393","status":"ACCEPTED","ok":true,"result":{"reason":"the appeal window has closed","status":"REFUSED","value_withdrawable":"10000000000000000"},"refusal":null,"done":true,"seconds":20}
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for close (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+i3_close                           {"tx":"0xa3f9f0f4dd4bef14bb91b72f17dd9fd5f2c885a7b36b18f5dfab0442bb851d23","status":"ACCEPTED","ok":true,"result":{"incident_id":3,"returned_to_sponsor_wei":"42016261016313832","status":"OK"},"refusal":null,"pool":{"closed":true,"credited_wei":"957983738983686168","oversubscribed":true,"owed_accepte
+i4_create                          {"tx":"0xbf751f194edf4831f52662bb73cac7f2e47e17f062472eae3bb150558e689b5f","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791267956,"claim_end":1791267836,"incident_id":4,"pool_wei":"1000000000000000000","status":"OK","terms_sha256":"952ec6c3ef513d2a65803f123eb758b51c8594e640125d3c1a9df9a73f1
+i4_file_b1_by_b2                   {"tx":"0x04ecfa9c4c5c863b5042cc7b96f649ce116a542a90d878f5b8555acd81d24b7c","status":"ACCEPTED","ok":true,"result":{"borrower":"0x45e2e2b04905e7499801fa41e29bb07319dee276","claim_id":12,"code_kind":"EOA","owed_gen_wei":"39571133176705970","owed_src_wei":"3957113317670597093","status":"OK"},"refusal":
+i4_file_b2                         {"tx":"0x8ba4c12e68d94d1e0e0cb6496b3ef5641d290bd6fa38a85712f3575701cf13bd","status":"ACCEPTED","ok":true,"result":{"borrower":"0x92858407f43512714a65ac5d90128bdf153d61e4","claim_id":13,"code_kind":"EOA","owed_gen_wei":"118713399530117913","owed_src_wei":"11871339953011791314","status":"OK"},"refusal
+waiting 553s for incident 4 claim window
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for settle (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+i4_settle                          {"tx":"0x17bb89cf98b1123ee0ab4787a6bd8893846bccd0a463beb7ed9775ee31fb27be","status":"ACCEPTED","ok":true,"result":{"credited_wei":"158284532706823883","incident_id":4,"ratio":"1/1","status":"OK"},"refusal":null,"done":true,"seconds":12}
+i4_b1_withdraw                     {"tx":"0x1edb065b99fd31658cd2fa34bb0debed32359cc99040e9588330d6f566838c67","status":"ACCEPTED","ok":true,"result":{"paid_wei":"39571133176705970","status":"OK"},"refusal":null,"credited_wei":"39571133176705970","wallet_before":"100000000000000000000","wallet_after_30s":"99999869338999999177","done":
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for withdraw (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+i4_b1_withdraw_twice_refused       {"tx":"0x011dd765ace70c0152b12e03ca02dbd3b1da70d0fd75adbdbf4039735dfcfade","status":"ACCEPTED","ok":false,"result":null,"refusal":"nothing to withdraw for 0x45e2e2b04905e7499801fa41e29bb07319dee276","done":true,"seconds":11}
+i4_ledger                          {"ledger":{"balance_wei":"10524830849014224885","claimable_wei":"4521215381721048768","invariant":"balance == open_stakes + claimable + undistributed","invariant_holds":true,"on_chain_balance_wei":"12323800000000000000","open_stakes_wei":"0","undistributed_wei":"6003615467293176117","withdrawn_wei":
+done

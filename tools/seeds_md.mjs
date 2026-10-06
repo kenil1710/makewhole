@@ -6,7 +6,8 @@ const require = createRequire(new URL("../test/package.json", import.meta.url));
 const { createClient } = require("genlayer-js");
 const { studioDevnet } = require("genlayer-js/chains");
 const dep = JSON.parse(readFileSync(root + "deployments.json", "utf8")).contracts;
-const client = createClient({ chain: studioDevnet });
+const relay = process.env.STUDIO_RPC;
+const client = createClient({ chain: relay ? { ...studioDevnet, rpcUrls: { ...studioDevnet.rpcUrls, default: { ...studioDevnet.rpcUrls.default, http: [relay] } } } : studioDevnet });
 const plain = (v) => v instanceof Map ? Object.fromEntries([...v].map(([k, x]) => [k, plain(x)])) : Array.isArray(v) ? v.map(plain) : typeof v === "bigint" ? Number(v) : v;
 const view = async (address, functionName, args = []) => { for (let i = 0; ; i++) { try { return plain(await client.readContract({ address, functionName, args })); } catch (e) { if (i > 4) throw e; await new Promise((r) => setTimeout(r, 4000)); } } };
 const fx = (w, p = 10) => { const n = BigInt(w), s = 10n ** BigInt(18 - p); const r = (n + s / 2n) / s; const d = 10n ** BigInt(p); return `${r / d}.${(r % d).toString().padStart(p, "0")}`; };
@@ -53,7 +54,9 @@ const DEMO = [
 const demoRows = DEMO.filter(([k]) => demo[k]).map(([k, what]) => {
   const s = demo[k];
   const r = s.result ? Object.entries(s.result).filter(([x]) => !["status"].includes(x)).map(([x, v]) => `${x}=${typeof v === "object" ? JSON.stringify(v) : v}`).join(", ") : s.refusal ? `refused: “${s.refusal}”` : "";
-  return `| ${what} | ${gl(s.tx)} | ${s.ok ? "OK" : "refused"} | ${r.replaceAll("|", "/")} |`;
+  const refused = !s.ok || s.result?.status === "REFUSED";
+  const note = k === "i4_b1_withdraw" ? ` — the contract zeroed the balance and posted the transfer (\`on: finalized\`); Studio Dev did not execute it (see Known limits)` : "";
+  return `| ${what} | ${gl(s.tx)} | ${refused ? "refused" : "OK"} | ${r.replaceAll("|", "/")}${note} |`;
 });
 const md = `# Seeds
 
@@ -84,7 +87,9 @@ ${appeals.map((a) => { const c = claims.find((x) => x.claim_id === a.claim_id); 
 
 The two DSProxy wallets (the largest account, 249.48 ETH, and 0xf82d…, 54.07 ETH) and two other owner() wallets were found
 ELIGIBLE under [E4]. 0x681d… (owner() returns an EOA) was found NOT_ELIGIBLE under [X1]: validators did not accept it as a
-single user's wallet from its source. The other 19 contract borrowers have no owner() view and stay withheld.
+single user's wallet from its source. Of the 35 borrowers, 22 are contracts on Ethereum (2 more are EIP-7702 EOAs, paid
+directly); the other 17 contracts have no owner() view (EIP-1167 clones, proxies, one Safe) and stay withheld until the
+appeal deadline, when their reserve returns to the sponsor.
 
 ## Demo — every other path
 

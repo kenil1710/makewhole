@@ -74,7 +74,13 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
         </aside>
       </div>
 
-      {isAave && (
+      {isAave && rep.accounts_found < rep.published_accounts && (
+        <section className="section" aria-labelledby="rep">
+          <h2 id="rep">Reproduction</h2>
+          <p className="section-note">This demo incident files only {claims.length} of the 49 real liquidations, to show one path. Its total isn&rsquo;t compared with the DAO&rsquo;s; each account below still is. The full reproduction is on <Link href="/incident/c-1">the canonical incident</Link>.</p>
+        </section>
+      )}
+      {isAave && rep.accounts_found >= rep.published_accounts && (
         <section className="section" aria-labelledby="rep">
           <h2 id="rep">Reproduction</h2>
           <p className="section-note">Every amount below was computed by the contract from the liquidation receipt with the frozen formula, then compared with the DAO&rsquo;s actual payout in <a href={ethtx(AFC_TX)} target="_blank" rel="noreferrer">0x687f…0f3f</a>.</p>

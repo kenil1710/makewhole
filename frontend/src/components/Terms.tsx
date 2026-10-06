@@ -1,7 +1,7 @@
 import { CopyButton } from "./Copy";
 
 /** The frozen terms as a document. Clause lines get anchors; one clause can be marked as relied upon. */
-export function TermsDoc({ terms, sha, highlight }: { terms: string; sha: string; highlight?: string }) {
+export function TermsDoc({ terms, sha, highlight, tone = "green" }: { terms: string; sha: string; highlight?: string; tone?: "green" | "red" }) {
   const blocks = terms.split(/\n\s*\n/);
   return (
     <article className="terms sheet" aria-label="Frozen terms">
@@ -19,7 +19,7 @@ export function TermsDoc({ terms, sha, highlight }: { terms: string; sha: string
                 if (m) {
                   const on = highlight === m[1];
                   return (
-                    <p key={j} id={`clause-${m[1]}`} className={`clause${on ? " relied" : ""}`}>
+                    <p key={j} id={`clause-${m[1]}`} className={`clause${on ? ` relied ${tone}` : ""}`}>
                       <span className="cid mono">{m[1]}</span>
                       <span>{m[2]}{on && <span className="relied-note">The decision relied on this clause.</span>}</span>
                     </p>

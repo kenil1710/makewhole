@@ -75,7 +75,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
             <div><dt>Proven by</dt><dd className="mono">{shown.view || "—"}</dd></div>
           </dl>
           {shown.clause_id && t.clauses[shown.clause_id] && (
-            <blockquote className="relied-quote">
+            <blockquote className={`relied-quote${shown.decision === "ELIGIBLE" ? "" : " excl"}`}>
               <p className="small muted" style={{ margin: "0 0 6px", fontFamily: "var(--sans)" }}>Clause {shown.clause_id}, as frozen in the terms</p>
               {t.clauses[shown.clause_id].replace(/^\[[A-Z]\d+\]\s*/, "")}
               <p style={{ margin: "8px 0 0", fontFamily: "var(--sans)" }} className="small"><a href={`#clause-${shown.clause_id}`}>See it in the full terms</a></p>
@@ -101,7 +101,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
 
       <section className="section" aria-labelledby="t">
         <h2 id="t">The terms</h2>
-        <TermsDoc terms={t.terms} sha={t.terms_sha256} highlight={shown?.clause_id || undefined} />
+        <TermsDoc terms={t.terms} sha={t.terms_sha256} highlight={shown?.clause_id || undefined} tone={shown?.decision === "ELIGIBLE" ? "green" : "red"} />
       </section>
       <p className="small muted">Deployment: <a href={gladdr(DEPLOYMENTS[p.dep].address)} target="_blank" rel="noreferrer">{DEPLOYMENTS[p.dep].label}</a>{shown ? <> · appeal filed {when(shown.filed_at)}</> : null}</p>
     </div>

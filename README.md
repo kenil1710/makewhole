@@ -9,11 +9,11 @@ cases, pull payouts — on GenLayer.
 |---|---|
 | **Live app** | https://makewhole-ledger.vercel.app |
 | **Network** | GenLayer Studio Dev, chain `61997` — [explorer](https://explorer-studio-dev.genlayer.com/) |
-| **MakeWhole — canonical** (the real incident; 30-day claim window, 14-day appeal window) | `{{C}}` |
-| **MakeWhole — demo** (same source; windows of minutes) | `{{D}}` |
-| **RecoveryLedger** (read-only consumer; no payable method) | `{{L}}` |
-| **Commit deployed** | `{{COMMIT}}` — sha256 of `contracts/MakeWhole.py`: `{{SHA}}` |
-| **Offline tests** | `python3 test/test_makewhole.py` (stdlib only, {{NTESTS}} tests) |
+| **MakeWhole — canonical** (the real incident; 30-day claim window, 14-day appeal window) | `0x6058b16009007E067660Ef28bF4741dD6A396581` |
+| **MakeWhole — demo** (same source; windows of minutes) | `0x0AD9C95Fdaa40514126613c8F67Bc96f614b5845` |
+| **RecoveryLedger** (read-only consumer; no payable method) | `0xe71B42174c597C8e14680A85ECE9dCff901B900B` |
+| **Commit deployed** | `031e18e965359831bd77514814604487cc51004b` — sha256 of `contracts/MakeWhole.py`: `c763db7dd993687ebb9c5b11afa43dd2209f9bc9dfcd14764d9c13d7a1cf24ec` |
+| **Offline tests** | `python3 test/test_makewhole.py` (stdlib only, 69 tests) |
 | **Demo video** | [`docs/demo/makewhole-demo.mp4`](docs/demo/makewhole-demo.mp4) (86 s) |
 
 More: [research](docs/RESEARCH.md) · [threat model](docs/THREAT_MODEL.md) · [seeds](docs/SEEDS.md) · [addresses](ADDRESSES.md) · [tasks](docs/TASKS.md)
@@ -35,7 +35,7 @@ MakeWhole makes that process checkable. A sponsor freezes the terms before anyon
 Every GenLayer validator reads the liquidation from Ethereum itself and the code computes the refund. Edge cases are
 appealed against the frozen terms. Refunds are pulled, never pushed. Every number in the app comes from a contract call.
 
-## Did it reproduce the DAO? {{MATCH}} of 35.
+## Did it reproduce the DAO? 33 of 35.
 
 We recovered the DAO's formula from its own payouts ([RESEARCH.md §5](docs/RESEARCH.md#5-reproducing-the-daos-amounts)):
 
@@ -43,10 +43,10 @@ We recovered the DAO's formula from its own payouts ([RESEARCH.md §5](docs/RESE
 refund = wstETH seized × 0.034991439125 ETH  +  1% × debt repaid (in ETH)
 ```
 
-Frozen into the canonical incident and computed by the contract from each receipt, **{{MATCH}} of 35 accounts match the
-DAO's payment** to nine significant digits, **{{CLOSE}} are within 0.004%** (their debt was cbETH and osETH; we price it with
+Frozen into the canonical incident and computed by the contract from each receipt, **33 of 35 accounts match the
+DAO's payment** to nine significant digits, **2 are within 0.004%** (their debt was cbETH and osETH; we price it with
 Aave's oracle in the liquidation block, the DAO used a slightly different price), **0 differ**. Our total
-{{OURS}} ETH vs the DAO's {{DAO}} ETH. The chain shows 35 accounts; the proposal says 34.
+512.192859797 ETH vs the DAO's 512.192859825 ETH. The chain shows 35 accounts; the proposal says 34.
 
 ## How it works
 
@@ -94,9 +94,45 @@ The real incident is seeded on the canonical contract: real terms text, all 49 r
 smart-wallet appeals. **Scale: 1 ETH = 0.01 GEN** — refunds are computed in ETH-wei from Ethereum and paid in GEN at 1/100,
 so the pool is 5.1319 GEN for the DAO's 513.19 ETH. Full detail and every demo path: [docs/SEEDS.md](docs/SEEDS.md).
 
-{{SEED_TABLE}}
+| # | account | ours (ETH) | DAO paid (ETH) | match | status |
+|---|---|---|---|---|---|
+| 1 | `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` | 249.4787941017 | 249.4787941000 | MATCH | approved on appeal |
+| 2 | `0x4bacce55f0991cfc4d919f7f50edb8be028e37df` | 87.7714041174 | 87.7714041200 | MATCH | owed (EOA) |
+| 3 | `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` | 54.0697851180 | 54.0697851300 | MATCH | approved on appeal |
+| 4 | `0x6c92cd38db2074379aa6e68257f28207a8f7585e` | 44.2929241088 | 44.2929241100 | MATCH | withheld (contract) |
+| 5 | `0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5` | 37.0960444279 | 37.0960444300 | MATCH | owed (EOA) |
+| 6 | `0x6cc243d26eb6b79b70d94af4fd6f145b297e728b` | 11.2603274252 | 11.2603274300 | MATCH | withheld (contract) |
+| 7 | `0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab` | 7.4157890633 | 7.4157890650 | MATCH | owed (EOA) |
+| 8 | `0x5cede91b3c5783d093b2f6c29cb2571a11204b27` | 5.8856395463 | 5.8856395470 | MATCH | withheld (contract) |
+| 9 | `0x669173f1505025bc31fc7245fe4565659ca0e6e0` | 2.7977259651 | 2.7977259650 | MATCH | withheld (contract) |
+| 10 | `0x2935dd2b83dfae2d038b7fb0b9d62d02a78d1707` | 2.7740085568 | 2.7740085570 | MATCH | withheld (contract) |
+| 11 | `0xb29730e5dbeeb428b7b723a8a51d722a08872d9a` | 2.1000893747 | 2.1000893750 | MATCH | owed (EOA) |
+| 12 | `0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2` | 1.9111633806 | 1.9111633810 | MATCH | owed (EOA) |
+| 13 | `0xa85cd6fe2f9e3ddc3f635f66a2773f71cfafac4d` | 1.6908580621 | 1.6908580620 | MATCH | owed (EOA) |
+| 14 | `0xfbfa537dde869b0c4738ef98fd9a652c7bf0efbc` | 1.3715832031 | 1.3715832030 | MATCH | withheld (contract) |
+| 15 | `0x342686053986b43cf852b94ca5afc46151296685` | 1.2276616967 | 1.2276616970 | MATCH | withheld (contract) |
+| 16 | `0x9a982dfcd22159a059114eca54b5abaabdd627b4` | 0.4683917618 | 0.4683917619 | MATCH | approved on appeal |
+| 17 | `0x318e706186a91ee084052789b5176ffb63135a21` | 0.2129984624 | 0.2129984625 | MATCH | owed (EOA) |
+| 18 | `0xeef25a4b78fef3e5daf6fb0a2f12e36ea0828f96` | 0.1776322039 | 0.1776322039 | MATCH | withheld (contract) |
+| 19 | `0x5e1b601245b942d99aa924d39e0fbec1786e2170` | 0.1060534396 | 0.1060534396 | MATCH | owed (EOA) |
+| 20 | `0x892843df4fa30ee38b38542f2050690403e47a0e` | 0.0254935472 | 0.0254935472 | MATCH | withheld (contract) |
+| 21 | `0xe7aaf0d67d89c253d5c00ffa3d85e7f1a6d235cf` | 0.0210918995 | 0.0210918995 | MATCH | owed (EOA) |
+| 22 | `0xe0eb3075c2cbc4c4807a5802da45b1dbc7b955d1` | 0.0148730337 | 0.0148730337 | MATCH | owed (EOA) |
+| 23 | `0xc8cf295c4e084d08d3db7702aca33450ad652eb8` | 0.0051849627 | 0.0051849627 | MATCH | withheld (contract) |
+| 24 | `0x1fc623b96c8024067142ec9c15d669e5c99c5e9d` | 0.0049785979 | 0.0049785979 | MATCH | withheld (contract) |
+| 25 | `0xde89be395b57d07741004ed0be3174f3027fd44a` | 0.0035774456 | 0.0035774456 | MATCH | withheld (contract) |
+| 26 | `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` | 0.0028166990 | 0.0028166990 | MATCH | withheld (contract) |
+| 27 | `0x3aac936216a43d4195791819ecc4975ba8fb6c72` | 0.0017624899 | 0.0017624899 | MATCH | withheld (contract) |
+| 28 | `0x7f689846082b2b086fd9a899c61c16e9d0f6c31f` | 0.0015042941 | 0.0015042941 | MATCH | owed (EOA) |
+| 29 | `0x6b803f020cb302db766c5a276e935cca01de4e4a` | 0.0011482732 | 0.0011482732 | MATCH | withheld (contract) |
+| 30 | `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` | 0.0004726261 | 0.0004726262 | MATCH | approved on appeal |
+| 31 | `0xb27dd61b74e49d9707ddb7ea4a4baf03734dd94b` | 0.0004469830 | 0.0004469830 | MATCH | withheld (contract) |
+| 32 | `0xdb306e5c24cd28a02b50c6f893d46a3572835195` | 0.0002980248 | 0.0002980248 | MATCH | owed (EOA) |
+| 33 | `0xf07e4924115e2b786a797b2b9545472324ee5b05` | 0.0001603174 | 0.0001603201 | within 0.01% | withheld (contract) |
+| 34 | `0x7f821b5058c362088c88952fd7735a6965e0bc98` | 0.0001392513 | 0.0001392513 | MATCH | withheld (contract) |
+| 35 | `0x1570c1a39779cd31906a2ba854738b7d58fdb367` | 0.0000373356 | 0.0000373370 | within 0.01% | owed (EOA) |
 
-Real appeals on canonical: {{APPEALS}}
+Real appeals on canonical: `0x4f962bb0…` eligible under [E4]; `0xf82d8c60…` eligible under [E4]; `0x9a982dfc…` eligible under [E4]; `0x681dc889…` not eligible under [X1]; `0xbe6e072a…` eligible under [E4]. The Safe (11 owners, threshold 2) was found NOT_ELIGIBLE under [X2] twice on the demo contract.
 
 The demo contract runs every other path on chain: a NOT_ELIGIBLE Safe (11 owners, threshold 2) run twice, the eligible
 DSProxy case run again, a prompt-injection appeal, a duplicate in another spelling, a real out-of-range liquidation, an
@@ -140,11 +176,15 @@ borrower withdrawing its own refund on a clearly labelled synthetic test chain (
   (`stEthPerToken` − capped rate = 0.034902) is 0.26% smaller. A sponsor using MakeWhole would publish its parameter up front.
 - **RPC trust.** Validators trust the frozen endpoints. Old receipts are served keyless only by dRPC (Blockscout's eth-rpc
   rate-limits five validators at once; publicnode has pruned them), so in practice one provider answers first.
-- **`owner()` is read at `latest`**, not at the liquidation block, and it is the only beneficiary view. 19 contract borrowers
+- **`owner()` is read at `latest`**, not at the liquidation block, and it is the only beneficiary view. 17 of the 22 contract borrowers
   (EIP-1167 clones, proxies, one Safe) have no `owner()` and stay withheld; their reserve returns to the sponsor.
-- **One semantic question goes to a model.** Two runs of the same Safe appeal both said NOT_ELIGIBLE; the clause they cited
-  can differ between X1 and X2 (both exclusions). A real pooled vault with an EOA admin is the case to watch.
-- **Studio Dev transfers.** Studio queues `emit_transfer`; `get_ledger().on_chain_balance_wei` shows what the chain holds.
+- **One semantic question goes to a model.** Two runs of the same Safe appeal agreed (NOT_ELIGIBLE, [X2]), and
+  the DSProxy case agreed across three runs (ELIGIBLE, [E4], same payee). Validators must agree on the clause id too, so a
+  case on the X1/X2 boundary can fail to reach consensus; the stake is then never taken. A real pooled vault with an EOA admin is the case to watch.
+- **Studio Dev does not deliver value transfers.** `withdraw()` zeroes the balance and posts an `emit_transfer` message
+  (`on: finalized`); the demo's test borrower withdrew 0.0396 GEN in a FINALIZED transaction carrying that message, but
+  Studio did not execute it, so the wallet was not credited. The contract's books are right; `get_ledger()` reports
+  `on_chain_balance_wei` next to them, and the gap equals the undelivered withdrawals (1.799 GEN on the demo).
 - **Decoder scope.** The contract decodes Aave V3 `LiquidationCall` only; other events need a new formula enum and decoder.
 
 ## Repository
