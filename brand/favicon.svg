@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 32 32">
+  <title>MakeWhole</title>
+  <rect x="1" y="1" width="30" height="30" rx="6" fill="#15233d"/>
+  <path d="M7 12.5h7.5M19.5 12.5H25" stroke="#f6f4ee" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M15.5 9.5l3 6" stroke="#e2877d" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M7 20.5h18" stroke="#6cc49b" stroke-width="2.6" stroke-linecap="round"/>
+</svg>

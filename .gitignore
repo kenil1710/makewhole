@@ -14,3 +14,5 @@ frontend/.env.local
 test/.seed-secrets.json
 .seed-state.json
 .canonical-state.json
+tools/shots/node_modules/
+frontend/.env.local
