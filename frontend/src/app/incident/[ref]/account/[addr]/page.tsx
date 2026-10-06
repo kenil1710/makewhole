@@ -33,7 +33,7 @@ async function Liquidation({ c, formulaParam, bonusBps, rate, isAave, base }: { 
     <article className="story sheet">
       <header className="story-head">
         <h3>Liquidated in block <a href={ethblock(c.block)} target="_blank" rel="noreferrer" className="num">{c.block.toLocaleString("en-US")}</a></h3>
-        <span className="small muted">{POOL_NAMES[c.pool] ?? "pool"} · log {c.log_index} · <Link href={`${base}/claim/${c.claim_id}`}>claim #{c.claim_id}</Link></span>
+        <span className="small muted">{POOL_NAMES[c.pool] ?? "pool"} · log {c.log_index} · <Link prefetch={false} href={`${base}/claim/${c.claim_id}`}>claim #{c.claim_id}</Link></span>
       </header>
       <dl className="story-grid">
         <div><dt>Transaction</dt><dd><Hash value={c.tx_hash} href={ethtx(c.tx_hash)} label="Ethereum transaction" /></dd></div>
@@ -79,10 +79,10 @@ export default async function AccountPage({ params }: { params: Promise<{ ref: s
     <div className="wrap">
       <div className="record" style={{ paddingTop: 40 }}>
         <div>
-          <p className="small"><Link href={base}>← {inc.title}</Link></p>
+          <p className="small"><Link prefetch={false} href={base}>← {inc.title}</Link></p>
           <h1 style={{ marginTop: 12 }}><span className="mono" style={{ fontSize: "0.62em", overflowWrap: "anywhere" }}>{a}</span></h1>
           {acc.claims === 0 ? (
-            <p className="lede" style={{ marginTop: 16 }}>No liquidation of this account has been claimed in this incident. If it was liquidated in the covered blocks, <Link href={`/file?incident=${ref}`}>file the claim</Link> — anyone can.</p>
+            <p className="lede" style={{ marginTop: 16 }}>No liquidation of this account has been claimed in this incident. If it was liquidated in the covered blocks, <Link prefetch={false} href={`/file?incident=${ref}`}>file the claim</Link> — anyone can.</p>
           ) : (
             <p className="lede" style={{ marginTop: 16 }}>
               Liquidated {claims.length === 1 ? "once" : `${claims.length} times`} while the cap was in force. Owed {fixed(acc.owed_src, 6)} ETH
@@ -128,13 +128,13 @@ export default async function AccountPage({ params }: { params: Promise<{ ref: s
         <section className="section" aria-labelledby="pay">
           <h2 id="pay">Who gets paid</h2>
           {myAppeals.length === 0 ? (
-            <p className="section-note">Nobody has appealed yet. {claims.filter((c) => c.status === "EXCLUDED_CONTRACT").map((c) => <Link key={c.claim_id} href={`${base}/claim/${c.claim_id}`}>Appeal claim #{c.claim_id}</Link>)}</p>
+            <p className="section-note">Nobody has appealed yet. {claims.filter((c) => c.status === "EXCLUDED_CONTRACT").map((c) => <Link prefetch={false} key={c.claim_id} href={`${base}/claim/${c.claim_id}`}>Appeal claim #{c.claim_id}</Link>)}</p>
           ) : (
             <ul className="plainlist">
               {myAppeals.map((x) => (
                 <li key={x.appeal_id}>
                   Appeal #{x.appeal_id}: <b>{x.decision === "ELIGIBLE" ? "eligible" : x.decision === "NOT_ELIGIBLE" ? "not eligible" : "inconclusive"}</b>
-                  {x.clause_id && <> under <Link href={`${base}/claim/${x.claim_id}?appeal=${x.appeal_id}#clause-${x.clause_id}`} className="mono">[{x.clause_id}]</Link></>}
+                  {x.clause_id && <> under <Link prefetch={false} href={`${base}/claim/${x.claim_id}?appeal=${x.appeal_id}#clause-${x.clause_id}`} className="mono">[{x.clause_id}]</Link></>}
                   {x.beneficiary && <> — paid to <span className="mono">{short(x.beneficiary)}</span>, confirmed by calling <span className="mono">{x.view}</span> on Ethereum</>}.
                 </li>
               ))}

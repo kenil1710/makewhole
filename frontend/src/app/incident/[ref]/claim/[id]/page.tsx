@@ -23,6 +23,11 @@ const CHECK: Record<string, string> = {
   OWNER_VIEW_UNAVAILABLE: "The contract has no owner() that returns an account, so no payee could be confirmed.",
   BENEFICIARY_IS_A_CONTRACT: "owner() returns another contract, which also has no key on GenLayer.",
   MODEL_UNAVAILABLE: "The model didn't answer. The stake was returned; the appeal can be sent again.",
+  WALLET_TYPE_NOT_RECOGNISED: "Code could not tell from the contract's bytecode what kind of wallet this is (it is not a DSProxy, a known single-owner account or a Safe). The stake was returned and the claim can be appealed again; if it is never approved, its reserve tops up other claims at close.",
+  MULTI_KEY_SAFE: "The contract is a Safe controlled by more than one key, read from its own getThreshold() and getOwners().",
+  MODEL_DID_NOT_CONFIRM: "Code decided, but the model reading the same evidence did not confirm it. The model can only confirm or withhold, so the appeal is inconclusive: stake returned, appeal again.",
+  CLAUSE_DOES_NOT_FIT_DECISION: "The model cited a clause that can't support that decision (only E4 for eligible, X1 or X2 for not). Stake returned.",
+  SOURCES_DISAGREE: "The Ethereum endpoints disagreed. Stake returned; appeal again.",
   NO_CODE_ANSWER: "Ethereum couldn't be read. The stake was returned; the appeal can be sent again.",
   NO_OWNER_ANSWER: "Ethereum couldn't be read. The stake was returned; the appeal can be sent again.",
 };
@@ -52,7 +57,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
     <div className="wrap">
       <div className="record" style={{ paddingTop: 40 }}>
         <div>
-          <p className="small"><Link href={base}>← {inc.title}</Link></p>
+          <p className="small"><Link prefetch={false} href={base}>← {inc.title}</Link></p>
           <h1 style={{ marginTop: 12 }}>Claim #{c.claim_id}</h1>
           <p style={{ marginTop: 14 }}><span className={`tag ${cls}`}>{label}</span></p>
           <p className="lede" style={{ marginTop: 12 }}>{explain}</p>
@@ -60,7 +65,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
         <aside className="margin">
           <dl>
             <div><dt>Liquidation</dt><dd><Hash value={c.tx_hash} href={ethtx(c.tx_hash)} label="Ethereum transaction" /><div className="small muted">log {c.log_index}, block {c.block.toLocaleString("en-US")}</div></dd></div>
-            <div><dt>Borrower</dt><dd><Link className="mono small" href={`${base}/account/${c.borrower}`}>{short(c.borrower)}</Link> <a className="small" href={ethaddr(c.borrower)} target="_blank" rel="noreferrer">Etherscan</a></dd></div>
+            <div><dt>Borrower</dt><dd><Link prefetch={false} className="mono small" href={`${base}/account/${c.borrower}`}>{short(c.borrower)}</Link> <a className="small" href={ethaddr(c.borrower)} target="_blank" rel="noreferrer">Etherscan</a></dd></div>
             <div><dt>Refund</dt><dd className="num">{fixed(c.owed_src, 9)} ETH<br />{fixed(c.owed_gen, 9)} GEN</dd></div>
             <div><dt>Filed by</dt><dd><Hash value={c.filer} href={gladdr(c.filer)} label="filer" /><div className="small muted">{when(c.filed_at)} — the filer is never the payee</div></dd></div>
           </dl>
@@ -75,6 +80,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
             <div><dt>Clause relied on</dt><dd>{shown.clause_id ? <a href={`#clause-${shown.clause_id}`} className="mono">[{shown.clause_id}]</a> : "—"}</dd></div>
             <div><dt>Payee</dt><dd>{shown.beneficiary ? <Hash value={shown.beneficiary} href={ethaddr(shown.beneficiary)} label="payee" /> : "—"}</dd></div>
             <div><dt>Proven by</dt><dd className="mono">{shown.view || "—"}</dd></div>
+            <div><dt>Wallet type (read by code)</dt><dd>{shown.wallet_type ? (shown.wallet_type === "UNRECOGNISED" ? "Not recognised" : shown.wallet_type) : "—"}</dd></div>
           </dl>
           {shown.clause_id && t.clauses[shown.clause_id] && (
             <blockquote className={`relied-quote${shown.decision === "ELIGIBLE" ? "" : " excl"}`}>
@@ -85,7 +91,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
           )}
           <p className="notice" style={{ marginTop: 16 }}>{CHECK[shown.code_check] ?? shown.code_check}</p>
           <p className="small muted">Stored on chain: the decision, the clause id, the sha256 of that clause as written in the terms (<span className="mono">{short(shown.clause_sha256 || "—", 8, 6)}</span>), the payee and the sha256 of the argument (<span className="mono">{short(shown.argument_sha256, 8, 6)}</span>). No text the model wrote is kept.</p>
-          {mine.length > 1 && <p className="small">Other appeals on this claim: {mine.filter((a) => a !== shown).map((a) => <Link key={a.appeal_id} href={`?appeal=${a.appeal_id}`} style={{ marginRight: 10 }}>#{a.appeal_id} ({a.decision.toLowerCase().replace("_", " ")})</Link>)}</p>}
+          {mine.length > 1 && <p className="small">Other appeals on this claim: {mine.filter((a) => a !== shown).map((a) => <Link prefetch={false} key={a.appeal_id} href={`?appeal=${a.appeal_id}`} style={{ marginRight: 10 }}>#{a.appeal_id} ({a.decision.toLowerCase().replace("_", " ")})</Link>)}</p>}
         </section>
       )}
 
@@ -94,7 +100,7 @@ export default async function ClaimPage({ params, searchParams }: { params: Prom
           <h2 id="ap">Appeal for a payee</h2>
           {open ? (
             <>
-              <p className="section-note">Validators read the contract&rsquo;s verified source and your evidence, and decide one question: is this a single person&rsquo;s wallet (clause E4) or a pooled vault or multi-key contract (X2)? Code then checks the clause is quoted exactly and confirms the payee by calling <span className="mono">owner()</span> on Ethereum.</p>
+              <p className="section-note">Every validator reads the contract&rsquo;s bytecode from at least two Ethereum endpoints. Code decides: a DSProxy or a known single-owner account whose <span className="mono">owner()</span> is an ordinary account is eligible under E4 and that account is paid; a Safe with several keys is not eligible under X2; no <span className="mono">owner()</span> is not eligible under X1; anything else is inconclusive and your stake comes back. The model reads your argument and evidence too, but can only confirm code&rsquo;s decision or withhold it.</p>
               <AppealForm address={DEPLOYMENTS[p.dep].address} claimId={c.claim_id} borrower={c.borrower} stake={inc.appeal_stake} proposalUrl={inc.proposal_url} base={base} />
             </>
           ) : <p className="notice">The appeal deadline has passed. This refund returns to the sponsor when the incident closes.</p>}

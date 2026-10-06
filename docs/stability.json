@@ -1,65 +1,78 @@
 {
  "run1_incident": {
   "incident_id": 5,
-  "tx": "0x64f86ceb4b3ecf8ebad02afddf7f2f1063823fb876e301d63331f4259670570c"
+  "tx": "0xa7bf3164090174bd35aa63a96d35f9897d5c59e67d5334205dc114831b8ba73d"
  },
  "run1_0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd": {
   "incident_id": 5,
   "claim_id": 14,
-  "tx": "0x38d4052d04d192701d49f80c3924a416fcac54f4bdfd7d9a321c25626fdc9cf3",
+  "tx": "0x70b2496d9523da4c4a424fe83918a98ca7dca7936a53fa2158edd7e5cedf4ee5",
   "status": "ACCEPTED",
   "result": {
    "appeal_id": 6,
-   "beneficiary": "0x49c8a4068c41095b34aa3323891b1e1111a1a816",
+   "beneficiary": "",
    "claim_id": 14,
-   "clause_id": "E4",
-   "code_check": "OK",
-   "decision": "ELIGIBLE",
+   "clause_id": "",
+   "code_check": "WALLET_TYPE_NOT_RECOGNISED",
+   "decision": "INCONCLUSIVE",
    "stake": "returned",
-   "status": "OK"
+   "status": "OK",
+   "wallet_type": "UNRECOGNISED"
   }
  },
  "run1_0xbe6e072a92224cdebcb5a171451a6ebd1e380e62": {
   "incident_id": 5,
   "claim_id": 15,
-  "tx": "0xb85445cd5c6ad10c13768abf7a1136b56bcc597822802c89daccfc84c4a87c2a",
+  "tx": "0x544a20df3b0fa8ff760d19bca077b8e733404f212a1e684634ad0d24faf1d758",
   "status": "ACCEPTED",
   "result": {
    "appeal_id": 7,
-   "beneficiary": "0xdcf972e3851620d1ba5201b923391b9f6a3ba528",
+   "beneficiary": "",
    "claim_id": 15,
-   "clause_id": "E4",
-   "code_check": "OK",
-   "decision": "ELIGIBLE",
+   "clause_id": "",
+   "code_check": "WALLET_TYPE_NOT_RECOGNISED",
+   "decision": "INCONCLUSIVE",
    "stake": "returned",
-   "status": "OK"
+   "status": "OK",
+   "wallet_type": "UNRECOGNISED"
   }
  },
  "run2_incident": {
   "incident_id": 6,
-  "tx": "0xedfb2c3c1f891269ff5e2ed15eee8e66e61fea996a6a08fe65dc2792e6456934"
+  "tx": "0x58e424a6fbe351c72dbb2dab7a9ac9b1206fdcc86acbef5bba0fa81cce227338"
  },
  "run2_0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd": {
   "incident_id": 6,
   "claim_id": 16,
-  "tx": "0x3a84a8e03626acba1b9827272fb94eba7d4c12a3b5714c82f61be45f99da1bee",
-  "status": "UNDETERMINED",
-  "result": null
+  "tx": "0xb71035ffd194815192d4e584bf699f7e19b2de5910483c83e6ebafd2e9709d22",
+  "status": "ACCEPTED",
+  "result": {
+   "appeal_id": 8,
+   "beneficiary": "",
+   "claim_id": 16,
+   "clause_id": "",
+   "code_check": "WALLET_TYPE_NOT_RECOGNISED",
+   "decision": "INCONCLUSIVE",
+   "stake": "returned",
+   "status": "OK",
+   "wallet_type": "UNRECOGNISED"
+  }
  },
  "run2_0xbe6e072a92224cdebcb5a171451a6ebd1e380e62": {
   "incident_id": 6,
   "claim_id": 17,
-  "tx": "0x30ecbc22dfc85a447a2acc6cd04cffcd52e61eeaabfe1c13341759349828ae05",
+  "tx": "0x4cfc6abf3589e027b941303d33f762b44c5d667f8cc445817c9e007fd6038e44",
   "status": "ACCEPTED",
   "result": {
-   "appeal_id": 8,
-   "beneficiary": "0xdcf972e3851620d1ba5201b923391b9f6a3ba528",
+   "appeal_id": 9,
+   "beneficiary": "",
    "claim_id": 17,
-   "clause_id": "E4",
-   "code_check": "OK",
-   "decision": "ELIGIBLE",
+   "clause_id": "",
+   "code_check": "WALLET_TYPE_NOT_RECOGNISED",
+   "decision": "INCONCLUSIVE",
    "stake": "returned",
-   "status": "OK"
+   "status": "OK",
+   "wallet_type": "UNRECOGNISED"
   }
  }
 }

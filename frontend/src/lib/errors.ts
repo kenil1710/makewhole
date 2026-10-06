@@ -1,5 +1,14 @@
 /** Contract refusals and wallet/network failures, in plain English. */
 const RULES: [RegExp, string][] = [
+  [/INCONCLUSIVE: fewer than two/i, "Fewer than two of the incident's Ethereum endpoints returned this liquidation identically (one may be rate-limited). Nothing was recorded; file it again — the deadline still applies."],
+  [/serve chain (\d+), not the incident's chain (\d+)/i, "The incident's endpoints serve chain $1, not chain $2. The claim can't be checked against the right chain."],
+  [/no single endpoint may decide/i, "List at least two RPC endpoints: no single endpoint may decide a claim."],
+  [/span <= 50000|block range must satisfy/i, "The block range must run forwards and cover at most 50,000 blocks."],
+  [/windows must be/i, "The claim and appeal windows are outside what this deployment allows (the canonical one needs at least 7 days each)."],
+  [/must contain clause \[(\w+)\]/i, "The terms need a clause starting with [$1]: appeals rest on it."],
+  [/terms_sha256 does not match/i, "The terms changed after their hash was computed. Reload and try again."],
+  [/send the pool with this call/i, "Fund the pool: send some GEN with the incident."],
+  [/may not contain <<< or >>>/i, "Arguments and links can't contain <<< or >>>."],
   [/already claim #(\d+)/i, "This liquidation has already been claimed (claim #$1). Each event is refunded once — open that claim instead."],
   [/claim window .* has closed/i, "The claim deadline for this incident has passed. Claims can no longer be filed."],
   [/appeal window has closed/i, "The appeal deadline for this incident has passed."],

@@ -1,0 +1,97 @@
+incident 1
+[1/49] 0x4f962bb0 ACCEPTED claim #1 22s
+[2/49] 0x4bacce55 ACCEPTED claim #2 23s
+[3/49] 0xf82d8c60 ACCEPTED claim #3 22s
+GenLayer RPC error (gen_call): Rate limit exceeded: 30 requests per minute
+  … find_claim attempt 1 hit the RPC rate limit, waiting 12s
+GenLayer RPC error (gen_call): Rate limit exceeded: 30 requests per minute
+  … find_claim attempt 2 hit the RPC rate limit, waiting 12s
+[4/49] 0x1e2799e0 ACCEPTED claim #4 40s
+[5/49] 0x6cc243d2 ACCEPTED claim #5 22s
+[6/49] 0x3ee505ba ACCEPTED claim #6 22s
+[7/49] 0x6c92cd38 ACCEPTED claim #7 16s
+[8/49] 0x718e7b7e ACCEPTED claim #8 15s
+[9/49] 0xfbfa537d ACCEPTED claim #9 22s
+GenLayer RPC error (eth_sendRawTransaction): NonceTooLow(expected=73,actual=72)
+[10/49] 0xb29730e5 UNSETTLED submit failed — Invalid parameters were provided to the RPC method.
+Double check you have provided the correct parameter 8s
+incident 1
+[11/49] 0x9a982dfc ACCEPTED claim #11 22s
+[12/49] 0x892843df ACCEPTED claim #12 15s
+[13/49] 0xe0eb3075 ACCEPTED claim #13 23s
+[14/49] 0x1fc623b9 ACCEPTED claim #14 17s
+[15/49] 0xc8cf295c ACCEPTED claim #15 23s
+[16/49] 0xde89be39 ACCEPTED claim #16 23s
+[17/49] 0x5e1b6012 ACCEPTED claim #17 23s
+[18/49] 0x3aac9362 ACCEPTED claim #18 16s
+[19/49] 0x7f689846 ACCEPTED claim #19 23s
+[20/49] 0x681dc889 ACCEPTED claim #20 24s
+[21/49] 0x6b803f02 ACCEPTED claim #21 24s
+[22/49] 0xe7aaf0d6 ACCEPTED claim #22 16s
+[23/49] 0x6c92cd38 ACCEPTED claim #23 23s
+[24/49] 0x5cede91b ACCEPTED claim #24 22s
+[25/49] 0x2935dd2b ACCEPTED claim #25 23s
+[26/49] 0x669173f1 ACCEPTED claim #26 16s
+[27/49] 0xa85cd6fe ACCEPTED claim #27 17s
+[28/49] 0xa85cd6fe ACCEPTED claim #28 24s
+[29/49] 0xa85cd6fe ACCEPTED claim #29 23s
+[30/49] 0xa85cd6fe ACCEPTED claim #30 23s
+[31/49] 0xa85cd6fe ACCEPTED claim #31 17s
+[32/49] 0x669173f1 ACCEPTED claim #32 23s
+[33/49] 0x34268605 ACCEPTED claim #33 23s
+[34/49] 0xa85cd6fe ACCEPTED claim #34 23s
+[35/49] 0xb29730e5 ACCEPTED claim #35 24s
+[36/49] 0xb29730e5 ACCEPTED claim #36 23s
+[37/49] 0xb29730e5 ACCEPTED claim #37 23s
+[38/49] 0x318e7061 ACCEPTED claim #38 23s
+[39/49] 0x318e7061 ACCEPTED claim #39 16s
+[40/49] 0xeef25a4b ACCEPTED claim #40 23s
+[41/49] 0x318e7061 ACCEPTED claim #41 18s
+[42/49] 0x5e1b6012 ACCEPTED claim #42 23s
+[43/49] 0x5e1b6012 ACCEPTED claim #43 16s
+[44/49] 0xf07e4924 ACCEPTED claim #44 23s
+[45/49] 0xbe6e072a ACCEPTED claim #45 16s
+[46/49] 0xb27dd61b ACCEPTED claim #46 26s
+[47/49] 0xdb306e5c ACCEPTED claim #47 17s
+[48/49] 0x1570c1a3 ACCEPTED claim #48 23s
+[49/49] 0x7f821b50 ACCEPTED claim #49 16s
+appeal claim #1 0x4f962bb0 ACCEPTED {"appeal_id":1,"beneficiary":"0x08d49c032f268d3ac4265d1909c28dfaab440040","claim_id":1,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK"} -> APPROVED_ON_APPEAL 44s
+appeal claim #3 0xf82d8c60 ACCEPTED {"appeal_id":2,"beneficiary":"0xf824a4b38bbb14f225e26ebac5fabae5362b3456","claim_id":3,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK"} -> APPROVED_ON_APPEAL 44s
+appeal claim #11 0x9a982dfc ACCEPTED {"appeal_id":3,"beneficiary":"0x6fa6e54eaa65f94a878b25b0bd79b5c418f84d69","claim_id":11,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK"} -> APPROVED_ON_APPEAL 76s
+appeal claim #20 0x681dc889 ACCEPTED {"appeal_id":4,"beneficiary":"0x49c8a4068c41095b34aa3323891b1e1111a1a816","claim_id":20,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK"} -> APPROVED_ON_APPEAL 37s
+appeal claim #45 0xbe6e072a ACCEPTED {"appeal_id":5,"beneficiary":"","claim_id":45,"clause_id":"X1","code_check":"OK","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK"} -> EXCLUDED_CONTRACT 82s
+{
+  accounts_found: 35,
+  claims: 49,
+  computed_total_src_wei: '512192859796503940665',
+  difference_ppm: '0',
+  difference_src_wei: '-28684909335',
+  published_accounts: 34,
+  published_total_src_wei: '512192859825188850000'
+}
+{
+  closed: false,
+  credited_wei: '0',
+  oversubscribed: false,
+  owed_accepted_wei: '4423619925963479514',
+  owed_total_wei: '5121928597965039379',
+  owed_withheld_wei: '698308672001559865',
+  pool_wei: '5141900000000000000',
+  ratio_den: '0',
+  ratio_num: '0',
+  returned_to_sponsor_wei: '0',
+  settled: false,
+  shortfall_wei: '0',
+  topped_up_wei: '0',
+  undistributed_wei: '5141900000000000000'
+}
+{
+  balance_wei: '5181900000000000000',
+  claimable_wei: '40000000000000000',
+  invariant: 'balance == open_stakes + claimable + undistributed',
+  invariant_holds: true,
+  on_chain_balance_wei: '5181900000000000000',
+  open_stakes_wei: '0',
+  undistributed_wei: '5141900000000000000',
+  withdrawn_wei: '0'
+}

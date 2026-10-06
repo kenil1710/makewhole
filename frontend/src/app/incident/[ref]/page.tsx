@@ -13,6 +13,8 @@ import { PoolMeter } from "@/components/PoolMeter";
 import { TermsDoc } from "@/components/Terms";
 import { AccountsTable } from "@/components/AccountsTable";
 import { ActionButton } from "@/components/ActionButton";
+import { TryIt } from "@/components/TryIt";
+import { plainName } from "@/lib/config";
 
 export const revalidate = 60;
 
@@ -52,7 +54,8 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
       <div className="record" style={{ paddingTop: 40 }}>
         <div>
           <p className="small muted" style={{ margin: "0 0 10px" }}>{dep.label} deployment · incident {inc.incident_id}{inc.chain_id !== 1 ? " · test chain" : ""}</p>
-          <h1>{inc.title}</h1>
+          <h1>{p.dep === "d" ? plainName({ dep: p.dep, id: p.id, title: inc.title }) : inc.title}</h1>
+          {p.dep === "d" && plainName({ dep: p.dep, id: p.id, title: inc.title }) !== inc.title && <p className="small muted" style={{ marginTop: 8 }}>{inc.title}</p>}
           {isAave && (
             <p className="lede" style={{ marginTop: 16 }}>
               Aave&rsquo;s wstETH price cap fell 2.84% below the real exchange rate. In the {new Set(claims.map((c) => c.block)).size} blocks that followed, {claims.length} liquidations
@@ -82,7 +85,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
       {!isAave && (
         <section className="section" aria-labelledby="rep">
           <h2 id="rep">Reproduction</h2>
-          <p className="section-note">Amounts are compared with the Aave DAO&rsquo;s payout only on <Link href="/incident/c-1">the canonical incident</Link>. This one is {p.dep === "d" ? "a demo of one path, on the demo deployment" : "not that incident"}, so no comparison is shown.</p>
+          <p className="section-note">Amounts are compared with the Aave DAO&rsquo;s payout only on <Link prefetch={false} href="/incident/c-1">the canonical incident</Link>. This one is {p.dep === "d" ? "a demo of one path, on the demo deployment" : "not that incident"}, so no comparison is shown.</p>
         </section>
       )}
       {isAave && (
@@ -103,6 +106,13 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
               <div><dt>Accounts</dt><dd>{rep.accounts_found} found on chain and paid by the AFC; the AIP said {rep.published_accounts}</dd></div>
             </dl>
           </div>
+        </section>
+      )}
+
+      {isAave && (
+        <section className="section" aria-labelledby="try">
+          <h2 id="try" className="sr-only">Try it yourself</h2>
+          <TryIt />
         </section>
       )}
 
@@ -138,7 +148,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
                 const [cls, label] = DECISION[a.decision];
                 return (
                   <tr key={a.appeal_id}>
-                    <td data-label="Claim"><Link href={`${base}/claim/${a.claim_id}`}>#{a.claim_id}</Link></td>
+                    <td data-label="Claim"><Link prefetch={false} href={`${base}/claim/${a.claim_id}`}>#{a.claim_id}</Link></td>
                     <td data-label="Account" className="mono">{c ? short(c.borrower) : "—"}</td>
                     <td data-label="Decision"><span className={`tag ${cls}`}>{label}</span></td>
                     <td data-label="Clause">{a.clause_id ? <a href={`${base}/claim/${a.claim_id}?appeal=${a.appeal_id}#clause-${a.clause_id}`} className="mono">{a.clause_id}</a> : <span className="small muted">{a.code_check.toLowerCase().replaceAll("_", " ")}</span>}</td>

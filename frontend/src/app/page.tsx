@@ -2,6 +2,7 @@ import Link from "next/link";
 import { incidentBundle } from "@/lib/bundle";
 import { daoPayouts } from "@/lib/dao";
 import { Marks } from "@/components/Marks";
+import { TryIt } from "@/components/TryIt";
 import { HOME_REF, AFC_TX, ethtx } from "@/lib/config";
 import { units } from "@/lib/format";
 
@@ -19,10 +20,10 @@ export default async function Home() {
     <div className="wrap">
       <section className="hero" aria-labelledby="h">
         <div>
-          <h1 id="h">35 people were wrongly liquidated by an oracle bug. Here&rsquo;s how each one gets paid back&nbsp;— proven from chain data.</h1>
+          <h1 id="h">35 accounts were wrongly liquidated by an oracle bug. Here&rsquo;s how each one gets paid back&nbsp;— proven from chain data.</h1>
           <p className="lede" style={{ marginTop: 20 }}>
             On 10 March 2026 a misconfigured price cap made Aave value wstETH 2.84% too low for 1,229 blocks. The DAO voted to refund the
-            people it liquidated, then paid them from a spreadsheet nobody could check. MakeWhole recomputes every refund from Ethereum itself.
+            accounts it liquidated, then paid all 35 in one transaction, with no published per-account formula. MakeWhole recomputes every refund from Ethereum itself.
           </p>
           <div className="actions">
             <Link className="btn" href={`/incident/${HOME_REF}`}>View the incident</Link>
@@ -63,6 +64,11 @@ export default async function Home() {
           </dl>
         </section>
       )}
+
+      <section className="section" aria-labelledby="try">
+        <h2 id="try" className="sr-only">Try it yourself</h2>
+        <TryIt />
+      </section>
 
       <section className="section" aria-labelledby="how">
         <h2 id="how">How a refund is made whole</h2>

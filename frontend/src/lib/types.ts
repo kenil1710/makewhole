@@ -19,7 +19,7 @@ export type Account = {
 export type Appeal = {
   appeal_id: number; claim_id: number; incident_id: number; appellant: string; stake: string;
   decision: "ELIGIBLE" | "NOT_ELIGIBLE" | "INCONCLUSIVE"; clause_id: string; clause_sha256: string; beneficiary: string;
-  view: string; code_check: string; argument_sha256: string; evidence_links: number; filed_at: number;
+  view: string; code_check: string; argument_sha256: string; evidence_links: number; filed_at: number; wallet_type?: string;
 };
 export type Pool = {
   pool_wei: string; owed_accepted_wei: string; owed_withheld_wei: string; owed_total_wei: string; oversubscribed: boolean;

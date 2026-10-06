@@ -10,7 +10,7 @@ DESC = {"MakeWhole": "MakeWhole — canonical (`CANONICAL`, windows ≥ 7 days; 
         "RecoveryLedger": "RecoveryLedger — read-only consumer of the canonical (no payable method, no transfer, no owner)"}
 out = ["# Addresses", "",
        "GenLayer **Studio Dev** — RPC `https://studio-dev.genlayer.com/api`, chain **61997**, explorer " + X + "/", "",
-       "## Current (v1.1, after attack round 1)", ""]
+       "## Current (v1.2, after the stability check)", ""]
 for k in ("MakeWhole", "MakeWholeDemo", "RecoveryLedger"):
     v = d[k]
     out += [f"### {DESC[k]}", "",
@@ -26,11 +26,12 @@ out += ["Copy-paste:", "", "```",
         f"Deployed with the throwaway test key `deployer` from `test/.accounts.json` (gitignored), `{d['MakeWhole']['deployer']}`. "
         "The bytes sent were `git show HEAD:<file>` (the deploy script refuses a dirty `contracts/`). There is no owner. "
         "Check that the chain holds exactly what HEAD holds: `node tools/verify_source.mjs`.", "",
-        "## Superseded (v1)", "",
-        "Still on chain, no longer used by the app. Replaced after an independent attack round — "
-        "[details](docs/superseded/v1/README.md).", "",
+        "## Superseded", "",
+        "Still on chain, no longer used by the app. v1 was replaced after an independent attack round "
+        "([details](docs/superseded/v1/README.md)); v1.1 after the stability check ([details](docs/superseded/v1.1/README.md)).", "",
         "| contract | address | replaced by |", "|---|---|---|"]
 for s in doc.get("superseded", []):
-    out.append(f"| {s['name']} (v1, commit `{s.get('commit','')}`) | `{s['address']}` | `{s['superseded_by']}` |")
+    ver = "v1.1" if s.get("commit", "").startswith("9340b6b") else "v1"
+    out.append(f"| {s['name']} ({ver}, commit `{s.get('commit','')}`) | `{s['address']}` | `{s['superseded_by']}` |")
 (ROOT / "ADDRESSES.md").write_text("\n".join(out) + "\n")
 print("wrote ADDRESSES.md")

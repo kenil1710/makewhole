@@ -1,92 +1,89 @@
-i1_create                          {"tx":"0x448a391e63835f6e242105aa4b2fd41a3aa02b16533cf55bd9f519833517a939","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791278988,"claim_end":1791278688,"incident_id":1,"pool_wei":"5131900000000000000","status":"OK","terms_sha256":"bbb6494ac79b10be27365123f3b0fd6c12d845a0b6be02c07333192ff4a
-i2_create                          {"tx":"0xb01a8c67982b5a98bcf74ef3c5ba6017dee5dddb10dfaa8fe289cf9b3a8a6a00","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791279903,"claim_end":1791279303,"incident_id":2,"pool_wei":"5131900000000000000","status":"OK","terms_sha256":"bbb6494ac79b10be27365123f3b0fd6c12d845a0b6be02c07333192ff4a
-GenLayer RPC error (eth_sendRawTransaction): Rate limit exceeded: 30 requests per minute
-  … create_incident attempt 1 hit the RPC rate limit, waiting 12s
-GenLayer RPC error (eth_sendRawTransaction): Rate limit exceeded: 30 requests per minute
-  … create_incident attempt 2 hit the RPC rate limit, waiting 12s
-i3_create                          {"tx":"0x750c243ae9daec4f1d0fd34dfff566d6c9d7b80aecc0807db17a003d45a4a91b","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791279352,"claim_end":1791279052,"incident_id":3,"pool_wei":"1000000000000000000","status":"OK","terms_sha256":"bbb6494ac79b10be27365123f3b0fd6c12d845a0b6be02c07333192ff4a
-i4_create                          {"tx":"0x8107eb879b8ad910fcfe16fd5cffde1f874606ec8e8fcf6726900f67a2e24ea3","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791279186,"claim_end":1791279066,"incident_id":4,"pool_wei":"1000000000000000000","status":"OK","terms_sha256":"11fc18e6e509b4c28626361c9b1a50a33c07372dfa6ea3738c04c5a7ea0
-i1_file_eoa                        {"tx":"0x33dcca1ac44a321def1b8617f84336e47fe70dfd2e49dc3572a1db65d94dd906","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","claim_id":1,"code_kind":"EOA","owed_gen_wei":"877714041173915609","owed_src_wei":"87771404117391560911","status":"OK"},"refusal"
-i1_file_dsproxy                    {"tx":"0xba931b8c5a488105c55eda378c813c95e49df0f33856f279c9194019fc396486","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f","claim_id":2,"code_kind":"CONTRACT","owed_gen_wei":"2494787941017015246","owed_src_wei":"249478794101701524600","status":"OK"},"r
-GenLayer RPC error (sim_estimateTransactionFees): Rate limit exceeded: 30 requests per minute
-  … appeal fee attempt 1 hit the RPC rate limit, waiting 12s
-i1_appeal_dsproxy                  {"tx":"0x9c8cf1f7b039fe7a2dfb88cb8892a8691c123442e236699dc3218ecabbabf321","status":"ACCEPTED","ok":true,"result":{"appeal_id":1,"beneficiary":"0x08d49c032f268d3ac4265d1909c28dfaab440040","claim_id":2,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK"},"refusal
-i2_file_safe                       {"tx":"0xf9d3ce0950dbd19b38ca211e4870ec944afe29e98725487da4cacc5fc1ef44fa","status":"ACCEPTED","ok":true,"result":{"borrower":"0xf07e4924115e2b786a797b2b9545472324ee5b05","claim_id":3,"code_kind":"CONTRACT","owed_gen_wei":"1603173533638","owed_src_wei":"160317353363809","status":"OK"},"refusal":null
-i2_file_dsproxy                    {"tx":"0x7a73cfd0d5127b69926050375c5b403c6981a9ec2793faf5afb24d30961f4a94","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f","claim_id":4,"code_kind":"CONTRACT","owed_gen_wei":"2494787941017015246","owed_src_wei":"249478794101701524600","status":"OK"},"r
-i2_file_eoa                        {"tx":"0x424d5bead174e381155695a7db514b9e572ad1d6729322e927575b4c78fc8526","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","claim_id":5,"code_kind":"EOA","owed_gen_wei":"877714041173915609","owed_src_wei":"87771404117391560911","status":"OK"},"refusal"
+i1_create                          {"tx":"0x341778e4f29bd937319108a6ccaa76241cb3594459a3fbdfe44976017f2d5e25","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791283261,"claim_end":1791282961,"incident_id":1,"pool_wei":"5131900000000000000","status":"OK","terms_sha256":"bbb6494ac79b10be27365123f3b0fd6c12d845a0b6be02c07333192ff4a
+i2_create                          {"tx":"0xa522e7a7ec65f580960680c6653b99683798d081469c2215c5d840fb61291859","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791284175,"claim_end":1791283575,"incident_id":2,"pool_wei":"5131900000000000000","status":"OK","terms_sha256":"bbb6494ac79b10be27365123f3b0fd6c12d845a0b6be02c07333192ff4a
+i3_create                          {"tx":"0xbf4d060878d13b50e0868f19aa9b5a9e4707e2c598785301de567bb0aa221f16","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791283589,"claim_end":1791283289,"incident_id":3,"pool_wei":"1000000000000000000","status":"OK","terms_sha256":"bbb6494ac79b10be27365123f3b0fd6c12d845a0b6be02c07333192ff4a
+i4_create                          {"tx":"0x2ba7c563db004f6c9f879aa6662a68c0c55c16e21909d67a445d419b740586c6","status":"ACCEPTED","ok":true,"result":{"appeal_end":1791283424,"claim_end":1791283304,"incident_id":4,"pool_wei":"1000000000000000000","status":"OK","terms_sha256":"11fc18e6e509b4c28626361c9b1a50a33c07372dfa6ea3738c04c5a7ea0
+i1_file_eoa                        {"tx":"0xce8d08c6e2fe8a972114fd7cd558f8dfd49d4fab8ac9fd56d6599f2e530f9ad2","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","claim_id":1,"code_kind":"EOA","owed_gen_wei":"877714041173915609","owed_src_wei":"87771404117391560911","status":"OK"},"refusal"
+i1_file_dsproxy                    {"tx":"0x7ee6a8f4a94a7cdf2d1e0cc33af5ff5c3ea1a654dd16a20c74ca69352b672143","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f","claim_id":2,"code_kind":"CONTRACT","owed_gen_wei":"2494787941017015246","owed_src_wei":"249478794101701524600","status":"OK"},"r
+i1_appeal_dsproxy                  {"tx":"0x3609550d8fcbd29b51e2ba0fc5fcae463bf42344b61bedfeeb7a6dcc4d8891ca","status":"ACCEPTED","ok":true,"result":{"appeal_id":1,"beneficiary":"0x08d49c032f268d3ac4265d1909c28dfaab440040","claim_id":2,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK","wallet_t
+i2_file_safe                       {"tx":"0x35ce812a907ada1cbe43acc42013e9ce65f18e01e8a8c64732c4b2040119c846","status":"ACCEPTED","ok":true,"result":{"borrower":"0xf07e4924115e2b786a797b2b9545472324ee5b05","claim_id":3,"code_kind":"CONTRACT","owed_gen_wei":"1603173533638","owed_src_wei":"160317353363809","status":"OK"},"refusal":null
+i2_file_dsproxy                    {"tx":"0xffbae58d8282b1ff7aa1b39de9502f03362b2cbc50247fd4dd796e1fd36289b4","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f","claim_id":4,"code_kind":"CONTRACT","owed_gen_wei":"2494787941017015246","owed_src_wei":"249478794101701524600","status":"OK"},"r
+i2_file_eoa                        {"tx":"0x90d166f5962ec0ae7abab74d377f3321acb6bfac4b2bba18b96ae5e5029634a0","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","claim_id":5,"code_kind":"EOA","owed_gen_wei":"877714041173915609","owed_src_wei":"87771404117391560911","status":"OK"},"refusal"
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for file_claim (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i2_duplicate_refused               {"tx":"0xb4cdb5cc13cf0506e960d46d5f41ddc5554f76ec73a0afc796ba1bc33b0e3ee1","status":"ACCEPTED","ok":false,"result":null,"refusal":"this liquidation is already claim #5","done":true,"seconds":11}
+i2_duplicate_refused               {"tx":"0x9b9209270ff28f773750ebb8c7ecb80f88a7c8c491c643750320d9c9423a4933","status":"ACCEPTED","ok":false,"result":null,"refusal":"this liquidation is already claim #5","done":true,"seconds":11}
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for file_claim (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i2_out_of_range_refused            {"tx":"0x7caeaf784c21860b7d2ffc880602e79b1672aacbb3f7fbaa8757d33488cb1a31","status":"ACCEPTED","ok":false,"result":null,"refusal":"block 24613580 is outside the incident range 24626860-24628088","done":true,"seconds":19}
-i2_appeal_safe_run1                {"tx":"0xe4d286db31303a5453da4f9e6f7ac4912b5446288e8bb84244e439e9ca9ba1de","status":"ACCEPTED","ok":true,"result":{"appeal_id":2,"beneficiary":"","claim_id":3,"clause_id":"X2","code_check":"OK","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK"},"refusal":null,"claim_after":"EXC
-i2_appeal_safe_run2                {"tx":"0x5e5fa38b83c9bdc7cbeeb7538730260be4e0a3dafdd6b7c70ed6d0b796b6bc83","status":"ACCEPTED","ok":true,"result":{"appeal_id":3,"beneficiary":"","claim_id":3,"clause_id":"X2","code_check":"OK","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK"},"refusal":null,"claim_after":"EXC
-i2_appeal_dsproxy                  {"tx":"0x085e1e875a514d70a9e03b2769b5fbbbddc3f1ef3bb874753a9533750c84a99f","status":"ACCEPTED","ok":true,"result":{"appeal_id":4,"beneficiary":"0x08d49c032f268d3ac4265d1909c28dfaab440040","claim_id":4,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK"},"refusal
-i2_file_clone                      {"tx":"0x447d0ea289e30dbd42a643a3ab7271f166c017214b6f7023cb5ffb7c5706ed4c","status":"ACCEPTED","ok":true,"result":{"borrower":"0x3aac936216a43d4195791819ecc4975ba8fb6c72","claim_id":6,"code_kind":"CONTRACT","owed_gen_wei":"17624899120081","owed_src_wei":"1762489912008138","status":"OK"},"refusal":nu
-i2_appeal_injection                {"tx":"0xbd657d4c575d84b24085253155b38fe341d58177389d9c6f7e0fcaa4b4dbfeaa","status":"ACCEPTED","ok":true,"result":{"appeal_id":5,"beneficiary":"","claim_id":6,"clause_id":"X1","code_check":"OK","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK"},"refusal":null,"claim_after":"EXC
-i3_file_0x4bacce55                 {"tx":"0x507831d1c957c320f80e362b43d9e63e6face7953a4a7eb3f3825994860f77e5","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","claim_id":7,"code_kind":"EOA","owed_gen_wei":"877714041173915609","owed_src_wei":"87771404117391560911","status":"OK"},"refusal"
-i3_file_0x1e2799e0                 {"tx":"0xe29778ed8039a3cab8f0924ca158caae278f1e3b8477dde2bf74e21836f07232","status":"ACCEPTED","ok":true,"result":{"borrower":"0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5","claim_id":8,"code_kind":"EOA","owed_gen_wei":"370960444279445638","owed_src_wei":"37096044427944563895","status":"OK"},"refusal"
-i3_file_0x3ee505ba                 {"tx":"0x2e8dffb9da22af9b5e13e892fffb8b6a5ae3c2de25739b68eafb6ad4e898e022","status":"ACCEPTED","ok":true,"result":{"borrower":"0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab","claim_id":9,"code_kind":"EOA","owed_gen_wei":"74157890633479479","owed_src_wei":"7415789063347947967","status":"OK"},"refusal":n
-i3_file_0x718e7b7e                 {"tx":"0x0fd86ac5569732d5ae759e2b8b5f9d32850f8c7afabb237fc16575bd65327726","status":"ACCEPTED","ok":true,"result":{"borrower":"0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2","claim_id":10,"code_kind":"EOA","owed_gen_wei":"19111633805819072","owed_src_wei":"1911163380581907280","status":"OK"},"refusal":
-i3_file_0x5cede91b                 {"tx":"0x3f6081f5d7e0bb9ed98bf4233da96fb7eb9de33af0387713431d153ef16544ac","status":"ACCEPTED","ok":true,"result":{"borrower":"0x5cede91b3c5783d093b2f6c29cb2571a11204b27","claim_id":11,"code_kind":"CONTRACT","owed_gen_wei":"58856395463189586","owed_src_wei":"5885639546318958636","status":"OK"},"refu
-i4_file_b1_by_b2                   {"tx":"0x7121a9f3df8d4c0a6cf6a6514703268a68edb3523ec7be93623baab638b8d323","status":"ACCEPTED","ok":true,"result":{"borrower":"0x45e2e2b04905e7499801fa41e29bb07319dee276","claim_id":12,"code_kind":"EOA","owed_gen_wei":"39571133176705970","owed_src_wei":"3957113317670597093","status":"OK"},"refusal":
-i4_file_b2                         {"tx":"0x5f2157026b535a62c4e343b9258be76b2abf74eb4f28cfab4fc8119b8ca0eaec","status":"ACCEPTED","ok":true,"result":{"borrower":"0x92858407f43512714a65ac5d90128bdf153d61e4","claim_id":13,"code_kind":"EOA","owed_gen_wei":"118713399530117913","owed_src_wei":"11871339953011791314","status":"OK"},"refusal
-waiting 698s for incident 1 claim window
-i1_late_claim_refused              {"tx":"0xf21abd00b6599df9e326060a91f227abf261a71234c824b11636931199bca21b","status":"ACCEPTED","ok":false,"result":null,"refusal":"the claim window for incident #1 has closed","done":true,"seconds":14}
+i2_out_of_range_refused            {"tx":"0x545307123cbef1d3ee37245d5dbfba0493535cf542e7dff09838cb71e6f5d17b","status":"ACCEPTED","ok":false,"result":null,"refusal":"block 24613580 is outside the incident range 24626860-24628088","done":true,"seconds":20}
+i2_appeal_safe_run1                {"tx":"0x2df2ef87de686db23118d10d4974ed1415adec17c3565dffbcf96166edc6e916","status":"ACCEPTED","ok":true,"result":{"appeal_id":2,"beneficiary":"","claim_id":3,"clause_id":"X2","code_check":"MULTI_KEY_SAFE","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK","wallet_type":"Safe v1
+i2_appeal_safe_run2                {"tx":"0xc1cfb358035e855e20fe03a629948e29836e3f4fe100af7fd3e7353408827f0a","status":"ACCEPTED","ok":true,"result":{"appeal_id":3,"beneficiary":"","claim_id":3,"clause_id":"X2","code_check":"MULTI_KEY_SAFE","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK","wallet_type":"Safe v1
+i2_appeal_dsproxy                  {"tx":"0x0615eaf95e98b83a9e676989b9d4cbf84609826ae711e3a61672af93ee30f605","status":"ACCEPTED","ok":true,"result":{"appeal_id":4,"beneficiary":"0x08d49c032f268d3ac4265d1909c28dfaab440040","claim_id":4,"clause_id":"E4","code_check":"OK","decision":"ELIGIBLE","stake":"returned","status":"OK","wallet_t
+i2_file_clone                      {"tx":"0x647e31e78166c4ece26cd8f5557da3b588cd59b705059aba53431b0c4450d4ba","status":"ACCEPTED","ok":true,"result":{"borrower":"0x3aac936216a43d4195791819ecc4975ba8fb6c72","claim_id":6,"code_kind":"CONTRACT","owed_gen_wei":"17624899120081","owed_src_wei":"1762489912008138","status":"OK"},"refusal":nu
+i2_appeal_injection                {"tx":"0xd165aa1e09ee12480c8badcd058055f06873b61bf595a02ecbabebc137d4cb0e","status":"ACCEPTED","ok":true,"result":{"appeal_id":5,"beneficiary":"","claim_id":6,"clause_id":"X1","code_check":"OWNER_VIEW_UNAVAILABLE","decision":"NOT_ELIGIBLE","stake":"forfeited to the pool","status":"OK","wallet_type":
+i3_file_0x4bacce55                 {"tx":"0x2163e5fa5c33124f266aec543d9625ed66bd21f06381d8779a40ca231e0ec4a7","status":"ACCEPTED","ok":true,"result":{"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","claim_id":7,"code_kind":"EOA","owed_gen_wei":"877714041173915609","owed_src_wei":"87771404117391560911","status":"OK"},"refusal"
+i3_file_0x1e2799e0                 {"tx":"0xf90b4845947e9d74e335c6d46e1f9b61efd59a51056fe5d8a409af47168f6e23","status":"ACCEPTED","ok":true,"result":{"borrower":"0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5","claim_id":8,"code_kind":"EOA","owed_gen_wei":"370960444279445638","owed_src_wei":"37096044427944563895","status":"OK"},"refusal"
+i3_file_0x3ee505ba                 {"tx":"0x7dfcd269959988b98ee743263d7cac0b7f6c6df722ea5c37026ab3af8a605456","status":"ACCEPTED","ok":true,"result":{"borrower":"0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab","claim_id":9,"code_kind":"EOA","owed_gen_wei":"74157890633479479","owed_src_wei":"7415789063347947967","status":"OK"},"refusal":n
+i3_file_0x718e7b7e                 {"tx":"0xc1582280607e17bdc4095070d101110097de429ce2f7b86856e8bd2b02bd833f","status":"ACCEPTED","ok":true,"result":{"borrower":"0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2","claim_id":10,"code_kind":"EOA","owed_gen_wei":"19111633805819072","owed_src_wei":"1911163380581907280","status":"OK"},"refusal":
+i3_file_0x5cede91b                 {"tx":"0x5e622718dd0d38aead0910f4f640c9f69fbbd725dac47b64ec18771e977f3cb4","status":"ACCEPTED","ok":true,"result":{"borrower":"0x5cede91b3c5783d093b2f6c29cb2571a11204b27","claim_id":11,"code_kind":"CONTRACT","owed_gen_wei":"58856395463189586","owed_src_wei":"5885639546318958636","status":"OK"},"refu
+i4_file_b1_by_b2                   {"tx":"0x87a2a4d125e697cc57cbdb7753742743dd6cc7304390831116a61ace56f6d1e8","status":"ACCEPTED","ok":true,"result":{"borrower":"0x45e2e2b04905e7499801fa41e29bb07319dee276","claim_id":12,"code_kind":"EOA","owed_gen_wei":"39571133176705970","owed_src_wei":"3957113317670597093","status":"OK"},"refusal":
+i4_file_b2                         {"tx":"0x3307013a200fbf5a938397c7ee31dd42fa43866e9468d0468729097049fe95ef","status":"ACCEPTED","ok":true,"result":{"borrower":"0x92858407f43512714a65ac5d90128bdf153d61e4","claim_id":13,"code_kind":"EOA","owed_gen_wei":"118713399530117913","owed_src_wei":"11871339953011791314","status":"OK"},"refusal
+waiting 599s for incident 1 claim window
+GenLayer RPC error (gen_call): Rate limit exceeded: 30 requests per minute
+  … get_incident attempt 1 hit the RPC rate limit, waiting 12s
+GenLayer RPC error (eth_sendRawTransaction): NonceTooLow(expected=165,actual=164)
+i1_late_claim_refused              {"tx":null,"status":"UNSETTLED","ok":false,"result":null,"refusal":"submit failed — Invalid parameters were provided to the RPC method.\nDouble check you have provided the correct parameters.\n\nDetails: NonceTooLow(expected=165,actual=164)\nVersion: viem@2.57.3","done":true,"seconds":8}
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for settle (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i1_settle                          {"tx":"0x59dc3b4ef771f983b78c0a0f836e2dde8b48b7063b46b2c39c66c559d3909f82","status":"ACCEPTED","ok":true,"result":{"claims":2,"credited_wei":"3372501982190930855","done":true,"incident_id":1,"ratio":"1/1","settled_claims":2,"status":"OK"},"refusal":null,"calls":1,"pool":{"closed":false,"credited_wei
-waiting 334s for incident 3 claim window
+i1_settle                          {"tx":"0x7f7f86712f60a78ea90f8d37ecade82080707276e008ca9b6f138d40ca621357","status":"ACCEPTED","ok":true,"result":{"claims":2,"credited_wei":"3372501982190930855","done":true,"incident_id":1,"ratio":"1/1","settled_claims":2,"status":"OK"},"refusal":null,"calls":1,"pool":{"closed":false,"credited_wei
+waiting 293s for incident 3 claim window
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for settle (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i3_settle_pro_rata                 {"tx":"0xf13a323d9d88ac9fdbbd17becd36c1dc89fdc411acd27168d024e662df788e8b","status":"ACCEPTED","ok":true,"result":{"claims":5,"credited_wei":"957983738983686168","done":true,"incident_id":3,"ratio":"1000000000000000000/1400800405355849384","settled_claims":5,"status":"OK"},"refusal":null,"calls":1,"
+i3_settle_pro_rata                 {"tx":"0xa232864c282bd63fa7d6a6571d616d26858a94c6eeb68970df7951a4518d6497","status":"ACCEPTED","ok":true,"result":{"claims":5,"credited_wei":"957983738983686168","done":true,"incident_id":3,"ratio":"1000000000000000000/1400800405355849384","settled_claims":5,"status":"OK"},"refusal":null,"calls":1,"
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for settle (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i4_settle                          {"tx":"0xc9fe9692abd27544727f2ec5785a31bd5b1c313d54f7b8bd53382b2212031ad1","status":"ACCEPTED","ok":true,"result":{"claims":2,"credited_wei":"158284532706823883","done":true,"incident_id":4,"ratio":"1/1","settled_claims":2,"status":"OK"},"refusal":null,"calls":1,"pool":{"closed":false,"credited_wei"
-i4_b1_withdraw                     {"tx":"0x6a552383b08f90564387a4e1c4c79fd27e13e43cd6b4504847c34a25669bd4a2","status":"ACCEPTED","ok":true,"result":{"paid_wei":"39571133176705970","status":"OK"},"refusal":null,"credited_wei":"39571133176705970","wallet_before":"149999790710999998354","wallet_after_30s":"149999660050249997531","done"
+i4_settle                          {"tx":"0x206a68acbf2815a42853df2dff8804bbdf627668e57f46f03e9f3facef4ae18d","status":"ACCEPTED","ok":true,"result":{"claims":2,"credited_wei":"158284532706823883","done":true,"incident_id":4,"ratio":"1/1","settled_claims":2,"status":"OK"},"refusal":null,"calls":1,"pool":{"closed":false,"credited_wei"
+i4_b1_withdraw                     {"tx":"0x1f29f1c480962acb6ada3399611c040f3dff65d8050e9291354a90af8e1accf7","status":"ACCEPTED","ok":true,"result":{"paid_wei":"39571133176705970","status":"OK"},"refusal":null,"credited_wei":"39571133176705970","wallet_before":"199999581422249996708","wallet_after_30s":"199999450761499995885","done"
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for withdraw (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i4_b1_withdraw_twice_refused       {"tx":"0x8d4caaac22def342ff3a34c2364d54af942a25503809a004b4b2925b8927b23b","status":"ACCEPTED","ok":false,"result":null,"refusal":"nothing to withdraw for 0x45e2e2b04905e7499801fa41e29bb07319dee276","done":true,"seconds":12}
+i4_b1_withdraw_twice_refused       {"tx":"0xe6948e9a715cf35b4e59f31d237cd795007c0f9e9baaeee60a4783ed515a56dc","status":"ACCEPTED","ok":false,"result":null,"refusal":"nothing to withdraw for 0x45e2e2b04905e7499801fa41e29bb07319dee276","done":true,"seconds":11}
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for close (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i1_close                           {"tx":"0xc4a6dbe17d172a400649336428542c0a44d18433e19cc26ecccb961f33a51613","status":"ACCEPTED","ok":true,"result":{"done":true,"incident_id":1,"phase":"CLOSED","returned_to_sponsor_wei":"1759398017809069145","status":"OK","topped_up_wei":"0"},"refusal":null,"calls":1,"pool":{"closed":true,"credited_
-i1_sponsor_withdraw                {"tx":"0xdcdea2286d8084b054d63be432143b11d45ad7f49c690567d638ee370be8f2b2","status":"ACCEPTED","ok":true,"result":{"paid_wei":"1759398017809069145","status":"OK"},"refusal":null,"done":true,"seconds":13}
+i1_close                           {"tx":"0x8106c356948d4b3732e4a1102ec516309f4b79dcf68197aaeeba2a8094a13ffd","status":"ACCEPTED","ok":true,"result":{"done":true,"incident_id":1,"phase":"CLOSED","returned_to_sponsor_wei":"1759398017809069145","status":"OK","topped_up_wei":"0"},"refusal":null,"calls":1,"pool":{"closed":true,"credited_
+i1_sponsor_withdraw                {"tx":"0xab31e2f639240cac6e760cd7cbb58ba32abc79299426e94a1ec2088b144da1e4","status":"ACCEPTED","ok":true,"result":{"paid_wei":"1759398017809069145","status":"OK"},"refusal":null,"done":true,"seconds":12}
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for withdraw (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i1_sponsor_withdraw_again_refused  {"tx":"0x0b576b52361010fa200470f54d514ca706f9031a51b10c68c46de3135c1126df","status":"ACCEPTED","ok":false,"result":null,"refusal":"nothing to withdraw for 0x11b1745f79e8a5af25627fd5421fb906925d5d8c","done":true,"seconds":11}
-waiting 177s for incident 3 appeal window
-i3_late_appeal_refused             {"claim_id":11,"tx":"0x278692231727d6157cc2eef467fd2dc20833117ef3475d98f2fc6c650f8c183c","status":"ACCEPTED","ok":true,"result":{"reason":"the appeal window has closed","status":"REFUSED","value_withdrawable":"10000000000000000"},"refusal":null,"done":true,"seconds":22}
+i1_sponsor_withdraw_again_refused  {"tx":"0x3621ee70cc767db46e80398713a1596babc475223e25d7ee6020ad8b9086439b","status":"ACCEPTED","ok":false,"result":null,"refusal":"nothing to withdraw for 0x11b1745f79e8a5af25627fd5421fb906925d5d8c","done":true,"seconds":12}
+waiting 169s for incident 3 appeal window
+i3_late_appeal_refused             {"claim_id":11,"tx":"0x35a8b7c4e9e8cd1818ef6cf6ac090254475247c3dd3d936fe62622d97c0ad8d0","status":"ACCEPTED","ok":true,"result":{"reason":"the appeal window has closed","status":"REFUSED","value_withdrawable":"10000000000000000"},"refusal":null,"done":true,"seconds":20}
 GenLayer RPC error (sim_estimateTransactionFees): execution failed
   … write fee simulation failed for close (Missing or invalid parameters.
 Double check you have provided the correct parameters.
 
 Details: exec)
-i3_close_topup                     {"tx":"0xbd984dac671d1d27058208fc1a6e1ba1e804f5872f112bf83ce44efa466ee32f","status":"ACCEPTED","ok":true,"result":{"done":true,"incident_id":3,"phase":"CLOSED","returned_to_sponsor_wei":"2","status":"OK","topped_up_wei":"42016261016313830"},"refusal":null,"calls":1,"pool":{"closed":true,"credited_we
+i3_close_topup                     {"tx":"0x0d518fe02aa6fae05f08dfd26a6bb444bd7bd5ddcef3073aa38bdcc6135a1935","status":"ACCEPTED","ok":true,"result":{"done":true,"incident_id":3,"phase":"CLOSED","returned_to_sponsor_wei":"2","status":"OK","topped_up_wei":"42016261016313830"},"refusal":null,"calls":1,"pool":{"closed":true,"credited_we
 i3_claims_after_close              {"claims":[{"claim_id":7,"borrower":"0x4bacce55f0991cfc4d919f7f50edb8be028e37df","status":"ACCEPTED","owed_gen":"877714041173915609","credited_gen":"654061596239117840","topup_gen":"27481222748329644"},{"claim_id":8,"borrower":"0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5","status":"ACCEPTED","owed_ge
-ledger                             {"ledger":{"balance_wei":"10524830849014224885","claimable_wei":"4521215381721048768","invariant":"balance == open_stakes + claimable + undistributed","invariant_holds":true,"on_chain_balance_wei":"12323800000000000000","open_stakes_wei":"0","undistributed_wei":"6003615467293176117","withdrawn_wei":
+ledger                             {"ledger":{"balance_wei":"10764830849014224885","claimable_wei":"4561215381721048768","invariant":"balance == open_stakes + claimable + undistributed","invariant_holds":true,"on_chain_balance_wei":"12563800000000000000","open_stakes_wei":"0","undistributed_wei":"6203615467293176117","withdrawn_wei":
 done

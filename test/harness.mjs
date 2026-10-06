@@ -257,6 +257,8 @@ export async function retry(fn, { attempts = 6, baseMs = 4000, label = "rpc" } =
         // trips it, and the answer is to wait rather than to fail a suite that
         // was measuring something else entirely.
         /rate limit exceeded|-32029/i.test(message) ||
+        // Studio's executor pool: "Server busy: all 8 execution slots occupied, retry later".
+        /Server busy|execution slots|-32006/i.test(message) ||
         // A node holds ONE transaction slot per recipient contract. A write that
         // arrives while the previous one is still settling is rejected at the
         // consensus contract, which surfaces as an EVM revert rather than as

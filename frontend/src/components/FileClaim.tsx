@@ -8,10 +8,12 @@ import { TxProgress } from "./TxProgress";
 import { getReadClient, plain } from "@/lib/genlayer";
 import { computeOwed, toGen } from "@/lib/formula";
 import { fixed, short } from "@/lib/format";
-import { ASSET_NAMES, POOL_NAMES, ethtx, type Deployment } from "@/lib/config";
+import { ASSET_NAMES, POOL_NAMES, ethtx, REAL_EVENTS, type Deployment, type IncidentGroup } from "@/lib/config";
+import { TryIt } from "./TryIt";
 import type { Incident } from "@/lib/types";
 
-export type IncidentOption = { ref: string; dep: Deployment; address: `0x${string}`; label: string; inc: Incident };
+export type IncidentOption = { ref: string; dep: Deployment; address: `0x${string}`; label: string; group: IncidentGroup; inc: Incident };
+const GROUP_LABEL: Record<IncidentGroup, string> = { canonical: "The real incident", scenario: "Demo scenarios", copy: "Copies (Try it yourself)", test: "Test runs" };
 type Log = { logIndex: number; pool: string; topic0: string; collateralAsset: string; debtAsset: string; user: string; debt: string; collateral: string };
 type Preview = { tx: string; found: boolean; status?: string; block?: number; logs: Log[]; otherLogs: number; kinds: Record<string, string>; error?: string };
 
@@ -29,6 +31,7 @@ export function FileClaim({ options, initialRef, initialTx }: { options: Inciden
   const [st, setSt] = useState<TxState>({ phase: "idle" });
   const now = Date.now() / 1000;
   const windowOpen = now < opt.inc.claim_end && !opt.inc.closed;
+  const allFiled = opt.group === "canonical" && opt.inc.claims >= REAL_EVENTS;
 
   useEffect(() => {
     const h = tx.trim();
@@ -85,10 +88,23 @@ export function FileClaim({ options, initialRef, initialTx }: { options: Inciden
       <div className="field">
         <label htmlFor="inc">Incident</label>
         <select id="inc" className="input" value={ref} onChange={(e) => setRef(e.target.value)}>
-          {options.map((o) => <option key={o.ref} value={o.ref}>{o.label}{Date.now() / 1000 >= o.inc.claim_end ? " (claims closed)" : ""}</option>)}
+          {(["canonical", "copy", "scenario", "test"] as IncidentGroup[]).map((g) => {
+            const os = options.filter((o) => o.group === g);
+            return os.length ? (
+              <optgroup key={g} label={GROUP_LABEL[g]}>
+                {os.map((o) => <option key={o.ref} value={o.ref}>{o.label}{Date.now() / 1000 >= o.inc.claim_end ? " (claims closed)" : ""}</option>)}
+              </optgroup>
+            ) : null;
+          })}
         </select>
         {!windowOpen && <span className="small" style={{ color: "var(--red)" }}>Claims for this incident have closed.</span>}
       </div>
+      {allFiled ? (
+        <div className="notice green">
+          <p style={{ margin: "0 0 12px" }}><b>All {REAL_EVENTS} real liquidations are already filed — try it on your own copy.</b> Every event of the real incident has a claim; filing one again would only be refused as a duplicate.</p>
+          <TryIt compact />
+        </div>
+      ) : (<>
       <div className="field">
         <label htmlFor="tx">Liquidation transaction (Ethereum)</label>
         <input id="tx" className="input mono" value={tx} onChange={(e) => setTx(e.target.value)} placeholder="0x…" spellCheck={false} autoComplete="off" aria-describedby="tx-hint" />
@@ -140,7 +156,8 @@ export function FileClaim({ options, initialRef, initialTx }: { options: Inciden
           <div><button className="btn" type="submit" disabled={!checks?.ok || existing > 0 || !windowOpen || busy}>{busy ? "Filing…" : "File this claim"}</button></div>
         </WalletGate>
       )}
-      <TxProgress state={st} validatorsLabel="Validators reading Ethereum" />
+      <TxProgress state={st} validatorsLabel="Validators reading two or more Ethereum endpoints" />
+      </>)}
     </form>
   );
 }

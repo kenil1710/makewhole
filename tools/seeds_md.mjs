@@ -119,15 +119,29 @@ ${(() => {
   return out.join("\n");
 })()}
 
-### The same real appeals in v1 and v1.1
+### Stability check: the two wallets that flipped
 
-The five canonical owner() appeals were also run on the superseded v1 contract ([v1 SEEDS](superseded/v1/SEEDS.md)), with
-a different prompt (v1.1 adds nonce fences, case-bound evidence and exact-clause rules). Three decisions were identical
-(both DSProxy wallets and \`0x9a98…\`: ELIGIBLE, same payee). **Two flipped**: \`0x681d…\` (a 16 KB contract) was
-NOT_ELIGIBLE [X1] in v1 and ELIGIBLE [E4] in v1.1; \`0xbe6e…\` (an EIP-1167 clone) was ELIGIBLE [E4] in v1 and NOT_ELIGIBLE
-[X1] in v1.1. Neither is a DSProxy; both sit on the line between "a single user's wallet" and "controller cannot be
-shown". In both versions code confirmed that any payee named was the wallet's real owner(), so a flip changes *whether*
-the owner is paid, never *who*. This is the residual model risk the threat model names.
+${(() => {
+  const st = existsSync(root + "docs/stability.json") ? JSON.parse(readFileSync(root + "docs/stability.json", "utf8")) : {};
+  const v11 = JSON.parse(readFileSync(root + "docs/superseded/v1.1/stability.json", "utf8"));
+  const W = { "0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd": "unverified 16 KB contract, owner() = EOA", "0xbe6e072a92224cdebcb5a171451a6ebd1e380e62": "EIP-1167 clone of SelfManagedDefiiV4, owner() = EOA" };
+  const fmt = (r) => !r ? "—" : r.result ? `${r.result.decision}${r.result.clause_id ? " [" + r.result.clause_id + "]" : ""}${r.result.code_check && r.result.code_check !== "OK" ? " (" + r.result.code_check + ")" : ""}` : (r.status || "—");
+  const can = Object.fromEntries(appeals.map((x) => [claims.find((c) => c.claim_id === x.claim_id)?.borrower, x]));
+  const rows = Object.entries(W).map(([w, what]) => `| \`${w}\` (${what}) | ${w.startsWith("0x681d") ? "NOT_ELIGIBLE [X1]" : "ELIGIBLE [E4]"} | ${w.startsWith("0x681d") ? "ELIGIBLE [E4]" : "NOT_ELIGIBLE [X1]"} | ${fmt(v11["run1_" + w])} | ${fmt(v11["run2_" + w])} | ${can[w] ? can[w].decision + (can[w].code_check !== "OK" ? " (" + can[w].code_check + ")" : "") : "—"} | ${fmt(st["run1_" + w])} | ${fmt(st["run2_" + w])} |`);
+  return `The canonical appeals for \`0x681d…\` and \`0xbe6e…\` changed between v1 and v1.1, so both were run again, twice each,
+on the v1.1 demo contract. **0xbe6e… flipped within v1.1** (NOT_ELIGIBLE on canonical, ELIGIBLE twice on demo — same code,
+same evidence) and 0x681d… once failed to reach consensus at all. The model was not a stable judge of "is this a single
+user's wallet", so v1.2 decides that **from bytecode**: DSProxy by its runtime sha256, Summer.fi DPM accounts by their
+EIP-1167 implementation, Safes by their singleton and getThreshold()/getOwners(). Neither of these two wallets is a
+recognised type, so both are now **INCONCLUSIVE by code** (stake returned, appealable again; if never approved, their reserve
+tops up the other claims at close). The model can still confirm or withhold code's decision, never reverse it.
+
+| wallet | v1 canonical | v1.1 canonical | v1.1 demo run 1 | v1.1 demo run 2 | v1.2 canonical | v1.2 demo run 1 | v1.2 demo run 2 |
+|---|---|---|---|---|---|---|---|
+${rows.join("\n")}
+
+The v1.1 records are in [superseded/v1.1](superseded/v1.1/README.md); the v1.2 runs in \`docs/stability.json\`.`;
+})()}
 
 ### Top-up at close (incident 3, attack-round fix 6)
 

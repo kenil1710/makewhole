@@ -3,6 +3,7 @@
  * from a real `readContract` against Studio Dev; nothing is mocked. Results are
  * memoised for a short time per process because Studio meters requests per IP.
  */
+import { unstable_cache } from "next/cache";
 import { createClient } from "genlayer-js";
 import { studioDevnet } from "genlayer-js/chains";
 import { plain } from "./genlayer";
@@ -13,7 +14,17 @@ const client = createClient({ chain: studioDevnet });
 const memo = new Map<string, { at: number; value: unknown }>();
 const TTL = 30_000;
 
+/**
+ * Reads go through Next's shared data cache (30 s) so the many serverless
+ * instances behind the site don't each ask Studio Dev, which meters requests.
+ * A failed read is never cached: it throws.
+ */
 async function call<T>(address: string, fn: string, args: unknown[] = []): Promise<T> {
+  const cached = unstable_cache(() => callLive<T>(address, fn, args), ["mw", address, fn, JSON.stringify(args)], { revalidate: 30 });
+  return cached();
+}
+
+async function callLive<T>(address: string, fn: string, args: unknown[] = []): Promise<T> {
   const key = address + fn + JSON.stringify(args);
   const hit = memo.get(key);
   if (hit && Date.now() - hit.at < TTL) return hit.value as T;

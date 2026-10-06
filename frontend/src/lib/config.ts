@@ -1,7 +1,7 @@
 /** Deployment addresses and the facts of the one real incident this app presents. */
-export const CANONICAL = (process.env.NEXT_PUBLIC_MAKEWHOLE ?? "0xe43638c41966F8501B8710710d50D16E261ba210") as `0x${string}`;
-export const DEMO = (process.env.NEXT_PUBLIC_MAKEWHOLE_DEMO ?? "0xB15e4437dfd5a1AF45C4EF0bFdeF4120cB00CbFa") as `0x${string}`;
-export const LEDGER = (process.env.NEXT_PUBLIC_RECOVERY_LEDGER ?? "0xcC13f189F337Dd0fAe4fB1a614EA8d6a5D445c49") as `0x${string}`;
+export const CANONICAL = (process.env.NEXT_PUBLIC_MAKEWHOLE ?? "0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab") as `0x${string}`;
+export const DEMO = (process.env.NEXT_PUBLIC_MAKEWHOLE_DEMO ?? "0x7c0c0C3536B943026d7E28012FA084dDffB8b549") as `0x${string}`;
+export const LEDGER = (process.env.NEXT_PUBLIC_RECOVERY_LEDGER ?? "0xF2A600B03BEf05fC978Cd4835A36Fb6ED1Fd9D5b") as `0x${string}`;
 
 export type Deployment = "c" | "d";
 export const DEPLOYMENTS: Record<Deployment, { address: `0x${string}`; label: string; blurb: string }> = {
@@ -55,4 +55,32 @@ export function isAaveIncident(dep: Deployment, id: number, chainId: number): bo
 /** A proposal link labelled with its own host, never a hard-coded name. */
 export function proposalLabel(url: string): string {
   try { return new URL(url).host.replace(/^www\./, ""); } catch { return "Proposal"; }
+}
+
+/** Demo incidents the seed scripts create, by id, with plain names. */
+export const DEMO_SCENARIOS: Record<number, string> = {
+  1: "Expiry: settle, close, sponsor refund",
+  2: "Appeals: eligible, not eligible, prompt injection, duplicates",
+  3: "Underfunded pool: pro-rata + top-up",
+  4: "Test chain: withdraw path",
+};
+/** Copies created with "Try it yourself" carry this title prefix. */
+export const COPY_PREFIX = "Try-it copy:";
+/** The canonical incident's real liquidation events (docs/RESEARCH.md). */
+export const REAL_EVENTS = 49;
+/** A real liquidation used to pre-fill File a claim on a copy (EOA borrower, 87.77 ETH). */
+export const EXAMPLE_TX = "0x8f47b5e821530e9b9fc2262cde6dbb7427311f13116de995650fd7709df2fa67";
+
+export type IncidentGroup = "canonical" | "scenario" | "copy" | "test";
+export function groupOf(ref: { dep: Deployment; id: number; title: string }): IncidentGroup {
+  if (ref.dep === "c" && ref.id === AAVE_REF.id) return "canonical";
+  if (ref.dep === "d" && DEMO_SCENARIOS[ref.id]) return "scenario";
+  if (ref.title.startsWith(COPY_PREFIX)) return "copy";
+  return "test";
+}
+export function plainName(ref: { dep: Deployment; id: number; title: string }): string {
+  const g = groupOf(ref);
+  if (g === "canonical") return "Aave wstETH CAPO incident (the real one)";
+  if (g === "scenario") return DEMO_SCENARIOS[ref.id];
+  return ref.title;
 }

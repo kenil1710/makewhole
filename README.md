@@ -9,14 +9,14 @@ cases, pull payouts — on GenLayer.
 |---|---|
 | **Live app** | https://makewhole-ledger.vercel.app |
 | **Network** | GenLayer Studio Dev, chain `61997` — [explorer](https://explorer-studio-dev.genlayer.com/) |
-| **MakeWhole — canonical** (the real incident; 30-day claim window, 14-day appeal window) | `0xe43638c41966F8501B8710710d50D16E261ba210` |
-| **MakeWhole — demo** (same source; windows of minutes) | `0xB15e4437dfd5a1AF45C4EF0bFdeF4120cB00CbFa` |
-| **RecoveryLedger** (read-only consumer; no payable method) | `0xcC13f189F337Dd0fAe4fB1a614EA8d6a5D445c49` |
-| **Commit deployed** | `9340b6b9e424778b07320fb36b4e45c68470f509` — sha256 of `contracts/MakeWhole.py`: `7205d323b1d6ad2f7c2c8572243fbdf4af41517728df51bb8cd45d1a90336ad9` |
-| **Offline tests** | `python3 test/test_makewhole.py` (stdlib only, 90 tests, including the attack round) |
-| **Demo video** | [`docs/demo/makewhole-demo.mp4`](docs/demo/makewhole-demo.mp4) (81 s) |
+| **MakeWhole — canonical** (the real incident; 30-day claim window, 14-day appeal window) | `0x8374D3ef8CC35d6d5DC8C6163eccD04157647bab` |
+| **MakeWhole — demo** (same source; windows of minutes) | `0x7c0c0C3536B943026d7E28012FA084dDffB8b549` |
+| **RecoveryLedger** (read-only consumer; no payable method) | `0xF2A600B03BEf05fC978Cd4835A36Fb6ED1Fd9D5b` |
+| **Commit deployed** | `dd73edef73f7dba1d9b1dde8075361bb17d7a3de` — sha256 of `contracts/MakeWhole.py`: `44e250da69e778f54c3aee0aa99dc6e94d1e6afc1df8a459e00128e68e391a8f` |
+| **Offline tests** | `python3 test/test_makewhole.py` (stdlib only, 95 tests, including the attack round and the stability check) |
+| **Demo video** | [`docs/demo/makewhole-demo.mp4`](docs/demo/makewhole-demo.mp4) (82 s) |
 
-More: [research](docs/RESEARCH.md) · [threat model](docs/THREAT_MODEL.md) · [seeds](docs/SEEDS.md) · [addresses](ADDRESSES.md) · [tasks](docs/TASKS.md) · [superseded v1](docs/superseded/v1/README.md)
+More: [research](docs/RESEARCH.md) · [threat model](docs/THREAT_MODEL.md) · [seeds](docs/SEEDS.md) · [addresses](ADDRESSES.md) · [tasks](docs/TASKS.md) · superseded [v1](docs/superseded/v1/README.md), [v1.1](docs/superseded/v1.1/README.md)
 
 ## The problem
 
@@ -27,7 +27,7 @@ Ethereum Core and Prime markets. For 1,229 blocks the cap was wrong; in the firs
 The Aave DAO did the right thing: [a proposal](https://governance.aave.com/t/direct-to-aip-wsteth-capo-oracle-incident-user-reimbursement/24275)
 approved **513.19 ETH** of refunds, and on 27 March the Aave Finance Committee paid 35 addresses in
 [one transaction](https://etherscan.io/tx/0x687f2a608fbc48c2f90130fd6f3620835770b03424ed497a5002f095d1c00f3f).
-But the process was a forum post, a spreadsheet and trust. The on-chain payload was a single `approve()`; the promised
+But the process was a forum post, one multisend transaction and trust. The on-chain payload was a single `approve()`; the promised
 per-user breakdown never appeared. Forum members asked for it twice after the money went out, and one said a payment
 "looks to be ~20 weth short". Nobody outside could check.
 
@@ -71,10 +71,12 @@ post-mortem — not published by the Aave DAO.
    (tx, log), whatever the spelling.
 3. **Appeal (anyone, small stake).** A borrower that is a smart contract on Ethereum has no key on GenLayer, so its refund is
    withheld (clause X1). An appeal argues who controls it (≤ 1,000 characters, no fence markers, up to three
-   Etherscan/Blockscout address pages or the proposal URL). Evidence is read only for the borrower, its implementation
-   and its `owner()` — addresses validators establish themselves. The model answers ELIGIBLE (must cite exactly E4) or
-   NOT_ELIGIBLE (exactly X1 or X2); code checks the quote is verbatim in that clause and confirms the payee by calling the
-   wallet's `owner()` on Ethereum through the same two-source quorum.
+   Etherscan/Blockscout address pages or the proposal URL). **Code decides** from bytecode every validator reads through the
+   two-source quorum: a DSProxy (runtime sha256) or a Summer.fi DPM account (EIP-1167 implementation) whose `owner()` is an
+   EOA → ELIGIBLE under [E4], paid to that `owner()`; a Safe with more than one key → NOT_ELIGIBLE under [X2]; no `owner()`
+   → NOT_ELIGIBLE under [X1]; **anything else → INCONCLUSIVE**, stake back, appealable again. The model reads the argument,
+   the evidence (bound to the borrower, its implementation and its `owner()`) and the verified source, and can only
+   **confirm** code's decision or withhold it (→ INCONCLUSIVE). It can never turn one decision into the other.
 4. **Settle (anyone, after the claim deadline; paginated).** If more is owed than the pool holds, each claim gets
    `floor(owed × pool / total)`; withheld claims are reserved at full value until the appeal deadline. No claim cap: the
    block range is capped at 50,000 blocks and settlement runs 50 claims per call.
@@ -93,14 +95,27 @@ a deadline and a permissionless exit.
 | Whether a liquidation counts | pool, event, collateral, block range, tx status, priced debt asset |
 | How much | the frozen formula, integer math on the receipt |
 | Who is paid | the borrower in the log; on appeal, whatever `owner()` returns on Ethereum (must be an EOA) |
-| Whether a cited clause is real and fits | exactly E4 for eligible, exactly X1/X2 for not eligible, quoted verbatim from that clause |
-| Duplicates, deadlines, pro-rata, every credit and transfer | code |
+| **Whether a contract is a single user's wallet** | bytecode: DSProxy runtime hash, known single-owner implementations, Safe singleton + `getThreshold()`/`getOwners()`; unrecognised → INCONCLUSIVE |
+| Which clause an appeal rests on | E4, X1 or X2, chosen by code; its sha256 is taken from the frozen terms |
+| Duplicates, deadlines, pro-rata, top-up, every credit and transfer | code |
 
-**The model decides one thing**, only in an appeal: is this contract a single user's wallet (E4) or a pooled vault /
-multi-key contract (X2)? It answers with a fixed word and a clause id. Nothing it writes is stored: an appeal keeps the
-decision, the clause id, the sha256 of that clause *as written in the terms*, the code-confirmed payee, and the sha256 of
-the argument. The argument and evidence pages are fenced as untrusted data; even a model that obeyed an injection could not
-name a payee that `owner()` does not return ([threat model](docs/THREAT_MODEL.md) item 08).
+**The model decides nothing that moves money.** In an appeal it reads the same facts plus the appellant's argument and
+evidence, and must independently reach code's decision with a verbatim quote from an allowed clause; if it does not, the
+appeal is INCONCLUSIVE and the stake goes back. Originally the model decided "single user's wallet or not". A stability
+check showed it gave the same real wallet opposite answers in different transactions, so that question moved to code
+([details](#stability-check)). Nothing the model writes is stored.
+
+## Stability check
+
+The two real appeals whose outcome had changed between v1 and v1.1 were run again, twice each:
+
+| wallet | v1 | v1.1 canonical | v1.1 demo ×2 | v1.2 (code decides) ×3 |
+|---|---|---|---|---|
+| `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` — unverified 16 KB contract | NOT_ELIGIBLE [X1] | ELIGIBLE [E4] | ELIGIBLE, then **UNDETERMINED** | INCONCLUSIVE ×3 (wallet type not recognised) |
+| `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` — clone of SelfManagedDefiiV4 | ELIGIBLE [E4] | NOT_ELIGIBLE [X1] | **ELIGIBLE ×2** (flip within v1.1) | INCONCLUSIVE ×3 (wallet type not recognised) |
+
+So v1.1 was replaced by v1.2 ([v1.1 record](docs/superseded/v1.1/README.md)). Recognised types are stable: the DSProxy is
+ELIGIBLE [E4] with the same payee, and the 2-of-11 Safe NOT_ELIGIBLE [X2], on every run.
 
 ## Attack round 1
 
@@ -146,7 +161,7 @@ so the pool is 5.1319 GEN for the DAO's 513.19 ETH. Full detail and every demo p
 | 23 | `0xc8cf295c4e084d08d3db7702aca33450ad652eb8` | 0.0051849627 | 0.0051849627 | MATCH | withheld (contract) |
 | 24 | `0x1fc623b96c8024067142ec9c15d669e5c99c5e9d` | 0.0049785979 | 0.0049785979 | MATCH | withheld (contract) |
 | 25 | `0xde89be395b57d07741004ed0be3174f3027fd44a` | 0.0035774456 | 0.0035774456 | MATCH | withheld (contract) |
-| 26 | `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` | 0.0028166990 | 0.0028166990 | MATCH | approved on appeal |
+| 26 | `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` | 0.0028166990 | 0.0028166990 | MATCH | withheld (contract) |
 | 27 | `0x3aac936216a43d4195791819ecc4975ba8fb6c72` | 0.0017624899 | 0.0017624899 | MATCH | withheld (contract) |
 | 28 | `0x7f689846082b2b086fd9a899c61c16e9d0f6c31f` | 0.0015042941 | 0.0015042941 | MATCH | owed (EOA) |
 | 29 | `0x6b803f020cb302db766c5a276e935cca01de4e4a` | 0.0011482732 | 0.0011482732 | MATCH | withheld (contract) |
@@ -157,7 +172,7 @@ so the pool is 5.1319 GEN for the DAO's 513.19 ETH. Full detail and every demo p
 | 34 | `0x7f821b5058c362088c88952fd7735a6965e0bc98` | 0.0001392513 | 0.0001392513 | MATCH | withheld (contract) |
 | 35 | `0x1570c1a39779cd31906a2ba854738b7d58fdb367` | 0.0000373356 | 0.0000373370 | within 0.01% | owed (EOA) |
 
-Real appeals on canonical: `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` eligible under [E4]; `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` eligible under [E4]; `0x9a982dfcd22159a059114eca54b5abaabdd627b4` eligible under [E4]; `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` eligible under [E4]; `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` not eligible under [X1]; `0x4bacce55f0991cfc4d919f7f50edb8be028e37df` accepted under [877714041173915609]; `0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5` accepted under [370960444279445638]; `0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab` accepted under [74157890633479479]; `0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2` accepted under [19111633805819072]; `0x5cede91b3c5783d093b2f6c29cb2571a11204b27` excluded contract under [58856395463189586]. The Safe (11 owners, threshold 2) was NOT_ELIGIBLE under [X2] on both demo runs; the DSProxy was ELIGIBLE under [E4] with the same payee on all three runs. Two owner() wallets decided differently from the v1 run (`0x681d…` and `0xbe6e…`, see [SEEDS.md](docs/SEEDS.md#the-same-real-appeals-in-v1-and-v11)).
+Real appeals on canonical (decided by code from bytecode): `0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f` eligible under [E4]; `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` eligible under [E4]; `0x9a982dfcd22159a059114eca54b5abaabdd627b4` eligible under [E4]; `0x681dc889b79aba892d973d41c52f1b2b1f1ee0dd` inconclusive (wallet type not recognised by code; stake returned); `0xbe6e072a92224cdebcb5a171451a6ebd1e380e62` inconclusive (wallet type not recognised by code; stake returned); `0x4bacce55f0991cfc4d919f7f50edb8be028e37df` accepted under [877714041173915609]; `0x1e2799e0071e535468097e04ad23b9fe3ae5a6a5` accepted under [370960444279445638]; `0x3ee505ba316879d246a8fd2b3d7ee63b51b44fab` accepted under [74157890633479479]; `0x718e7b7e03f9370394cc8a3bd41b395c72b90fa2` accepted under [19111633805819072]; `0x5cede91b3c5783d093b2f6c29cb2571a11204b27` excluded contract under [58856395463189586]. On the demo contract the 2-of-11 Safe was NOT_ELIGIBLE under [X2] (code: multi-key Safe) on both runs and the DSProxy ELIGIBLE under [E4] with the same payee on every run. See the [stability check](#stability-check).
 
 The demo contract runs every other path on chain: a NOT_ELIGIBLE Safe (11 owners, threshold 2) run twice, the eligible
 DSProxy case run again, a prompt-injection appeal, a duplicate in another spelling, a real out-of-range liquidation, an
@@ -166,22 +181,23 @@ borrower withdrawing its own refund on a clearly labelled synthetic test chain (
 
 ## Use it
 
-1. Open [the incident](https://makewhole-ledger.vercel.app/incident/c-1): the frozen terms and their sha256, the block range,
-   the pool, and every account's refund next to what the DAO paid.
-2. Open any account to see its liquidation told step by step: the Etherscan transaction, the price Aave used against the
-   real rate, the formula with its numbers filled in, and who gets paid.
-3. **File a claim**: paste an Ethereum liquidation hash; the page shows exactly what the code will check and the amount it
-   will compute. Connect a wallet (it switches you to Studio Dev) and send; validators read Ethereum and decide.
-4. **Appeal** a withheld smart-contract claim with a short argument and an Etherscan/Blockscout link. The result shows the
-   clause the decision relied on, highlighted in the terms.
-5. **Balance**: after settlement, withdraw what you are owed.
+1. **Look at the real incident** — [Incidents](https://makewhole-ledger.vercel.app/incidents) → the Aave wstETH CAPO incident:
+   frozen terms and their sha256, the block range, the pool, and every account's refund next to what the DAO paid.
+2. **Try it yourself** — one click (plus a wallet confirmation) creates your own copy of the Aave incident on the demo
+   contract, with a one-hour claim window and a 0.1 GEN pool, and opens File a claim with a real liquidation filled in.
+3. **File a claim** — paste an Ethereum liquidation hash; the page shows what the code will check and the amount it will
+   compute. Send it; validators read Ethereum from at least two endpoints and decide.
+4. **Appeal** a withheld smart-contract claim from its claim page ([Appeals](https://makewhole-ledger.vercel.app/appeals) lists
+   them). The result shows the wallet type code recognised and the clause the decision rests on, highlighted in the terms.
+5. **Create an incident** — as a sponsor, publish your own refund terms, endpoints, formula and deadlines and fund the pool
+   ([Create](https://makewhole-ledger.vercel.app/create)); after settlement, payees withdraw from **Balance**.
 
 ## Explorer listing kit
 
 - Logo: [`brand/logo.svg`](brand/logo.svg), [`brand/logo-512.png`](brand/logo-512.png); favicon [`brand/favicon.svg`](brand/favicon.svg) / [`.ico`](brand/favicon.ico)
 - Social image 1200×630: [`brand/og.png`](brand/og.png)
 - Screenshots (1440 px and 390 px): [`docs/screenshots/`](docs/screenshots/)
-- Demo video (81 s, flows 1→4): [`docs/demo/makewhole-demo.mp4`](docs/demo/makewhole-demo.mp4); script: [`docs/demo/SCRIPT.md`](docs/demo/SCRIPT.md)
+- Demo video (82 s: landing, incident, account, appeal decision, file a claim, create): [`docs/demo/makewhole-demo.mp4`](docs/demo/makewhole-demo.mp4); script: [`docs/demo/SCRIPT.md`](docs/demo/SCRIPT.md)
 - How to use: the five steps above.
 
 <p>
@@ -191,6 +207,10 @@ borrower withdrawing its own refund on a clearly labelled synthetic test chain (
 <p>
 <img src="docs/screenshots/account-vault-desktop.png" width="49%" alt="Account">
 <img src="docs/screenshots/claim-desktop.png" width="49%" alt="Appeal decision">
+</p>
+<p>
+<img src="docs/screenshots/create-desktop.png" width="49%" alt="Create an incident">
+<img src="docs/screenshots/appeals-desktop.png" width="49%" alt="Appeals">
 </p>
 
 ## Known limits
@@ -205,10 +225,13 @@ borrower withdrawing its own refund on a clearly labelled synthetic test chain (
   (EIP-1167 clones, proxies, one Safe) have no `owner()` and stay withheld; their reserve returns to the sponsor.
 - **Rate limits make claims INCONCLUSIVE sometimes.** If fewer than two endpoints answer a validator, nothing is stored and
   the claim is filed again; the deadline still runs.
-- **One semantic question goes to a model.** Two runs of the same Safe appeal agreed (NOT_ELIGIBLE, [X2]), and
-  the DSProxy case agreed across three runs (ELIGIBLE, [E4], same payee), but two non-DSProxy owner() wallets flipped
-  between the v1 and v1.1 prompts (payee always the real owner() when paid). Validators must agree on the clause id too, so a
-  case on the X1/X2 boundary can fail to reach consensus; the stake is then never taken. A real pooled vault with an EOA admin is the case to watch.
+- **The wallet-type registry is small.** Code recognises DSProxy, Summer.fi DPM accounts and Safe; every other contract
+  borrower (here: InstaDapp accounts, Morpho/Euler-style beacon proxies, 0x681d…, 0xbe6e…) is INCONCLUSIVE on appeal and
+  its reserve tops up the other claims at close. Adding a type means adding its runtime hash or implementation to the
+  code and redeploying.
+- **The model only confirms.** It can withhold a decision (INCONCLUSIVE, stake back) when it reads the evidence
+  differently from code; validators running different model samples can also fail to agree, and the appeal is then simply
+  not recorded.
 - **Studio Dev does not deliver value transfers.** `withdraw()` zeroes the balance and posts an `emit_transfer` message
   (`on: finalized`); the demo's test borrower withdrew 0.0396 GEN in a FINALIZED transaction carrying that message, but
   Studio did not execute it, so the wallet was not credited. The contract's books are right; `get_ledger()` reports

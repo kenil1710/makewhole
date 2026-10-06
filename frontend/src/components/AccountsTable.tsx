@@ -11,7 +11,7 @@ const STATUS: Record<string, [string, string]> = {
 };
 
 export function AccountsTable({ rows, base, showDao }: { rows: Row[]; base: string; showDao: boolean }) {
-  if (!rows.length) return <p className="notice">No claims have been filed for this incident yet. <Link href="/file">File the first one</Link>.</p>;
+  if (!rows.length) return <p className="notice">No claims have been filed for this incident yet. <Link prefetch={false} href="/file">File the first one</Link>.</p>;
   return (
     <table className="ledger stack">
       <caption className="sr-only">Accounts, our recomputed refund and the DAO&rsquo;s payment</caption>
@@ -31,7 +31,7 @@ export function AccountsTable({ rows, base, showDao }: { rows: Row[]; base: stri
           return (
             <tr key={r.borrower}>
               <td data-label="Account">
-                <span className="hash"><Link className="mono" href={`${base}/account/${r.borrower}`} title={r.borrower}>{short(r.borrower)}</Link><CopyButton value={r.borrower} label="Copy address" /></span>
+                <span className="hash"><Link prefetch={false} className="mono" href={`${base}/account/${r.borrower}`} title={r.borrower}>{short(r.borrower)}</Link><CopyButton value={r.borrower} label="Copy address" /></span>
                 {r.claims > 1 && <span className="small muted"> · {r.claims} events</span>}
               </td>
               <td data-label="Our refund" className="r num">{fixed(r.owed_src, 6)}</td>

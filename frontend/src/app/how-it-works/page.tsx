@@ -9,7 +9,8 @@ const CODE = [
   ["How much is owed", "The formula and its numbers were fixed at creation; the amount is integer arithmetic on the receipt."],
   ["Who is paid", "The borrower in the log. Never the person who filed the claim."],
   ["Duplicates", "One refund per transaction and log index, however the hash is spelled."],
-  ["Whether a quote is real", "A clause the model cites must exist, and its quote must appear word for word inside it."],
+  ["Whether a contract is a single user's wallet", "Code recognises the wallet type from bytecode every validator reads: a DSProxy by its runtime hash, a Summer.fi account by its implementation, a Safe by its singleton and getThreshold(). Anything else is inconclusive, stake returned."],
+  ["Whether a quote is real", "A clause the model cites must be exactly E4 (eligible) or X1/X2 (not), and its quote must appear word for word inside it."],
   ["Whether the payee controls the wallet", "Code calls the wallet's owner() on Ethereum and requires the answer to be the payee, and the payee to be an ordinary account."],
   ["Deadlines and money", "Claim and appeal deadlines, the pro-rata ratio, every credit, the sponsor's remainder and every withdrawal."],
 ];
@@ -31,7 +32,7 @@ export default function How() {
         <ol className="steps" style={{ marginTop: 16 }}>
           <li><div><h3>Create</h3><p>A sponsor (the protocol or its DAO) publishes the incident and funds the pool in one transaction. The terms text is stored with its sha256. Nothing about the incident can be changed afterwards, by anyone.</p></div></li>
           <li><div><h3>Claim</h3><p>Anyone pastes a liquidation transaction. Validators read it from Ethereum; code applies the terms and computes the refund. Borrowers that are smart contracts are accepted but withheld.</p></div></li>
-          <li><div><h3>Appeal</h3><p>For a withheld contract, anyone can appeal with a short argument and up to three evidence links, plus a small stake. Validators read the contract&rsquo;s verified source and the evidence and answer one question. Code checks the answer.</p></div></li>
+          <li><div><h3>Appeal</h3><p>For a withheld contract, anyone can appeal with a short argument and up to three evidence links, plus a small stake. Code reads the contract&rsquo;s bytecode and decides: a recognised single-owner wallet is paid to its <span className="mono">owner()</span>; a multi-key Safe or a contract with no owner is not; anything else is inconclusive and the stake comes back. The model reads the same evidence and can only confirm or withhold.</p></div></li>
           <li><div><h3>Settle</h3><p>After the claim deadline anyone can settle. If more is owed than the pool holds, every refund is cut by the same ratio: each credit is the owed amount × pool ÷ total, rounded down. Withheld refunds are reserved at full value until the appeal deadline.</p></div></li>
           <li><div><h3>Close and withdraw</h3><p>After the appeal deadline anyone can close the incident. Whatever nobody is owed — rounding dust, unapproved reserves, forfeited stakes — returns to the sponsor. Everyone withdraws their own balance.</p></div></li>
         </ol>
@@ -39,12 +40,12 @@ export default function How() {
 
       <section className="section" aria-labelledby="never">
         <h2 id="never">What the model never decides</h2>
-        <p className="section-note">A language model is asked exactly one question, only in an appeal: is this contract a single person&rsquo;s wallet, or a pooled vault or multi-key contract? It answers with a fixed word and the clause it relied on. Everything below is code, run identically by every validator.</p>
+        <p className="section-note">Nothing that moves money. In an appeal the model reads the argument, the evidence and the contract&rsquo;s verified source, and can confirm code&rsquo;s decision or withhold it — never reverse it. It used to decide whether a contract was a single user&rsquo;s wallet; a stability check showed it gave the same real wallet opposite answers in different transactions, so code decides that now. Everything below is code, run identically by every validator.</p>
         <table className="ledger stack">
           <thead><tr><th scope="col">Decided by code</th><th scope="col">How</th></tr></thead>
           <tbody>{CODE.map(([a, b]) => <tr key={a}><td data-label="Decided by code"><b>{a}</b></td><td data-label="How">{b}</td></tr>)}</tbody>
         </table>
-        <p style={{ marginTop: 20, maxWidth: "70ch" }}>What the model writes is never stored. An appeal keeps only the decision, the clause id, the sha256 of that clause as written in the terms, the payee code confirmed, and the sha256 of the argument. Arguments and evidence pages are handed to the model as untrusted data; instructions inside them are ignored, and even a model that obeyed them couldn&rsquo;t name a payee that <span className="mono">owner()</span> doesn&rsquo;t return.</p>
+        <p style={{ marginTop: 20, maxWidth: "70ch" }}>What the model writes is never stored. An appeal keeps only the decision, the clause id code chose, the sha256 of that clause as written in the terms, the wallet type code recognised, the payee code confirmed, and the sha256 of the argument. Arguments and evidence pages are handed to the model as untrusted data; instructions inside them are ignored, and even a model that obeyed them couldn&rsquo;t name a payee that <span className="mono">owner()</span> doesn&rsquo;t return.</p>
       </section>
 
       <section className="section" aria-labelledby="money">

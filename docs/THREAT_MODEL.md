@@ -24,6 +24,7 @@ Two properties are checked on **every** call of every test by `World.call`, not 
 | 10 | **Oversubscribed pool math; reserve handed back while claimants are cut** | `settle()` fixes `num/den = pool / (accepted + withheld)`; each credit `floor(owed × num / den)` in incident order; an appeal approved later is credited from its reserve at the same ratio. At `close()`, before anything returns to the sponsor, under-credited claims are **topped up** from unused reserves: `U = pool − credited`, `S = Σ(owed − credited)`; full if `S ≤ U`, else `floor(shortfall × U / S)` each, in incident order. Only then does the rest go to the sponsor | `T10_OversubscribedPool` (3), `A06_ShortPoolReserveToSponsor`, `AttackFixes` |
 | 11 | **Sponsor withdraws early** | The pool is never on the sponsor's balance. There's no owner, setter or pause. Only `close()`, permissionless and only after the appeal deadline, returns what nobody is owed | `T11_SponsorEarlyWithdraw` (4) |
 | 12 | **Withdraw twice** | `withdraw()` zeroes the balance before posting the transfer; `settle()` and `close()` refuse a second run | `T12_WithdrawTwice` (2) |
+| 13d | **An unstable judge** — the same wallet gets opposite appeal outcomes in different transactions | Code decides the wallet type from bytecode read through the quorum (DSProxy runtime sha256, known single-owner implementations, Safe singleton + `getThreshold()`/`getOwners()`); unrecognised → INCONCLUSIVE, stake back. The model can only confirm code's decision or withhold it; it can never reverse it. Found by a stability check on the real wallets 0x681d… and 0xbe6e… ([v1.1 record](superseded/v1.1/README.md)) | `Stability` (5) |
 | 13b | **A hard cap locks valid claims out** | No per-incident claim cap. The block range is capped at 50,000 blocks at creation, and `settle()`/`close()` are paginated (50 claims per call, permissionless, resumable), so any number of valid claims can be filed and settled | `A07_HardClaimCap`, `AttackFixes` |
 | 13c | **Value sent to a non-payable method** | Only `create_incident`, `fund` and `appeal` are payable (AST-checked); the runtime rejects value elsewhere. The stub models that rejection and the test checks the books are untouched | `AttackFixes`, `T11` |
 | 13 | **Ledger invariant after every path** | Asserted after every call (above), plus one world that runs every path (two incidents, top-up, approved / forfeited / inconclusive / refused appeals, settle, close, refused top-up) and drains to exactly zero | `T13_LedgerAfterEveryPath` |
@@ -41,9 +42,9 @@ The terms must contain E4/X1/X2. RecoveryLedger has no payable method or transfe
   change a payout; two colluding endpoints with the rest down could. The demo's synthetic test chain has two endpoints that
   are the same app, and its terms say so.
 - **`owner()` is read at `latest`**, not at the liquidation block. Ownership transferred since March pays the current owner.
-- **The model decides one semantic question** (single-user wallet vs pooled vault / multi-key). It's bounded by code on
-  both sides, but a model that calls a pooled vault with an EOA admin a "personal wallet" would pay that admin. Validators
-  must agree, and the stake makes repeated attempts cost something.
+- **The wallet-type registry.** Code pays a contract's `owner()` only for wallet types it recognises (DSProxy, Summer.fi
+  DPM account). A mis-registered type would pay its owner; an unregistered single-owner wallet is never paid (INCONCLUSIVE,
+  its reserve tops up others). The model no longer decides this question.
 - **Studio Dev value transfers.** Studio queues `emit_transfer` messages; `get_ledger().on_chain_balance_wei` reports what the
   chain actually holds next to the books.
 

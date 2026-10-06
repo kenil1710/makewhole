@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Wordmark } from "./Logo";
 import { WalletButton } from "./WalletButton";
 import { ThemeToggle } from "./Theme";
-import { HOME_REF } from "@/lib/config";
 
 export function Header() {
   return (
@@ -10,8 +9,10 @@ export function Header() {
       <div className="wrap bar">
         <Link href="/" aria-label="MakeWhole home" style={{ textDecoration: "none" }}><Wordmark /></Link>
         <nav aria-label="Main" className="nav">
-          <Link href={`/incident/${HOME_REF}`}>Incident</Link>
+          <Link href="/incidents">Incidents</Link>
+          <Link href="/create">Create</Link>
           <Link href="/file">File a claim</Link>
+          <Link href="/appeals">Appeals</Link>
           <Link href="/balance">Balance</Link>
           <Link href="/how-it-works">How it works</Link>
         </nav>

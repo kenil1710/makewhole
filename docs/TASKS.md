@@ -30,7 +30,7 @@
 - [x] Logo (SVG + 512 px PNG), favicon, OG image 1200×630 — `brand/`
 - [x] Screenshots at 1440 px and 390 px — `docs/screenshots/`
 - [x] "How to use" in five steps — README
-- [x] 81 s demo recording of flows 1→4 + script — `docs/demo/`
+- [x] 82 s demo recording of flows 1→4 + script — `docs/demo/`
 
 ## Finish
 - [x] README, repository public, Vercel deployed
@@ -48,3 +48,14 @@
 - [x] One redeploy (CANONICAL, DEMO, RecoveryLedger from `9340b6b`); full reseed; model cases run twice/three times; `verify_source` identical
 - [x] v1 addresses and seed records → `docs/superseded/v1/`
 - [x] Vercel redeployed, screenshots and demo video re-taken
+
+## Stability check and final pass (v1.2)
+- [x] The two flipped real appeals (0x681d…, 0xbe6e…) re-run twice each on v1.1: 0xbe6e… flipped within v1.1 (ELIGIBLE ×2 on demo vs NOT_ELIGIBLE on canonical), 0x681d… once UNDETERMINED → v1.2
+- [x] v1.2: wallet type decided by code from bytecode (DSProxy runtime hash, Summer.fi DPM implementation, Safe singleton + getThreshold/getOwners); unrecognised → INCONCLUSIVE, stake back; model can only confirm; 95 tests pass
+- [x] One redeploy (CANONICAL, DEMO, RecoveryLedger from `dd73ede`); full reseed; v1.2 stability runs: both wallets INCONCLUSIVE on every run; v1.1 archived in `docs/superseded/v1.1/`
+- [x] Landing copy: "35 accounts…", "paid all 35 in one transaction, with no published per-account formula"; no "spreadsheet"/"people"
+- [x] Create an incident page (client validation mirroring the contract, sha256 preview, prefill from the real incident)
+- [x] Try it yourself (landing + incident): one-click copy of the Aave incident on DEMO, then File a claim with a real tx
+- [x] Incident picker + Incidents page grouped (real · demo scenarios · copies · test runs hidden from pickers)
+- [x] Nav: Incidents · Create · File a claim · Appeals · Balance · How it works; Appeals page
+- [x] Canonical File a claim shows "All 49 real liquidations are already filed — try it on your own copy"
