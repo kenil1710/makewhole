@@ -63,6 +63,7 @@ async function save(st, final = false) {
 }
 
 const view = async (fn, args) => plain(await c.view(fn, args));
+let fees = null;
 const mw = {
   address,
   incidents: (o, l) => view("get_incidents", [o, l]),
@@ -72,7 +73,9 @@ const mw = {
   submit: async (iid, tx, li) => {
     if (Date.now() - t0 > budgetMs) throw new Error("run time budget used up");
     const args = [iid, tx, li];
-    const fees = await estimateWriteFees(c.wallet, { address, functionName: "file_event", args });
+    // Studio meters requests per IP (about 500 an hour): one fee estimate per
+    // run, reused for every filing, instead of a simulation per filing.
+    fees ??= await estimateWriteFees(c.wallet, { address, functionName: "file_event", args });
     return retry(() => c.wallet.writeContract({ address, functionName: "file_event", args, value: 0n, ...(fees ? { fees } : {}) }), { label: "file_event" });
   },
   tx: async (hash) => {
@@ -105,10 +108,11 @@ const logRpcs = {
   137: ["https://polygon.gateway.tenderly.co", "https://polygon-bor-rpc.publicnode.com"],
 };
 const waitAccepted = async (hash) => {
-  for (let i = 0; i < 100; i++) {
+  await sleep(12000);                           // a filing takes ~15 s: do not poll before
+  for (let i = 0; i < 60; i++) {
     const t = await mw.tx(hash).catch(() => null);
     if (t && ["ACCEPTED", "FINALIZED", "UNDETERMINED", "CANCELED"].includes(t.status)) return t;
-    await sleep(6000);
+    await sleep(10000);
   }
 };
 const run = await runKeeper({
