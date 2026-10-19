@@ -151,12 +151,13 @@ Compound v3 base tokens (the debt asset of every absorb in that market):
 | NOT_FINALIZED | block |
 | NOT_INCIDENT_EMITTER | the log was emitted by |
 | NOT_INCIDENT_MARKET | Morpho market |
-| NOT_LATER | the new deadline must be later than |
+| NOT_LATER | an amendment may not shorten the claim deadline or the claim window |
 | NOT_SPONSOR | only the sponsor may amend |
 | NO_INCIDENT | no incident # |
 | NO_SUCH_LOG | that transaction has no log at index |
 | NO_SURPLUS | the pool does not exceed the total owed |
 | OUT_OF_RANGE | block |
+| PRICE_SOURCE_REVERTED | the price-source call reverted at block of this event |
 | TERMS_FROZEN | the terms are frozen since the first filing |
 | TOO_LATE | at most |
 | TX_FAILED | that transaction reverted on chain |
@@ -301,7 +302,8 @@ def judge(inc: typing.Any, got: dict) -> dict:
     else:
         owed = compute_owed(inc.formula, int(inc.formula_param), int(inc.bonus_bps),
                             coll, debt, rates[debt_asset], usd8)
-        if owed < int(inc.min_owed_src) or owed <= 0:
+        # below the minimum, or so small it rounds to 0 GEN: nothing to pay
+        if owed < int(inc.min_owed_src) or owed * int(inc.scale_num) // int(inc.scale_den) <= 0:
             verdict, reason, owed = V_NOT_ELIGIBLE, R_MIN, 0
     return {"verdict": verdict, "reason": reason, "owed_src": owed,
             "owed_gen": owed * int(inc.scale_num) // int(inc.scale_den),

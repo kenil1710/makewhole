@@ -42,20 +42,31 @@ export const eventKey = (l) => `${String(l.transactionHash).toLowerCase()}:${par
  * each page so the caller can persist the cursor before moving on.
  * -> { cursor, done, pages }
  */
-export async function scan({ inc, query, cursor, rpcs, finalized, span = 2000, maxPages = 1e9, onPage, rpc = defaultRpc }) {
+export async function scan({ inc, query, cursor, rpcs, finalized, span = 2000, maxPages = 1e9, onPage, onMismatch, rpc = defaultRpc }) {
   let pages = 0;
   let s = span;
   for (;;) {
     const page = nextPage(cursor, inc, finalized, s);
     if (!page) return { cursor, done: cursor >= Math.min(inc.to_block, finalized) && finalized >= inc.to_block, pages };
     if (pages >= maxPages) return { cursor, done: false, pages };
-    let logs = null, lastErr = null;
+    // Every page is read from the first TWO endpoints that answer, and the union
+    // is kept: one endpoint silently dropping logs cannot hide an event.
+    let logs = null, lastErr = null, answers = [];
     for (const url of rpcs) {
       try {
-        logs = await rpc(url, "eth_getLogs", [{ address: query.address, topics: query.topics, fromBlock: hex(page[0]), toBlock: hex(page[1]) }]);
-        if (!Array.isArray(logs)) { logs = null; throw new Error("not an array"); }
-        break;
+        const got = await rpc(url, "eth_getLogs", [{ address: query.address, topics: query.topics, fromBlock: hex(page[0]), toBlock: hex(page[1]) }]);
+        if (!Array.isArray(got)) throw new Error("not an array");
+        answers.push(got);
+        if (answers.length === 2) break;
       } catch (e) { lastErr = e; }
+    }
+    if (answers.length > 0) {
+      const seen = new Map();
+      for (const a of answers) for (const l of a) seen.set(eventKey(l), l);
+      logs = [...seen.values()];
+      if (answers.length === 2 && (answers[0].length !== answers[1].length || logs.length !== answers[0].length)) {
+        onMismatch?.({ from: page[0], to: page[1], a: answers[0].length, b: answers[1].length });
+      }
     }
     if (logs === null) {
       if (s > 10) { s = Math.max(10, Math.floor(s / 2)); continue; }

@@ -709,13 +709,14 @@ class TestFiling(Base):
         inc = self.view("get_incident", iid)
         self.assertEqual((inc["filings"], inc["eligible"], inc["accounts"], inc["owed_gen_total_wei"]), (1, 0, 0, "0"))
 
-    def test_price_condition_reverting_is_never_met(self):
+    def test_price_condition_reverting_records_nothing(self):
         iid, cfg = self.open(CBETH)
         ch = fx.install_rpcs(cfg)
         for blk in ch.at:
             ch.at[blk]["calls"][("0xd7e2307bafb6e8ee916c54a50d938161c0c9cec3", "0xa035b1fe")] = stub.MockChain.REVERT
         tx, li = self.ev(CBETH)
-        self.assertEqual(self.file(iid, tx, li)["reason"], "PRICE_CONDITION_NOT_MET")
+        self.refused("file_event", iid, tx, li, contains="PRICE_SOURCE_REVERTED")
+        self.assertEqual(self.view("get_incident", iid)["filings"], 0)
 
     def test_price_condition_disagreement_inconclusive(self):
         iid, cfg = self.open(CBETH)
@@ -1396,6 +1397,114 @@ class TestViews(Base):
     def test_last_result_written(self):
         iid, _ = self.open(CBETH)
         self.assertIn('"incident_id": ' + str(iid), self.view("get_last_result", fx.SPONSOR))
+
+
+class TestAttackRound(Base):
+    """docs/ATTACK_REPORT_V2.md: each finding and each probe has a test here."""
+
+    def test_A1_reverting_price_source_is_not_a_permanent_verdict(self):
+        iid, cfg = self.open(CBETH)
+        ch = fx.install_rpcs(cfg)
+        saved = {b: dict(ch.at[b]["calls"]) for b in ch.at}
+        for blk in ch.at:
+            ch.at[blk]["calls"][("0xd7e2307bafb6e8ee916c54a50d938161c0c9cec3", "0xa035b1fe")] = stub.MockChain.REVERT
+        tx, li = self.ev(CBETH)
+        self.refused("file_event", iid, tx, li, contains="PRICE_SOURCE_REVERTED")
+        for b in saved:
+            ch.at[b]["calls"] = saved[b]
+        self.assertEqual(self.file(iid, tx, li)["verdict"], "ELIGIBLE")
+
+    def test_A2_refund_rounding_to_zero_gen_is_not_eligible(self):
+        iid, _ = self.open(CBETH, scale_num="1", scale_den=str(10 ** 30))
+        tx, li = self.ev(CBETH)
+        r = self.file(iid, tx, li)
+        self.assertEqual((r["verdict"], r["reason"]), ("NOT_ELIGIBLE", "BELOW_MIN_AMOUNT"))
+        s = self.W.view(self.gate, "status", iid, r["borrower"])
+        self.assertEqual(s["state"], "NOT_ELIGIBLE")
+
+    def test_A3_amend_cannot_shorten_the_deadline(self):
+        iid, cfg = self.open(CBETH)
+        self.refused("amend_incident", iid, json.dumps(dict(cfg, claim_deadline_s=3600)), fx.terms(CBETH),
+                     sender=fx.SPONSOR, contains="NOT_LATER")
+        self.refused("amend_incident", iid, json.dumps(dict(cfg, claim_window_s=600)), fx.terms(CBETH),
+                     sender=fx.SPONSOR, contains="NOT_LATER")
+
+    def test_P1_forged_leader_result_records_nothing(self):
+        iid, _ = self.open(CBETH)
+        tx, li = self.ev(CBETH)
+        good = MW.read_event(fx.config(CBETH)["rpcs"], "MORPHO_BLUE", tx, li, {"to": "", "data": ""})
+        self.assertTrue(good["ok"])
+        stub.FORGE["mutate"] = lambda r: dict(r, borrower="0x" + "e" * 40) if r.get("ok") else r
+        try:
+            self.refused("file_event", iid, tx, li, contains="UNDETERMINED")
+        finally:
+            stub.FORGE["mutate"] = None
+        self.assertEqual(self.view("get_incident", iid)["filings"], 0)
+
+    def test_P2_spark_log_cannot_be_filed_in_an_aave_core_incident(self):
+        iid, cfg = self.open(CAPO)
+        ch = fx.install_rpcs(cfg)
+        tx, li = self.ev(CAPO)
+        fake = "0x" + "6" * 64
+        rc = copy.deepcopy(ch.receipts[tx])
+        rc["transactionHash"] = fake
+        for lg in rc["logs"]:
+            lg["address"] = "0xc13e21b648a5ee794902342038ff3adab66be987"
+        ch.receipts[fake] = rc
+        self.refused("file_event", iid, fake, li, contains="NOT_INCIDENT_EMITTER")
+
+    def test_P3_lookalike_morpho_with_same_market_id_refused(self):
+        iid, cfg = self.open(CBETH)
+        ch = fx.install_rpcs(cfg)
+        tx, li = self.ev(CBETH)
+        fake = "0x" + "5" * 64
+        rc = copy.deepcopy(ch.receipts[tx])
+        rc["transactionHash"] = fake
+        for lg in rc["logs"]:
+            lg["address"] = "0x6c247b1f6182318877311737bac0844baa518f5e"   # Morpho's Arbitrum address
+        ch.receipts[fake] = rc
+        self.refused("file_event", iid, fake, li, contains="NOT_INCIDENT_EMITTER")
+
+    def test_P4_proxy_market_with_another_oracle_is_another_id(self):
+        cfg = fx.config(CBETH)
+        m = cfg["markets"][0]
+        other = MW.morpho_market_id(m["loan_token"], m["collateral_token"], "0x" + "4" * 40, m["irm"], int(m["lltv"]))
+        self.assertNotEqual(other, m["id"])
+        cfg["markets"][0] = dict(m, oracle="0x" + "4" * 40)
+        r = MW.parse_terms(cfg, fx.terms(CBETH), 60)
+        self.assertIn("does not hash", r["why"])
+
+    def test_P5_claim_in_another_incident_refused(self):
+        a, _ = self.open(CBETH)
+        b, _ = self.open(CBETH)
+        tx, li = self.ev(CBETH)
+        r = self.file(a, tx, li)
+        self.W.advance(7 * fx.DAY)
+        self.refused("claim", b, r["borrower"], contains="NOT_ELIGIBLE")
+
+    def test_P6_comet_absorb_debt_event_is_not_absorb_collateral(self):
+        k = [k for k, s in fx.SAMPLES.items() if s["template"] == "COMPOUND_V3" and s.get("logs")][0]
+        s = fx.SAMPLES[k]
+        rc = receipt(s["chain"], s["logs"][0]["tx"])
+        debt_topic = "0x1547a878dc89ad3c367b6338b4be6a65a5dd74fb77ae044da1e8747ef1f4f62f"
+        others = [l for l in rc["logs"] if l["topics"][0] == debt_topic]
+        for lg in others:
+            self.assertFalse(MW.decode_event("COMPOUND_V3", lg)["ok"])
+
+    def test_P7_rounding_with_prime_pool_never_overpays(self):
+        rnd = random.Random(3)
+        for _ in range(50):
+            owed = [rnd.randint(1, 10 ** 20) for _ in range(rnd.randint(2, 40))]
+            T = sum(owed)
+            P = rnd.randint(1, T)
+            paid = sum(MW.entitled(o, P, T) for o in owed)
+            self.assertLessEqual(paid, P)
+
+    def test_P8_filing_by_the_sponsor_changes_nothing_for_payees(self):
+        iid, _ = self.open(CBETH)
+        tx, li = self.ev(CBETH)
+        r = self.file(iid, tx, li, sender=fx.SPONSOR)
+        self.assertEqual(r["borrower"], "0xca686974913389d42f3c5f61010503daccdb487a")
 
 
 if __name__ == "__main__":

@@ -686,6 +686,10 @@ def read_event(rpcs: list, template: str, tx_hash: str, log_index: int,
             return {"ok": False, "why": "PRICE_SOURCE_" + c["why"]}
         if c["value"]["chain_id"] != d["chain_id"]:
             return {"ok": False, "why": "PRICE_SOURCE_SOURCES_DISAGREE"}
+        if c["value"]["value"] == "REVERT":
+            # Not recorded: an archive node that cannot serve old state may
+            # answer like a revert, and a NOT_ELIGIBLE could never be refiled.
+            return {"ok": False, "why": "PRICE_SOURCE_REVERTED"}
         d["cond_answer"] = c["value"]["value"]
     return d
 
@@ -737,7 +741,8 @@ def judge(inc: typing.Any, got: dict) -> dict:
     else:
         owed = compute_owed(inc.formula, int(inc.formula_param), int(inc.bonus_bps),
                             coll, debt, rates[debt_asset], usd8)
-        if owed < int(inc.min_owed_src) or owed <= 0:
+        # below the minimum, or so small it rounds to 0 GEN: nothing to pay
+        if owed < int(inc.min_owed_src) or owed * int(inc.scale_num) // int(inc.scale_den) <= 0:
             verdict, reason, owed = V_NOT_ELIGIBLE, R_MIN, 0
     return {"verdict": verdict, "reason": reason, "owed_src": owed,
             "owed_gen": owed * int(inc.scale_num) // int(inc.scale_den),
@@ -1246,6 +1251,8 @@ class MakeWholeV2(gl.contract.Contract):
         p = parse_terms(cfg, str(terms), int(self.min_window_s))
         if not p["ok"]:
             raise gl.vm.UserError("BAD_CONFIG: " + p["why"])
+        if int(inc.created_at) + p["deadline_s"] < int(inc.claim_deadline) or p["window_s"] < int(inc.claim_window_s):
+            raise gl.vm.UserError("NOT_LATER: an amendment may not shorten the claim deadline or the claim window")
         self._apply_terms(inc, p)
         inc.claim_deadline = u64(int(inc.created_at) + p["deadline_s"])
         inc.claim_window_s = u64(p["window_s"])
@@ -1340,6 +1347,9 @@ class MakeWholeV2(gl.contract.Contract):
                                       "event identically (" + why + "); nothing was recorded, file again")
             if why == "NO_SUCH_LOG":
                 raise gl.vm.UserError("NO_SUCH_LOG: that transaction has no log at index " + str(li))
+            if why == "PRICE_SOURCE_REVERTED":
+                raise gl.vm.UserError("PRICE_SOURCE_REVERTED: the price-source call reverted at block of this event "
+                                      "on the incident's endpoints; nothing was recorded, file again")
             if why == "WRONG_EVENT":
                 raise gl.vm.UserError("WRONG_EVENT: that log is not a " + TEMPLATE_EVENTS[template] + " event")
             raise gl.vm.UserError("UNREADABLE: the receipt could not be read (" + why + ")")

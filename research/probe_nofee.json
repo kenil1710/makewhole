@@ -1,0 +1,42 @@
+{
+ "address": "0x2D0E64228c2d7942869B35f77511620334bb8F3f",
+ "claim": "0x9c7dcba3fcc2923892d6c1b1ad31d98fa055b52098158501063a7c4664543814",
+ "status": "FINALIZED",
+ "effects": {
+  "0x03ed1334cca0401f4166ee00d59842fe1f9dd10a0832959364eb10caf3b4b5ef": {
+   "phase": "finalized",
+   "value": 198235818662261,
+   "include": true,
+   "descriptor": "0x59f13e0e6c9e9781515612d630118a74fb33189dc5133e9c1551d9836437d0b4",
+   "declaredBudget": 0
+  }
+ },
+ "messages": [
+  {
+   "messageType": "0",
+   "recipient": "0xFF7690b1963171db50cE9a1E3ac58CF25C8DfB4c",
+   "value": 198235818662261,
+   "data": "",
+   "onAcceptance": false
+  }
+ ],
+ "before": {
+  "c": "50000000000000000",
+  "b": "0"
+ },
+ "after": {
+  "c": "49801764181337739",
+  "b": "198235818662261"
+ },
+ "ledger": {
+  "books_wei": "49801764181337739",
+  "identity_holds": true,
+  "on_chain_balance_wei": "49801764181337739",
+  "paid_out_wei": "198235818662261",
+  "pools_in_wei": "50000000000000000",
+  "refunded_out_wei": "0",
+  "refused_in_wei": "0",
+  "refused_out_wei": "0"
+ },
+ "due": "198235818662261"
+}

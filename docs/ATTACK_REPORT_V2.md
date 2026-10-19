@@ -1,0 +1,34 @@
+# MakeWhole v2: internal attack round
+
+One round across the three layers (contract, keeper, meaning) before deployment. Every finding of severity High or
+Medium was fixed in the commit that carries this report; each finding and each probe has a test named after it
+(`test/v2/test_contract.py::TestAttackRound`, `test/v2/keeper.test.mjs` tests `K1`-`K5`).
+
+## Findings
+
+| id | layer | severity | finding | fix | test |
+|---|---|---|---|---|---|
+| A1 | contract | Medium | A price-source `eth_call` that reverted on two endpoints was recorded as `NOT_ELIGIBLE`. A filing counts once, so an archive node that cannot serve old state (some answer like a revert) could turn an eligible event into a permanent refusal. | A reverted price source is now a refusal, `PRICE_SOURCE_REVERTED`: nothing is recorded and the event can be filed again. | `test_A1_reverting_price_source_is_not_a_permanent_verdict` |
+| A2 | contract / meaning | Medium | An event whose refund was positive in the reference asset but floored to 0 GEN was recorded `ELIGIBLE` with 0 owed. RecoveryGate then saw an eligible account owing nothing and answered `UNAVAILABLE` for a real, settled account. | A refund that rounds to 0 GEN is `NOT_ELIGIBLE` with reason `BELOW_MIN_AMOUNT`. | `test_A2_refund_rounding_to_zero_gen_is_not_eligible` |
+| A3 | contract | Low | Before the first filing a sponsor could amend the terms to a shorter claim deadline or window. | An amendment may not shorten either (`NOT_LATER`). | `test_A3_amend_cannot_shorten_the_deadline` |
+| K1 | keeper | Medium | Discovery trusted one `eth_getLogs` endpoint per page; an endpoint silently dropping logs would hide events from the keeper (the contract would never see them). | Each page is read from two endpoints and the union is kept; a disagreement is reported in the run's errors. | `K1` |
+| K2 | keeper | Medium | Anyone can open an incident. One incident with thousands of real events would use the whole run and starve every other incident. | At most 150 submissions per incident per run, and incidents with the least work left go first. | `K2` |
+| K3 | keeper | Low | A stale or edited state file saying `FILED` was believed. | The contract is the source of truth: a `FILED` entry the contract does not have is re-queued. | `K3` |
+
+## Probes that found nothing to fix
+
+| id | layer | probe | result | test |
+|---|---|---|---|---|
+| P1 | contract | A leader forging the decoded event (borrower replaced) | Validators recompute and disagree; the transaction is undetermined and nothing is recorded. | `test_P1_forged_leader_result_records_nothing` |
+| P2 | contract | Fake logs: a real LiquidationCall re-emitted from SparkLend's address into an Aave Core incident | `NOT_INCIDENT_EMITTER` (emitters are frozen per incident and must be in the code's official registry). | `test_P2_…`, `test_lookalike_contract_log_refused`, `test_lookalike_emitter_refused` |
+| P3 | contract | A look-alike Morpho deployment emitting the same market id | `NOT_INCIDENT_EMITTER`. | `test_P3_…` |
+| P4 | contract | A proxy market: same tokens, another oracle | Another market id (`keccak256(abi.encode(params))`, recomputed by the contract); a config naming the real id with other parameters is refused. | `test_P4_…`, `test_real_morpho_market_ids` |
+| P5 | contract | Claiming in incident B for an account that is only in incident A | `NOT_ELIGIBLE`. Accounts, pools and payouts are per incident. | `test_P5_…` |
+| P6 | contract | Double counting across templates: Compound's `AbsorbDebt` in the same receipt as `AbsorbCollateral` | Only `AbsorbCollateral` decodes; each event is (chain, tx, log index) and counts once per incident; the same event in two incidents is visible through `event_incidents_of`. | `test_P6_…`, `test_same_event_in_two_incidents_both_count_and_overlap_is_visible`, duplicate tests |
+| P7 | contract | Pool draining through rounding (many accounts, prime-sized pools, top-ups between claims) | Every entitlement floors; the sum never exceeds the pool; repeated claims pay only the difference. | `test_P7_…`, `test_rounding_cannot_drain_pool`, `test_sum_of_entitlements_never_exceeds_pool_random` |
+| P8 | contract | Filing someone else's liquidation (or the sponsor filing) to redirect a payout | The payee is always the borrower in the log; the filer is not paid. | `test_P8_…`, `test_payee_is_the_borrower_never_the_filer`, `test_claimer_is_not_paid` |
+| P9 | contract (live) | A `claim` sent without an External message allocation: would the books record a payout that never arrives? | Measured on Studio Dev (throwaway deployment `0x2D0E6422…`, claim [`0x9c7dcba3…`](https://explorer-studio-dev.genlayer.com/tx/0x9c7dcba3fcc2923892d6c1b1ad31d98fa055b52098158501063a7c4664543814)): the value was delivered and the contract's books equal its balance (`research/probe_nofee.json`). Every seed payout is still checked at the recipient. | `tools/final_check.mjs` |
+| K4 | keeper | Two keepers racing on the same events | Each event is filed once; the second transaction is refused `DUPLICATE` and resolves to `FILED`. | `K4` |
+| K5 | keeper | An endpoint answering `getLogs` with a non-array | Not read as "no events"; the cursor does not move. | `K5`, `a malformed getLogs answer is not taken as zero events` |
+| M1 | meaning | RecoveryGate fed missing, non-numeric, inconsistent or truthy-but-not-true fields (4,000 random records) | Never `PAID` unless every field is present and consistent; `made_whole` only with `PAID`. | `TestGateClassify`, `TestGateFuzz` |
+| M2 | meaning | Docs drifting from code | `docs/RULES_V2.md` and the site's `/docs` are generated from the contract (registries, refusal codes, and the money functions quoted verbatim); the suite fails if they differ. | `TestDocsMatchCode` |

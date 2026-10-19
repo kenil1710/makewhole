@@ -20,6 +20,7 @@
 // or whose submitted transaction is still pending.
 import { queriesFor, scan } from "./discover.mjs";
 
+export const PER_INCIDENT_SUBMITS = 150;   // per run: no incident can starve the others
 export const PERMANENT = ["NOT_INCIDENT_EMITTER", "NOT_INCIDENT_MARKET", "OUT_OF_RANGE", "WRONG_EVENT", "NO_SUCH_LOG",
   "TX_FAILED", "WRONG_CHAIN", "BAD_TX", "BAD_LOG_INDEX", "WRONG_RECEIPT", "LOG_REMOVED"];
 export const CLOSED_FOR_FILING = ["DEADLINE_PASSED", "NO_INCIDENT"];
@@ -79,7 +80,11 @@ export async function runKeeper({ mw, src, state, opts }) {
   state.contract = mw.address;
   const incs = await allPages((o, l) => mw.incidents(o, l), opts.incidentPage ?? 50);
   let submits = 0;
+  // incidents with the least work left go first, so one huge incident cannot starve the rest
+  const backlog = (inc) => Object.values(state.incidents[String(inc.incident_id)]?.events ?? {}).filter((e) => e.status !== "FILED" && e.status !== "REFUSED").length;
+  incs.sort((a, b) => backlog(a) - backlog(b) || a.incident_id - b.incident_id);
   for (const inc of incs) {
+    let incSubmits = 0;
     const iid = String(inc.incident_id);
     const st = (state.incidents[iid] ??= { chain_id: inc.chain_id, title: inc.title, cursors: {}, scan_done: false, events: {} });
     st.title = inc.title;
@@ -100,6 +105,7 @@ export async function runKeeper({ mw, src, state, opts }) {
           try {
             const r = await scan({ inc, query: q, cursor, rpcs: opts.logRpcs?.[inc.chain_id] ?? inc.rpcs, finalized: fin,
               span: opts.pageSpan?.[inc.chain_id] ?? 2000, maxPages: opts.maxPages ?? 1e9, rpc: src.rpc,
+              onMismatch: (m) => run.errors.push(`incident ${iid} ${ck}: log endpoints disagree on ${m.from}-${m.to} (${m.a} vs ${m.b} events); kept the union`),
               onPage: async (events, to) => {
                 for (const e of events) {
                   const k = `${e.tx}:${e.log_index}`;
@@ -137,13 +143,13 @@ export async function runKeeper({ mw, src, state, opts }) {
       for (const [k, e] of chunk) {
         if (Number(have[k] ?? 0) > 0) { e.status = "FILED"; e.filing_id = Number(have[k]); run.confirmed++; continue; }
         if (!filingOpen) { e.status = "REFUSED"; e.last_error = "DEADLINE_PASSED: filings closed before this event was filed"; continue; }
-        if (submits >= (opts.maxSubmits ?? 1e9)) continue;
+        if (submits >= (opts.maxSubmits ?? 1e9) || incSubmits >= (opts.perIncident ?? PER_INCIDENT_SUBMITS)) continue;
         const [tx, li] = k.split(":");
         let hash;
         try { hash = await mw.submit(Number(iid), tx, Number(li)); }
         catch (err) { schedule(e, `submit failed: ${String(err.message ?? err).slice(0, 120)}`, now); run.retried++; await save(state); continue; }
         e.status = "SUBMITTED"; e.tx_hash = hash; e.attempts = (e.attempts ?? 0) + 1; e.submitted_at = now();
-        submits++; run.submitted++;
+        submits++; incSubmits++; run.submitted++;
         await save(state);                       // the hash is durable before we wait on it
         if (opts.waitAccepted) { try { await opts.waitAccepted(hash); } catch { /* checked below or next run */ } }
         await settle(mw, iid, k, e, run, now);
@@ -158,6 +164,12 @@ export async function runKeeper({ mw, src, state, opts }) {
       for (const [k, e] of Object.entries(st.events)) {
         const f = byKey.get(k);
         if (f) { e.status = "FILED"; e.filing_id = f.filing_id; e.verdict = f.verdict; e.reason = f.reason; }
+        else if (e.status === "FILED") {
+          // the contract is the source of truth: a state file that says FILED
+          // for an event the contract does not have is wrong, so file it again
+          e.status = "QUEUED"; e.last_error = "state said FILED but the contract has no such filing"; delete e.filing_id;
+          run.requeued = (run.requeued ?? 0) + 1;
+        }
       }
       const accounts = await allPages((o, l) => mw.accounts(Number(iid), o, l), 100);
       st.coverage = coverage(st, inc, accounts);

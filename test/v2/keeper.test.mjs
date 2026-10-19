@@ -53,7 +53,11 @@ function fakeMW({ incidents, acceptedPolls = 0, refuse = () => null, failSubmit 
       if (!t) return null;
       t.polls++;
       if (t.polls <= acceptedPolls) return { status: "ACCEPTED", ok: !t.reason, reverted: !!t.reason, reason: t.reason ?? "" };
-      if (!t.reason && !filings.has(t.key) && !noStateAfterFinal(t)) filings.set(t.key, { filing_id: ++n, incident_id: t.iid, tx_hash: t.tx, log_index: t.li, verdict: "ELIGIBLE", reason: "" });
+      if (!t.final) {
+        t.final = true;
+        if (!t.reason && filings.has(t.key)) t.reason = "DUPLICATE: this event is already filing #" + filings.get(t.key).filing_id;
+        if (!t.reason && !noStateAfterFinal(t)) filings.set(t.key, { filing_id: ++n, incident_id: t.iid, tx_hash: t.tx, log_index: t.li, verdict: "ELIGIBLE", reason: "" });
+      }
       return { status: "FINALIZED", ok: !t.reason, reverted: !!t.reason, reason: t.reason ?? "" };
     },
   };
@@ -99,7 +103,7 @@ test("more than 500 events across many getLogs pages are all filed once", async 
   const src = fakeSource({ events: evs(640) });
   const mw = fakeMW({ incidents: [inc(1)] });
   const st = emptyState();
-  await run(mw, src, st, { span: 37 });
+  await run(mw, src, st, { span: 37, perIncident: 1e6 });
   assert.equal(mw.submits.length, 640);
   assert.equal(new Set(mw.submits.map((s) => s.join())).size, 640);
   assert.equal(st.incidents[1].cursors[AAVE], 1999);
@@ -494,4 +498,66 @@ test("verdicts of filed events are copied into the state", async () => {
   const st = emptyState();
   await run(mw, src, st);
   for (const e of Object.values(st.incidents[1].events)) assert.equal(e.verdict, "ELIGIBLE");
+});
+
+// ---- attack round (docs/ATTACK_REPORT_V2.md) ----
+
+test("K1: one log endpoint silently dropping events cannot hide them (union of two)", async () => {
+  const all = evs(30);
+  const src = fakeSource({ events: all });
+  const honest = src.rpc;
+  src.rpc = async (url, m, p) => { const r = await honest(url, m, p); return url === "https://a" ? r.filter((_, i) => i % 3 !== 0) : r; };
+  const mw = fakeMW({ incidents: [inc(1)] });
+  const st = emptyState();
+  const r = await run(mw, src, st);
+  assert.equal(st.incidents[1].coverage.found, 30);
+  assert.ok(r.errors.some((e) => /disagree/.test(e)));
+});
+
+test("K2: a huge incident cannot starve a small one", async () => {
+  const big = evs(1000, { seed: 1 }), small = evs(3, { seed: 2, from: 5000, to: 5999 });
+  const src = fakeSource({ events: [...big, ...small] });
+  const mw = fakeMW({ incidents: [inc(1), inc(2, { from_block: 5000, to_block: 5999 })] });
+  const st = emptyState();
+  await run(mw, src, st, { span: 1000, perIncident: 150 });
+  assert.equal(st.incidents[2].coverage.filed, 3);
+  assert.equal(st.incidents[1].coverage.filed, 150);
+  await run(mw, src, st, { span: 1000, perIncident: 150 });
+  assert.equal(st.incidents[1].coverage.filed, 300);
+});
+
+test("K3: a tampered state file claiming FILED is corrected from the contract", async () => {
+  const src = fakeSource({ events: evs(4) });
+  const mw = fakeMW({ incidents: [inc(1)] });
+  const st = emptyState();
+  await run(mw, src, st, { maxSubmits: 0 });
+  for (const e of Object.values(st.incidents[1].events)) { e.status = "FILED"; e.filing_id = 99; }
+  const r = await run(mw, src, st);
+  assert.equal(r.requeued, 4);
+  await run(mw, src, st);
+  assert.equal(st.incidents[1].coverage.filed, 4);
+  assert.equal(mw.store.size, 4);
+});
+
+test("K4: two keepers racing file each event once; the loser resolves to FILED", async () => {
+  const src = fakeSource({ events: evs(5) });
+  const mw = fakeMW({ incidents: [inc(1)], acceptedPolls: 1 });
+  const a = emptyState(), b = emptyState();
+  await run(mw, src, a);
+  await run(mw, src, b);           // a's txs are not final yet: b submits too
+  await run(mw, src, a);
+  await run(mw, src, b);
+  assert.equal(mw.store.size, 5);
+  assert.equal(a.incidents[1].coverage.filed, 5);
+  assert.equal(b.incidents[1].coverage.filed, 5);
+});
+
+test("K5: a lying getLogs answer (a non-array) never advances the cursor", async () => {
+  const i = inc(1);
+  const st = emptyState();
+  const mw = fakeMW({ incidents: [i] });
+  const src = { finalized: async () => 1e9, rpc: async () => "0x" };
+  const r = await runKeeper({ mw, src, state: st, opts: { now: () => 1, pageSpan: { 1: 100 } } });
+  assert.ok(r.errors.length > 0);
+  assert.equal(st.incidents[1].cursors[AAVE], undefined);
 });
