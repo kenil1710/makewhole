@@ -1,0 +1,33 @@
+{
+ "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
+ "sponsor": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+ "incidents": {
+  "aave-wsteth-capo-2026-03": {
+   "incident_id": 1,
+   "open_tx": "0x7c2d62a9ec05e0e0a0ef95ddc9b77fb1da513cbcfbb934b802adcb765d5c56e4",
+   "pool_wei": "5200000000000000000",
+   "terms_sha256": "5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "official_list_sha256": "2ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c",
+   "claim_deadline": 1792440928,
+   "claim_end": 1792444528
+  },
+  "morpho-cbeth-base-2025-03": {
+   "incident_id": 2,
+   "open_tx": "0x1a8cc54210a0dc08a86a1383d12b5027bb39cccfa389077aee8bffde3c5ebe6d",
+   "pool_wei": "120000000000000000",
+   "terms_sha256": "c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "official_list_sha256": "",
+   "claim_deadline": 1792440943,
+   "claim_end": 1792444543
+  },
+  "morpho-ezeth-2024-04": {
+   "incident_id": 3,
+   "open_tx": "0x39be9ae21d699d4534c37c67350c2662625ec25d000787187e8dff90da29322d",
+   "pool_wei": "10000000000000000000",
+   "terms_sha256": "32f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
+   "official_list_sha256": "",
+   "claim_deadline": 1792440959,
+   "claim_end": 1792444559
+  }
+ }
+}

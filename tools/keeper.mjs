@@ -50,8 +50,15 @@ async function save(st, final = false) {
     try {
       execFileSync("git", ["-C", dir, "add", "-A"]);
       execFileSync("git", ["-C", dir, "commit", "-qm", `keeper: ${st.updated_at}`], { stdio: "ignore" });
-      execFileSync("git", ["-C", dir, "push", "-q", "origin", "HEAD:keeper-state"], { stdio: "ignore" });
-    } catch { /* nothing to commit, or a push race: the next save retries */ }
+      try { execFileSync("git", ["-C", dir, "push", "-q", "origin", "HEAD:keeper-state"], { stdio: "ignore" }); }
+      catch {
+        // another keeper pushed first: keep our file (the contract is the source
+        // of truth and the next run reconciles any difference) and push again
+        execFileSync("git", ["-C", dir, "fetch", "-q", "origin", "keeper-state"], { stdio: "ignore" });
+        execFileSync("git", ["-C", dir, "merge", "-q", "-s", "ours", "-m", "keeper: keep this run's state", "FETCH_HEAD"], { stdio: "ignore" });
+        execFileSync("git", ["-C", dir, "push", "-q", "origin", "HEAD:keeper-state"], { stdio: "ignore" });
+      }
+    } catch { /* nothing to commit, or the push failed: the next save retries */ }
   }
 }
 

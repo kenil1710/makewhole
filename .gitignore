@@ -16,3 +16,4 @@ test/.seed-secrets.json
 .canonical-state.json
 tools/shots/node_modules/
 frontend/.env.local
+.keeper-state/

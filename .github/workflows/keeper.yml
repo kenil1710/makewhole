@@ -1,0 +1,28 @@
+name: keeper
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch: {}
+concurrency: keeper
+permissions:
+  contents: write
+jobs:
+  keeper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 58
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: keeper-state
+          path: .keeper-state
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --prefix test
+      - run: |
+          git -C .keeper-state config user.name "makewhole-keeper"
+          git -C .keeper-state config user.email "keeper@users.noreply.github.com"
+      - run: node tools/keeper.mjs --push --minutes=50
+        env:
+          MAKEWHOLE_KEEPER_KEY: ${{ secrets.MAKEWHOLE_KEEPER_KEY }}
