@@ -559,30 +559,42 @@
     "0xee0fef5f4269db15ab7c64098314157e6d34519ab404105fe6acf454674f99e3:36": {
      "block": 19722300,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x77dd61363ad1e35a5678c8bc8cc0b4f0bad518051f7528ddb345a1ccc49b13b6",
+     "submitted_at": 1792423395,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x36fa318c81cc7a2d6300594036958dc14ecab111ac70aa746703262c37187265:2": {
      "block": 19722301,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0xa4778f064461aad7840d5d6156c28dca298771c0c5cb33993473688774d0d98e",
+     "submitted_at": 1792423469,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x0be3b66e5dc80d4b46df1ec989a6ab65cfed18f1e7fd1bb483d1612addb1223f:12": {
      "block": 19722301,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x30535293aa5c46331becfea245afaa2611446376ef534df2b5b149ee8d604f50",
+     "submitted_at": 1792423485,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0xa6fed64c6b2b5a328a36e142504ef87996470a6543a1083bf052445f2950199b:13": {
      "block": 19722302,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x9c16173723cedf9115d92d86df0de446cccf21880962e8daadd47b4ca4968bd8",
+     "submitted_at": 1792423502,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x54fb9772334536b2cf953d93af7c34e5513681390f7d49cede9b41aeb3b94044:86": {
      "block": 19722302,
@@ -1506,5 +1518,5 @@
    "closed": false
   }
  },
- "updated_at": "2026-10-19T15:23:10.511Z"
+ "updated_at": "2026-10-19T15:25:16.600Z"
 }
