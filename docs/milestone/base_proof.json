@@ -1,0 +1,32 @@
+[
+  {
+    "name": "MakeWhole (canonical)",
+    "address": "0x721aec66070f54082164B58fB8E2e6f1E6A085BA",
+    "file": "contracts/MakeWhole.py",
+    "bytes": 89288,
+    "sha256_chain": "7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed",
+    "sha256_base": "7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed",
+    "identical": true,
+    "balance_wei": "5181900000000000000"
+  },
+  {
+    "name": "MakeWhole (demo)",
+    "address": "0x3265AfB9e1f311698f85f7AF4FD890303Cd39Ad1",
+    "file": "contracts/MakeWhole.py",
+    "bytes": 89288,
+    "sha256_chain": "7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed",
+    "sha256_base": "7b3e9dd2d52fe3b2eebb639b5b215ccfdbbf58f80840d465628270acdd698bed",
+    "identical": true,
+    "balance_wei": "12333800000000000000"
+  },
+  {
+    "name": "RecoveryLedger",
+    "address": "0x59941E298EF8b3C4BcDdE0674a19EdC55DD1362B",
+    "file": "contracts/RecoveryLedger.py",
+    "bytes": 3378,
+    "sha256_chain": "bd3684c745a52ced82c37b6371e26a581b4a04b66ebb6df51e26c95cfa860cee",
+    "sha256_base": "bd3684c745a52ced82c37b6371e26a581b4a04b66ebb6df51e26c95cfa860cee",
+    "identical": true,
+    "balance_wei": "0"
+  }
+]
