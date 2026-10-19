@@ -1,0 +1,25 @@
+MakeWhole refund terms: Aave V3 wstETH CAPO oracle incident, Ethereum, 10 March 2026
+
+PART A. The Aave DAO proposal, quoted verbatim.
+Source: https://governance.aave.com/t/direct-to-aip-wsteth-capo-oracle-incident-user-reimbursement/24275 and the AIP payload aave-dao/aave-proposals-v3 commit a93ce7ec2ed3a2df946f6add33b9951bb022d9dc.
+
+"This proposal refunds users who were erroneously liquidated during the wstETH CAPO oracle misconfiguration incident on Ethereum Core and Prime instances. The total refund amounts to 513.19 ETH, with a net cost to the DAO of 358.56 ETH after recoveries, a figure that should decrease as more recoveries are processed."
+
+"A configuration misalignment between the `snapshotRatio` and `snapshotTimestamp` parameters in the wstETH CAPO risk oracle caused the reported wstETH/stETH exchange rate cap to fall approximately 2.85% below the actual market rate. This triggered erroneous liquidations across 34 accounts on the Ethereum Core and Prime instances, totaling ~10,938 wstETH liquidated."
+
+"The affected users bear no responsibility for these liquidations, which were the direct result of a protocol-level configuration error. Making these users whole is a straightforward decision for the DAO and reinforces the trust that underpins Aave's position as the leading lending protocol."
+
+Loss Breakdown table as published (ETH): Oracle profit (loss to users) 382.76; Liquidation bonus (loss to users) 129.72; Goodwill allowance 1; Total loss 513.19; Recovered from Titan Builder (141.60); Recovered liquidation fees (13.32); Net cost to the DAO 358.56.
+
+"Upon AIP execution, the AFC will distribute the appropriate refund amount to each affected user address."
+
+PART B. How this pool applies it: drafted for MakeWhole from the post-mortem; not published by the protocol. MakeWhole computes refunds from on-chain events under these terms; it does not decide who caused the incident. The proposal published no per-account formula; the per-wstETH rate and the 1% in [E2] were taken from the Aave Finance Committee's own payout transaction 0x687f2a608fbc48c2f90130fd6f3620835770b03424ed497a5002f095d1c00f3f, which paid 35 accounts although the AIP said 34.
+
+[E1] Eligible: each LiquidationCall event emitted by the Aave v3 Ethereum Core pool 0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2 or Prime pool 0x4e033931ad43597d96D6bcc25c280717730B58B1, with wstETH 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 as the collateral, mined in Ethereum blocks 24626860 to 24628088 inclusive.
+[E2] Price source: the event counts only if the wstETH CAPO adapter 0xe1d97bf61901b075e9626c8a2340a7de385861ef answers isCapped() = true (selector 0x671528d4) at the event's block, read from at least two of the frozen RPCs.
+[E3a] Amount: the wstETH seized multiplied by 0.034991439125 ETH per wstETH, plus 1% of the debt repaid valued in ETH (WETH at 1, cbETH at 1.124931903010748, osETH at 1.067241394153283 ETH per token).
+[E3] Payee: each refund is owed to the borrower address recorded in the event and is paid to that same address on GenLayer. A borrower that is a smart account (a Safe, a DSProxy, any contract) is paid at the account address; nobody else can redirect it.
+[X3] Not counted: events from other contracts, other markets, other chains, outside the block range, in failed transactions, or in blocks that are not final on the source chain. Each event (chain, transaction, log index) counts once.
+[P1] Payment: refunds are paid in GEN at 1 ETH = 0.01 GEN. If the refunds owed exceed the pool, every refund is reduced in the same proportion: floor(owed x pool / total owed), whatever the order of claims. A top-up by the sponsor raises every refund in proportion until the pool covers them.
+[P2] Deadlines: events can be filed until the claim deadline; refunds can then be claimed (pushed to the borrower by anyone, who pays the transfer fee) for the claim window. Afterwards everything the pool still holds returns to the sponsor. Any part of the pool above the total owed may be returned to the sponsor from the claim deadline on.
+[R1] Reconciliation: the official list is the Aave Finance Committee payout above, 35 accounts, total 512.19285982518885 ETH, frozen as sha256 2ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c (one line "address=amount_in_wei" per account, sorted by address). An account's computed refund MATCHES its listed amount within 1 part per million (1000 parts per billion); otherwise it is a DIFF with the delta shown; an account the list does not name is NOT_IN_LIST.

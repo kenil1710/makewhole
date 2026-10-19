@@ -1,0 +1,221 @@
+{
+ "1": [
+  {
+   "url": "https://eth.drpc.org",
+   "chain": 1,
+   "finalized": 26226385,
+   "logs_span": 100
+  },
+  {
+   "url": "https://rpc.mevblocker.io",
+   "chain": 1,
+   "finalized": 26226385,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://gateway.tenderly.co/public/mainnet",
+   "chain": 1,
+   "finalized": 26226385,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://eth-mainnet.public.blastapi.io",
+   "chain": 1,
+   "finalized": 26226385
+  },
+  {
+   "url": "https://eth-pokt.nodies.app",
+   "chain": 1,
+   "finalized": 26226385,
+   "logs_span": 10
+  },
+  {
+   "url": "https://ethereum-rpc.publicnode.com",
+   "chain": 1,
+   "finalized": 26226385,
+   "logs_span": 2000
+  },
+  {
+   "url": "https://1rpc.io/eth",
+   "chain": 1,
+   "finalized": 26226385
+  },
+  {
+   "url": "https://eth.llamarpc.com",
+   "err": "http 525 non-json: <!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldi"
+  },
+  {
+   "url": "https://cloudflare-eth.com",
+   "chain": 1,
+   "err": "rpc error -32046: Cannot fulfill request"
+  },
+  {
+   "url": "https://eth.merkle.io",
+   "err": "rpc error -32005: Rate limit exceeded"
+  }
+ ],
+ "10": [
+  {
+   "url": "https://mainnet.optimism.io",
+   "chain": 10,
+   "finalized": 158405597,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://optimism.drpc.org",
+   "chain": 10,
+   "finalized": 158405597,
+   "logs_span": 100
+  },
+  {
+   "url": "https://op-pokt.nodies.app",
+   "chain": 10,
+   "finalized": 158405446,
+   "logs_span": 10
+  },
+  {
+   "url": "https://optimism-mainnet.public.blastapi.io",
+   "err": "rpc error -32000: Blast API is no longer available. Please update your integrati"
+  },
+  {
+   "url": "https://optimism.gateway.tenderly.co",
+   "chain": 10,
+   "finalized": 158405597,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://optimism-rpc.publicnode.com",
+   "chain": 10,
+   "finalized": 158405597,
+   "logs_span": 2000
+  },
+  {
+   "url": "https://1rpc.io/op",
+   "chain": 10,
+   "finalized": 158405446,
+   "logs_span": 10
+  }
+ ],
+ "137": [
+  {
+   "url": "https://polygon-rpc.com",
+   "err": "rpc error undefined: undefined"
+  },
+  {
+   "url": "https://polygon.drpc.org",
+   "chain": 137,
+   "finalized": 95803844,
+   "logs_span": 100
+  },
+  {
+   "url": "https://polygon-pokt.nodies.app",
+   "err": "http 403 non-json: The network of this endpoint requires a paid subscription pla"
+  },
+  {
+   "url": "https://polygon-mainnet.public.blastapi.io",
+   "err": "rpc error -32000: Blast API is no longer available. Please update your integrati"
+  },
+  {
+   "url": "https://polygon.gateway.tenderly.co",
+   "chain": 137,
+   "finalized": 95803846,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://polygon-bor-rpc.publicnode.com",
+   "chain": 137,
+   "finalized": 95803847,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://1rpc.io/matic",
+   "chain": 137,
+   "finalized": 95803707,
+   "logs_span": 10
+  },
+  {
+   "url": "https://rpc-mainnet.matic.quiknode.pro",
+   "chain": 137,
+   "finalized": 95803850,
+   "logs_span": 10000
+  }
+ ],
+ "8453": [
+  {
+   "url": "https://mainnet.base.org",
+   "chain": 8453,
+   "finalized": 52810343
+  },
+  {
+   "url": "https://base.drpc.org",
+   "chain": 8453,
+   "finalized": 52810343,
+   "logs_span": 100
+  },
+  {
+   "url": "https://base-pokt.nodies.app",
+   "chain": 8453,
+   "finalized": 52810343,
+   "logs_span": 10
+  },
+  {
+   "url": "https://base-mainnet.public.blastapi.io",
+   "chain": 8453,
+   "finalized": 52810164
+  },
+  {
+   "url": "https://base.gateway.tenderly.co",
+   "chain": 8453,
+   "finalized": 52810343,
+   "logs_span": 500
+  },
+  {
+   "url": "https://1rpc.io/base",
+   "chain": 8453,
+   "finalized": 52810164,
+   "logs_span": 10
+  }
+ ],
+ "42161": [
+  {
+   "url": "https://arb1.arbitrum.io/rpc",
+   "chain": 42161,
+   "finalized": 516273838,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://arbitrum.drpc.org",
+   "chain": 42161,
+   "finalized": 516273838,
+   "logs_span": 100
+  },
+  {
+   "url": "https://arb-pokt.nodies.app",
+   "chain": 42161,
+   "finalized": 516273838,
+   "logs_span": 10
+  },
+  {
+   "url": "https://arbitrum-one.public.blastapi.io",
+   "chain": 42161,
+   "finalized": 516273838
+  },
+  {
+   "url": "https://arbitrum.gateway.tenderly.co",
+   "chain": 42161,
+   "finalized": 516273838,
+   "logs_span": 10000
+  },
+  {
+   "url": "https://arbitrum-one-rpc.publicnode.com",
+   "chain": 42161,
+   "finalized": 516273838
+  },
+  {
+   "url": "https://1rpc.io/arb",
+   "chain": 42161,
+   "finalized": 516273838,
+   "logs_span": 10
+  }
+ ]
+}

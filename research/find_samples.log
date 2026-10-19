@@ -1,0 +1,40 @@
+AAVE_V3:1:0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2 Aave v3 Ethereum Core Pool 0x935dd15f6564bb2ffa999a0db7683e918b90d48c845a5e73bd0759d038694616 @26221640
+AAVE_V3:1:0x4e033931ad43597d96d6bcc25c280717730b58b1 Aave v3 Ethereum Prime Pool 0x76b54382155fe3d196e245aeeac78ee0524c48d7a3b2372f19ebc829a87dab96 @26216189
+AAVE_V3:1:0x0aa97c284e98396202b6a04024f5e2c65026f3c0 Aave v3 Ethereum EtherFi Pool NONE in 400000 blocks
+AAVE_V3:1:0xc13e21b648a5ee794902342038ff3adab66be987 Spark SparkLend Pool (Ethereum) 0x5495e6450cb6397202b7a2dfa59d001215355d858ad642e699dfea191e76aaf2 @26216273
+AAVE_V3:42161:0x794a61358d6845594f94dc1db02a252b5b4814ad Aave v3 Arbitrum Pool 0x8f402399e422212f6c22fa169c0d6865df282174e566b1dcfe69e0fd09be0826 @516160016
+AAVE_V3:8453:0xa238dd80c259a72e81d7e4664a9801593f98d1c5 Aave v3 Base Pool 0x382f88e531e6461d6d2312fbf5d65a61e0bf4577687c77192c63643d7de58228 @52783845
+AAVE_V3:10:0x794a61358d6845594f94dc1db02a252b5b4814ad Aave v3 Optimism Pool 0x0536157e343a96a665b104266d5795a9f8cec20c485ecc6499c75c1d1e666fd5 @158393037
+AAVE_V3:137:0x794a61358d6845594f94dc1db02a252b5b4814ad Aave v3 Polygon Pool 0x9184511b4a9f2493890c51f260966d0510033b6e6fbc858615d2f004ecb189a3 @95786705
+COMPOUND_V3:1:0xc3d688b66703497daa19211eedff47f25384cdc3 Compound v3 Ethereum cUSDCv3 0x735f39a0f41b815747cca7477623abe46f1c3dd8b706984105cb4056e3b627e1 @26194915
+COMPOUND_V3:1:0xa17581a9e3356d9a858b789d68b4d866e593ae94 Compound v3 Ethereum cWETHv3 NONE in 400000 blocks
+COMPOUND_V3:1:0x3afdc9bca9213a35503b077a6072f3d0d5ab0840 Compound v3 Ethereum cUSDTv3 0x735f39a0f41b815747cca7477623abe46f1c3dd8b706984105cb4056e3b627e1 @26194915
+COMPOUND_V3:42161:0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf Compound v3 Arbitrum cUSDCv3 0xa7bfc1f1e7284a5bbf03be37d02dc5518795641b328395d534bbe264e303a40b @514926712
+COMPOUND_V3:42161:0x6f7d514bbd4aff3bcd1140b7344b32f063dee486 Compound v3 Arbitrum cWETHv3 NONE in 8000000 blocks
+COMPOUND_V3:42161:0xd98be00b5d27fc98112bde293e487f8d4ca57d07 Compound v3 Arbitrum cUSDTv3 0x7122cb6cf68468f2cae2b1ef5e357453cd5467d17c99398fb5899a893085edc2 @512531597
+COMPOUND_V3:8453:0xb125e6687d4313864e53df431d5425969c15eb2f Compound v3 Base cUSDCv3 0xf557116bec1b32e82aa128d477a9906be63c94e3097d57bd15227fc894f50c6a @52620875
+COMPOUND_V3:8453:0x46e6b214b524310239732d51387075e0e70970bf logs err fetch failed
+COMPOUND_V3:8453:0x46e6b214b524310239732d51387075e0e70970bf Compound v3 Base cWETHv3 NONE in 15000 blocks
+node:internal/deps/undici/undici:14976
+      Error.captureStackTrace(err);
+            ^
+
+TypeError: fetch failed
+    at node:internal/deps/undici/undici:14976:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async rpc (file:///Users/kenilvakariya/dev/makewhole/tools/lib/evm.mjs:3:15)
+    at async retry (file:///Users/kenilvakariya/dev/makewhole/tools/lib/evm.mjs:18:46)
+    at async file:///Users/kenilvakariya/dev/makewhole/research/find_samples.mjs:19:26 {
+  [cause]: Error: getaddrinfo ENOTFOUND mainnet.optimism.io
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: 'mainnet.optimism.io'
+  }
+}
+
+Node.js v22.22.2
+AAVE_V3:1:0x0aa97c284e98396202b6a04024f5e2c65026f3c0 Aave v3 Ethereum EtherFi Pool NONE in 400000 blocks
+COMPOUND_V3:1:0xa17581a9e3356d9a858b789d68b4d866e593ae94 Compound v3 Ethereum cWETHv3 NONE in 400000 blocks
+COMPOUND_V3:42161:0x6f7d514bbd4aff3bcd1140b7344b32f063dee486 Compound v3 Arbitrum cWETHv3 NONE in 3000000 blocks

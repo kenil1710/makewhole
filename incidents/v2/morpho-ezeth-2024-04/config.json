@@ -1,0 +1,56 @@
+{
+ "title": "Morpho Blue ezETH/WETH markets, ezETH depeg, Ethereum, 24 April 2024",
+ "protocol": "Morpho Blue (Ethereum), Gauntlet LRT Core markets",
+ "chain_id": 1,
+ "template": "MORPHO_BLUE",
+ "emitters": [
+  "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb"
+ ],
+ "markets": [
+  {
+   "id": "0x49bb2d114be9041a787432952927f6f144f05ad3e83196a7d062f374ee11d0ee",
+   "loan_token": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "collateral_token": "0xbf5495efe5db9ce00f80364c8b423567e58d2110",
+   "oracle": "0x61025e2b0122ac8be4e37365a4003d87ad888cc3",
+   "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+   "lltv": "860000000000000000"
+  },
+  {
+   "id": "0x093d5b432aace8bf6c4d67494f4ac2542a499571ff7a1bcc9f8778f3200d457d",
+   "loan_token": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+   "collateral_token": "0xbf5495efe5db9ce00f80364c8b423567e58d2110",
+   "oracle": "0x61025e2b0122ac8be4e37365a4003d87ad888cc3",
+   "irm": "0x870ac11d48b15db9a138cf899d20f13f79ba00bc",
+   "lltv": "770000000000000000"
+  }
+ ],
+ "collateral_assets": [
+  "0xbf5495efe5db9ce00f80364c8b423567e58d2110"
+ ],
+ "debt_rates": {
+  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": "1000000000000000000"
+ },
+ "formula": "TRUE_VALUE_MINUS_DEBT",
+ "formula_param": "1008281448094200173",
+ "bonus_bps": 0,
+ "min_owed_src_wei": "1000000000000000",
+ "scale_num": "1",
+ "scale_den": "100",
+ "from_block": 19722000,
+ "to_block": 19727000,
+ "rpcs": [
+  "https://rpc.mevblocker.io",
+  "https://gateway.tenderly.co/public/mainnet",
+  "https://eth.drpc.org",
+  "https://eth-pokt.nodies.app"
+ ],
+ "price_condition": {
+  "to": "0x61025e2b0122ac8be4e37365a4003d87ad888cc3",
+  "data": "0xa035b1fe",
+  "op": "LT",
+  "value": "1000000000000000000000000000000000000"
+ },
+ "sources": [
+  "https://forum.morpho.org/t/gauntlet-lrt-core-vault-market-update-4-24-2024-ezeth-price-volatility/578"
+ ]
+}

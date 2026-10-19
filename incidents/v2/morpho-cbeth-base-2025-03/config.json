@@ -1,0 +1,48 @@
+{
+ "title": "Morpho Blue cbETH/WETH (94.5% LLTV) Pyth push-feed skew, Base, 2 March 2025",
+ "protocol": "Morpho Blue (Base), market curated by RE7 Labs",
+ "chain_id": 8453,
+ "template": "MORPHO_BLUE",
+ "emitters": [
+  "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb"
+ ],
+ "markets": [
+  {
+   "id": "0xd75387f30c983be0aec58b03b51cca52337b496e38cf4effbe995531bf34901c",
+   "loan_token": "0x4200000000000000000000000000000000000006",
+   "collateral_token": "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22",
+   "oracle": "0xd7e2307bafb6e8ee916c54a50d938161c0c9cec3",
+   "irm": "0x46415998764c29ab2a25cbea6254146d50d22687",
+   "lltv": "945000000000000000"
+  }
+ ],
+ "collateral_assets": [
+  "0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22"
+ ],
+ "debt_rates": {
+  "0x4200000000000000000000000000000000000006": "1000000000000000000"
+ },
+ "formula": "TRUE_VALUE_MINUS_DEBT",
+ "formula_param": "1091181000000000000",
+ "bonus_bps": 0,
+ "min_owed_src_wei": "0",
+ "scale_num": "1",
+ "scale_den": "100",
+ "from_block": 27071900,
+ "to_block": 27072400,
+ "rpcs": [
+  "https://mainnet.base.org",
+  "https://base.gateway.tenderly.co",
+  "https://base.drpc.org",
+  "https://base-pokt.nodies.app"
+ ],
+ "price_condition": {
+  "to": "0xd7e2307bafb6e8ee916c54a50d938161c0c9cec3",
+  "data": "0xa035b1fe",
+  "op": "LT",
+  "value": "1080000000000000000000000000000000000"
+ },
+ "sources": [
+  "https://forum.morpho.org/t/pyth-cbeth-price-feed-is-easily-manipulated-resulted-in-me-losing-33000/1577"
+ ]
+}
