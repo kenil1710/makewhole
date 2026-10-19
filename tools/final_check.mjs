@@ -56,6 +56,7 @@ check("every link in README, MILESTONE, SUBMISSION, SEEDS_V2 and every site page
 const c = connect({ address: v2.MakeWholeV2.address, role: "keeper" });
 const view = async (addr, fn, args = []) => plain(await c.read.readContract({ address: addr, functionName: fn, args }));
 const canon = (await view(v2.MakeWholeV2.address, "get_incidents", [0, 100])).items;
+execFileSync("git", ["-C", ROOT, "fetch", "-q", "origin", "keeper-state"]);
 const ks = JSON.parse(execFileSync("git", ["-C", ROOT, "show", "origin/keeper-state:state.json"]).toString());
 const settled = canon.filter((i) => i.closed);
 const coverageOk = canon.every((i) => { const k = ks.incidents[String(i.incident_id)]?.coverage; return k && k.found === i.filings && k.filed === i.filings && k.unprocessed.length === 0; });
