@@ -208,5 +208,58 @@
       "superseded_by": "0x59941E298EF8b3C4BcDdE0674a19EdC55DD1362B",
       "why": "reads the new canonical"
     }
-  ]
+  ],
+  "v2": {
+    "commit": "b52bb2278495661fa8eb47da9e1bfcc003c2e967",
+    "deployed_at": "2026-10-19T15:14:02.472Z",
+    "deployer": "0xCAb5f214083d98bc334bA5BAAdd9508fC0c82dB3",
+    "contracts": {
+      "MakeWholeV2": {
+        "address": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
+        "deploy_tx": "0xc78931af71e4d08f4ffbde12e0f466719176ff5e16abe73978493391f8bfdce2",
+        "file": "contracts/MakeWholeV2.py",
+        "commit": "b52bb2278495661fa8eb47da9e1bfcc003c2e967",
+        "bytes": 86541,
+        "sha256": "57caf874f2ef4d99f38a78819a6530d911ce994ab5414d0754531a20aae6f447",
+        "constructor_args": [
+          "CANONICAL",
+          3600
+        ]
+      },
+      "MakeWholeV2Demo": {
+        "address": "0x65AD8233033ee9a46366B8671d6C9Df36FB6B117",
+        "deploy_tx": "0x61da3dc6446cde70589190c6d47bc0c1db8c3411084a366955a02dc1d3700dad",
+        "file": "contracts/MakeWholeV2.py",
+        "commit": "b52bb2278495661fa8eb47da9e1bfcc003c2e967",
+        "bytes": 86541,
+        "sha256": "57caf874f2ef4d99f38a78819a6530d911ce994ab5414d0754531a20aae6f447",
+        "constructor_args": [
+          "DEMO",
+          60
+        ]
+      },
+      "RecoveryGate": {
+        "address": "0x01990f29Dd25604219c63E2b9e94B09957E8B52e",
+        "deploy_tx": "0xe4b5d5fc835c7c65408186159dd4d2c2784cbe699826d474c51873f9456d4186",
+        "file": "contracts/RecoveryGate.py",
+        "commit": "b52bb2278495661fa8eb47da9e1bfcc003c2e967",
+        "bytes": 4908,
+        "sha256": "f658eb848e065b97cfc616cfb4af774c48b063cd4b6688a93b7b23ef9c0aa0a3",
+        "constructor_args": [
+          "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c"
+        ]
+      },
+      "RecoveryGateDemo": {
+        "address": "0x7555D03dE33f3fC8C586f0B2AE5Fe3BC1CD9f125",
+        "deploy_tx": "0xa08ac6f844d5aa905b6106777c9bcdffa5decb6c13dea38685ad8de42ae1da41",
+        "file": "contracts/RecoveryGate.py",
+        "commit": "b52bb2278495661fa8eb47da9e1bfcc003c2e967",
+        "bytes": 4908,
+        "sha256": "f658eb848e065b97cfc616cfb4af774c48b063cd4b6688a93b7b23ef9c0aa0a3",
+        "constructor_args": [
+          "0x65AD8233033ee9a46366B8671d6C9Df36FB6B117"
+        ]
+      }
+    }
+  }
 }
