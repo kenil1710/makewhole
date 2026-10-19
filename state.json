@@ -1,0 +1,174 @@
+{
+ "version": 2,
+ "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
+ "runs": [],
+ "incidents": {
+  "1": {
+   "chain_id": 1,
+   "title": "Aave v3 wstETH CAPO oracle incident, Ethereum, 10 March 2026",
+   "cursors": {
+    "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2": 24628088
+   },
+   "scan_done": false,
+   "events": {
+    "0x9064b507f16bd8b85fb5aea0185153b01fa23b3205f7153f986e5107ce988a9c:17": {
+     "block": 24626860,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x8f47b5e821530e9b9fc2262cde6dbb7427311f13116de995650fd7709df2fa67:14": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x6b9c0d3292b51fc1612fba7cc26258357b2b705ab2699d2a4f0014c09a9b96cc:37": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xac1cad7fdcab60d1174cd785ac993d36b8230caa5517541b7ee8b7a370fd66fb:79": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x7872defdef7b839d43e79797ce4c4461b9727861db6aa9e72347f8e995812f5f:233": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x058203b57c37d0700a2caccf9303a25ce1a3cbe7b751c26c8b9a02dd24f49f65:272": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x5444c97b90d957420b8d1b1e53117525cf498e6f2c3aefb66ac34034c461db19:334": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x5444c97b90d957420b8d1b1e53117525cf498e6f2c3aefb66ac34034c461db19:359": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x5444c97b90d957420b8d1b1e53117525cf498e6f2c3aefb66ac34034c461db19:384": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xd1ac5af3abbaaf1a0acc0fd257a71dbb28924368ddbc68f6dd8cb45c85eeeb78:409": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xd1ac5af3abbaaf1a0acc0fd257a71dbb28924368ddbc68f6dd8cb45c85eeeb78:434": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xd1ac5af3abbaaf1a0acc0fd257a71dbb28924368ddbc68f6dd8cb45c85eeeb78:459": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xf7ef63d5b2da12a3ff3dedca42156174f5970f073777e24349a064af6fb5c566:484": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xf7ef63d5b2da12a3ff3dedca42156174f5970f073777e24349a064af6fb5c566:509": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xf7ef63d5b2da12a3ff3dedca42156174f5970f073777e24349a064af6fb5c566:534": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x545558c91855f69185390957af3dacc7422c5d72758cc3b0ebc2a81bd3f79f77:564": {
+     "block": 24626861,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x98e993438697cdf7c8faade4a15f9b9bce74fda0a91fe29fc1762740826458bd:377": {
+     "block": 24626865,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x0269621586a95336197fd4194ec0fa964de27b283516c856713625f9540def47:110": {
+     "block": 24626866,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x0269621586a95336197fd4194ec0fa964de27b283516c856713625f9540def47:127": {
+     "block": 24626866,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x0269621586a95336197fd4194ec0fa964de27b283516c856713625f9540def47:144": {
+     "block": 24626866,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0x0fb57c3cba7aaedcd7b3033be6ab17e354cd78883b241d93dce11cb17229b5ce:363": {
+     "block": 24626866,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    },
+    "0xa6367dca45597724f06d499bec95a86bea0475243bca975331ecf2338fa20452:126": {
+     "block": 24626867,
+     "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423025
+    }
+   },
+   "claim_deadline": 1792440928,
+   "closed": false
+  }
+ },
+ "updated_at": "2026-10-19T15:17:05.714Z"
+}
