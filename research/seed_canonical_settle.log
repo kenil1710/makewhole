@@ -1,0 +1,19 @@
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+20:17:46 c1_refund_surplus delivered 78071402034960621 0x11b1745f79e8a5af25627fd5421fb906925d5d8c 
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+20:18:40 c1_claim_0x4f962bb0 delivered 2494787941017015246 0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f 
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+20:19:30 c2_refund_surplus delivered 2648584942868960 0x11b1745f79e8a5af25627fd5421fb906925d5d8c 
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+20:20:20 c2_claim_0xca686974 delivered 117144290396227074 0xca686974913389d42f3c5f61010503daccdb487a 
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+20:21:31 c3_claim_0x6e659c99 delivered 3204584623371560386 0x6e659c99f5bc322f433e66dd2471bd3aae5c4f5d 
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+21:16:42 c1_close_unclaimed delivered 2627140656948024133 0x11b1745f79e8a5af25627fd5421fb906925d5d8c 
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+21:17:37 c2_close_unclaimed delivered 207124660903966 0x11b1745f79e8a5af25627fd5421fb906925d5d8c 
+GenLayer RPC error (gen_call): Server busy: all 8 execution slots occupied, retry later
+  … get_incident attempt 1 hit transient RPC noise, waiting 4s
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+21:18:34 c3_close_unclaimed delivered 6795415376628439614 0x11b1745f79e8a5af25627fd5421fb906925d5d8c 
+21:18:40 final {"incidents":[{"id":1,"title":"Aave v3 wstETH CAPO oracle incident, Ethereum, 10 March 2026","filings":49,"eligible":49,"accounts":35,"owed_gen":"5121928597965039379","pool":"5200000000000000000","paid":"2494787941017015246","surplus":"78071402034960621","unclaimed_to_sponsor":"2627140656948024133","closed":true},{"id":2,"title":"Morpho Blue cbETH/WETH (94.5% LLTV) Pyth push-feed skew, Base, 2 March 2025","filings":3,"eligible":3,"accounts":3,"owed_gen":"117351415057131040","pool":"120000000000000000","paid":"117144290396227074","surplus":"2648584942868960","unclaimed_to_sponsor":"207124660903966","closed":true},{"id":3,"title":"Morpho Blue ezETH/WETH markets, ezETH depeg, Ethereum, 24 April 2024","filings":146,"eligible":145,"accounts":44,"owed_gen":"14570506655440963805","pool":"10000000000000000000","paid":"3204584623371560386","surplus":"0","unclaimed_to_sponsor":"6795415376628439614","closed":true}],"reconciliation":{"computed_total_src":"512192859796503940665","diff":2,"list_entries":35,"list_total_src":"512192859825188850000","match":33,"not_in_list":0,"total_delta_src":"-28684909335"},"ledger":{"books_wei":"0","identity_holds":true,"on_chain_balance_wei":"0","paid_out_wei":"5816516854784802706","pools_in_wei":"15320000000000000000","refunded_out_wei":"9503483145215197294","refused_in_wei":"0","refused_out_wei":"0"},"eth_getBalance":"0"}

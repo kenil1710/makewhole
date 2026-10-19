@@ -29,5 +29,232 @@
    "claim_deadline": 1792440959,
    "claim_end": 1792444559
   }
+ },
+ "payouts": [
+  {
+   "name": "c1_refund_surplus",
+   "kind": "SURPLUS_TO_SPONSOR",
+   "incident": 1,
+   "tx": "0xa66be4bc987bd7247b1370161cf2e5abaaad87ab1d8e241108192e32486680b4",
+   "to": "0x11b1745f79e8a5af25627fd5421fb906925d5d8c",
+   "amount": "78071402034960621",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "15320000000000000000",
+   "contract_after": "15241928597965039379",
+   "payee_before": "1961203126247151595897",
+   "payee_after": "1961281197649186556518"
+  },
+  {
+   "name": "c1_claim_0x4f962bb0",
+   "kind": "CLAIM",
+   "incident": 1,
+   "tx": "0xbf4678fbb99ffb2919e98bca5c9b892df3a4e2fb2e903187449ce7936f4bce62",
+   "to": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+   "amount": "2494787941017015246",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "15241928597965039379",
+   "contract_after": "12747140656948024133",
+   "payee_before": "2494787941017015246",
+   "payee_after": "4989575882034030492"
+  },
+  {
+   "name": "c2_refund_surplus",
+   "kind": "SURPLUS_TO_SPONSOR",
+   "incident": 2,
+   "tx": "0x0de6be8409cddaddfa5d07083f5d1acbdce481452e6546ee8a3231b3086a40fb",
+   "to": "0x11b1745f79e8a5af25627fd5421fb906925d5d8c",
+   "amount": "2648584942868960",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "12747140656948024133",
+   "contract_after": "12744492072005155173",
+   "payee_before": "1961281197649186556518",
+   "payee_after": "1961283846234129425478"
+  },
+  {
+   "name": "c2_claim_0xca686974",
+   "kind": "CLAIM",
+   "incident": 2,
+   "tx": "0x83312c06280a8b73a39a015412b5b57eff6bc5f44e4ea1dc140d8bef4ce680ea",
+   "to": "0xca686974913389d42f3c5f61010503daccdb487a",
+   "amount": "117144290396227074",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "12744492072005155173",
+   "contract_after": "12627347781608928099",
+   "payee_before": "216967790896154467",
+   "payee_after": "334112081292381541"
+  },
+  {
+   "name": "c3_claim_0x6e659c99",
+   "kind": "CLAIM",
+   "incident": 3,
+   "tx": "0xbe37a2d5f399ff987f88773be8cddb8a90ef4dd154dba8150723bc8f78c78002",
+   "to": "0x6e659c99f5bc322f433e66dd2471bd3aae5c4f5d",
+   "amount": "3204584623371560386",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "12627347781608928099",
+   "contract_after": "9422763158237367713",
+   "payee_before": "0",
+   "payee_after": "3204584623371560386"
+  },
+  {
+   "name": "c1_close_unclaimed",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 1,
+   "tx": "0x51c1acecc40cc6b10c62069fc9d6cad284d60b403d7d1d0035183c830c21170a",
+   "to": "0x11b1745f79e8a5af25627fd5421fb906925d5d8c",
+   "amount": "2627140656948024133",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "9422763158237367713",
+   "contract_after": "6795622501289343580",
+   "payee_before": "1961283846234129425478",
+   "payee_after": "1963910986891077449611"
+  },
+  {
+   "name": "c2_close_unclaimed",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 2,
+   "tx": "0xabd4794beaa7abb55d64796873705a7b7c123c86ddd7a3994a0af8617dceca99",
+   "to": "0x11b1745f79e8a5af25627fd5421fb906925d5d8c",
+   "amount": "207124660903966",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "6795622501289343580",
+   "contract_after": "6795415376628439614",
+   "payee_before": "1963910986891077449611",
+   "payee_after": "1963911194015738353577"
+  },
+  {
+   "name": "c3_close_unclaimed",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 3,
+   "tx": "0xafe585f38b448778c168bf77057ec3f994cd7040345ee2dc2d6338d27558ac0a",
+   "to": "0x11b1745f79e8a5af25627fd5421fb906925d5d8c",
+   "amount": "6795415376628439614",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "6795415376628439614",
+   "contract_after": "0",
+   "payee_before": "1963911194015738353577",
+   "payee_after": "1970706609392366793191"
+  }
+ ],
+ "steps": {
+  "c1_refund_surplus": {
+   "done": true,
+   "tx": "0xa66be4bc987bd7247b1370161cf2e5abaaad87ab1d8e241108192e32486680b4"
+  },
+  "c1_claim_0x4f962bb0": {
+   "done": true,
+   "tx": "0xbf4678fbb99ffb2919e98bca5c9b892df3a4e2fb2e903187449ce7936f4bce62"
+  },
+  "c2_refund_surplus": {
+   "done": true,
+   "tx": "0x0de6be8409cddaddfa5d07083f5d1acbdce481452e6546ee8a3231b3086a40fb"
+  },
+  "c2_claim_0xca686974": {
+   "done": true,
+   "tx": "0x83312c06280a8b73a39a015412b5b57eff6bc5f44e4ea1dc140d8bef4ce680ea"
+  },
+  "c3_claim_0x6e659c99": {
+   "done": true,
+   "tx": "0xbe37a2d5f399ff987f88773be8cddb8a90ef4dd154dba8150723bc8f78c78002"
+  },
+  "c1_close_unclaimed": {
+   "done": true,
+   "tx": "0x51c1acecc40cc6b10c62069fc9d6cad284d60b403d7d1d0035183c830c21170a"
+  },
+  "c2_close_unclaimed": {
+   "done": true,
+   "tx": "0xabd4794beaa7abb55d64796873705a7b7c123c86ddd7a3994a0af8617dceca99"
+  },
+  "c3_close_unclaimed": {
+   "done": true,
+   "tx": "0xafe585f38b448778c168bf77057ec3f994cd7040345ee2dc2d6338d27558ac0a"
+  }
+ },
+ "final": {
+  "incidents": [
+   {
+    "id": 1,
+    "title": "Aave v3 wstETH CAPO oracle incident, Ethereum, 10 March 2026",
+    "filings": 49,
+    "eligible": 49,
+    "accounts": 35,
+    "owed_gen": "5121928597965039379",
+    "pool": "5200000000000000000",
+    "paid": "2494787941017015246",
+    "surplus": "78071402034960621",
+    "unclaimed_to_sponsor": "2627140656948024133",
+    "closed": true
+   },
+   {
+    "id": 2,
+    "title": "Morpho Blue cbETH/WETH (94.5% LLTV) Pyth push-feed skew, Base, 2 March 2025",
+    "filings": 3,
+    "eligible": 3,
+    "accounts": 3,
+    "owed_gen": "117351415057131040",
+    "pool": "120000000000000000",
+    "paid": "117144290396227074",
+    "surplus": "2648584942868960",
+    "unclaimed_to_sponsor": "207124660903966",
+    "closed": true
+   },
+   {
+    "id": 3,
+    "title": "Morpho Blue ezETH/WETH markets, ezETH depeg, Ethereum, 24 April 2024",
+    "filings": 146,
+    "eligible": 145,
+    "accounts": 44,
+    "owed_gen": "14570506655440963805",
+    "pool": "10000000000000000000",
+    "paid": "3204584623371560386",
+    "surplus": "0",
+    "unclaimed_to_sponsor": "6795415376628439614",
+    "closed": true
+   }
+  ],
+  "reconciliation": {
+   "computed_total_src": "512192859796503940665",
+   "diff": 2,
+   "list_entries": 35,
+   "list_total_src": "512192859825188850000",
+   "match": 33,
+   "not_in_list": 0,
+   "total_delta_src": "-28684909335"
+  },
+  "ledger": {
+   "books_wei": "0",
+   "identity_holds": true,
+   "on_chain_balance_wei": "0",
+   "paid_out_wei": "5816516854784802706",
+   "pools_in_wei": "15320000000000000000",
+   "refunded_out_wei": "9503483145215197294",
+   "refused_in_wei": "0",
+   "refused_out_wei": "0"
+  },
+  "eth_getBalance": "0"
  }
 }
