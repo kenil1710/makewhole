@@ -444,7 +444,9 @@ def _web_request(url, method="GET", body=None, headers=None, **_k):
 
 def _tampered(url, req, ans):
     fn = WEB.tamper.get(url)
-    return fn(req, ans) if fn is not None else ans
+    # a copy: the chain hands out its own objects, and one lying endpoint must
+    # not rewrite what the honest ones serve
+    return fn(req, json.loads(json.dumps(ans))) if fn is not None else ans
 
 
 def _web_get(url, **_k):

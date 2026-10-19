@@ -226,7 +226,163 @@
   "chain": 8453,
   "address": "0x46e6b214b524310239732D51387075E0e70970bf",
   "label": "Compound v3 Base cWETHv3",
-  "scanned_back_from": 52810547,
+  "scanned_back_from": 52811301,
+  "logs": [
+   {
+    "tx": "0xa7d25aa7cda0f845e90512c1ab1df6459f08a6bc84c7cd3c7e881f416228611e",
+    "log_index": 505,
+    "block": 50957472
+   }
+  ]
+ },
+ "COMPOUND_V3:10:0x2e44e174f7d53f0212823acc11c01a11d58c5bcb": {
+  "template": "COMPOUND_V3",
+  "chain": 10,
+  "address": "0x2e44e174f7D53F0212823acC11C01A11d58c5bCB",
+  "label": "Compound v3 Optimism cUSDCv3",
+  "scanned_back_from": 158407530,
+  "logs": [
+   {
+    "tx": "0x508ab799a0aff184518c5e70e22cf3b1a5a6d30cfeaaf6f68b0e1e8cf6a25158",
+    "log_index": 333,
+    "block": 158334996
+   },
+   {
+    "tx": "0x508ab799a0aff184518c5e70e22cf3b1a5a6d30cfeaaf6f68b0e1e8cf6a25158",
+    "log_index": 335,
+    "block": 158334996
+   }
+  ]
+ },
+ "COMPOUND_V3:10:0xe36a30d249f7761327fd973001a32010b521b6fd": {
+  "template": "COMPOUND_V3",
+  "chain": 10,
+  "address": "0xE36A30D249f7761327fd973001A32010b521b6Fd",
+  "label": "Compound v3 Optimism cWETHv3",
+  "scanned_back_from": 158407530,
+  "logs": [
+   {
+    "tx": "0x6004cc5c99362ccb9c6f1b3d130a421138c408ed37eff5d550d7730aa443619f",
+    "log_index": 136,
+    "block": 155787437
+   }
+  ]
+ },
+ "COMPOUND_V3:137:0xf25212e676d1f7f89cd72ffee66158f541246445": {
+  "template": "COMPOUND_V3",
+  "chain": 137,
+  "address": "0xF25212E676D1F7F89Cd72fFEe66158f541246445",
+  "label": "Compound v3 Polygon cUSDCv3 (USDC.e)",
+  "scanned_back_from": 95806509,
   "logs": []
+ },
+ "COMPOUND_V3:137:0xaeb318360f27748acb200ce616e389a6c9409a07": {
+  "template": "COMPOUND_V3",
+  "chain": 137,
+  "address": "0xaeB318360f27748Acb200CE616E389A6C9409a07",
+  "label": "Compound v3 Polygon cUSDTv3",
+  "scanned_back_from": 95806640,
+  "logs": [
+   {
+    "tx": "0x6f744f2d8458763ec4a78a4d103cd8345b70e02ad46bab9418fd18a222a04d3c",
+    "log_index": 581,
+    "block": 93855780
+   },
+   {
+    "tx": "0xb498982af5b1cb1477ea2cd5689f6a4d9c546175e7dd3486ef873ddedf7687cc",
+    "log_index": 896,
+    "block": 93855815
+   }
+  ]
+ },
+ "MORPHO_BLUE:1:0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb": {
+  "template": "MORPHO_BLUE",
+  "chain": 1,
+  "address": "0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb",
+  "label": "Morpho Blue Ethereum",
+  "scanned_back_from": 26226736,
+  "logs": [
+   {
+    "tx": "0xde57f4ff5e4342f0f392bfb01e7f7fa450ab3b80cdd5aeced75795ff11a8fdd5",
+    "log_index": 2614,
+    "block": 26220794
+   },
+   {
+    "tx": "0xe244ca16dd924f0aefdaab2f668bc2bc9a5350232fc4b07fb3134e57c7438692",
+    "log_index": 21,
+    "block": 26224646
+   }
+  ]
+ },
+ "MORPHO_BLUE:8453:0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb": {
+  "template": "MORPHO_BLUE",
+  "chain": 8453,
+  "address": "0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb",
+  "label": "Morpho Blue Base",
+  "scanned_back_from": 52812451,
+  "logs": [
+   {
+    "tx": "0xe4104d7555a51534384418614f6a12af2364e152d48a2764feb86c5f9b906bfc",
+    "log_index": 1006,
+    "block": 52782055
+   },
+   {
+    "tx": "0xe4104d7555a51534384418614f6a12af2364e152d48a2764feb86c5f9b906bfc",
+    "log_index": 1008,
+    "block": 52782055
+   }
+  ]
+ },
+ "MORPHO_BLUE:42161:0x6c247b1f6182318877311737bac0844baa518f5e": {
+  "template": "MORPHO_BLUE",
+  "chain": 42161,
+  "address": "0x6c247b1F6182318877311737BaC0844bAa518F5e",
+  "label": "Morpho Blue Arbitrum",
+  "scanned_back_from": 516289675,
+  "logs": [
+   {
+    "tx": "0x54509c4f1cda56068756a4ee60d0b0e2635a04d456675999010d33182fb52596",
+    "log_index": 3,
+    "block": 516284100
+   },
+   {
+    "tx": "0x956a507efc765f578e8c9f310e167283805382481492c5ea39ad8d92270e16ad",
+    "log_index": 6,
+    "block": 516285336
+   }
+  ]
+ },
+ "MORPHO_BLUE:10:0xce95afbb8ea029495c66020883f87aae8864af92": {
+  "template": "MORPHO_BLUE",
+  "chain": 10,
+  "address": "0xce95AfbB8EA029495c66020883F87aaE8864AF92",
+  "label": "Morpho Blue Optimism",
+  "scanned_back_from": 158407712,
+  "logs": [
+   {
+    "tx": "0x2aa3dd24975ec15c7d0eeeddb64640818a87cdf16cfbf116836509f0d1e22405",
+    "log_index": 146,
+    "block": 155104165
+   }
+  ]
+ },
+ "MORPHO_BLUE:137:0x1bf0c2541f820e775182832f06c0b7fc27a25f67": {
+  "template": "MORPHO_BLUE",
+  "chain": 137,
+  "address": "0x1bF0c2541F820E775182832f06c0B7Fc27A25f67",
+  "label": "Morpho Blue Polygon",
+  "scanned_back_from": 95806829,
+  "logs": [
+   {
+    "tx": "0x0d8cb087f5901044ef15f23b1ffb1ca4305e6fa639dc347a228bf049d4ae37ec",
+    "log_index": 1109,
+    "block": 95788319
+   },
+   {
+    "tx": "0x557ac3df9fbc70fa1f6ee5b203afee858385ae9965e9e6583d647229db6ba6db",
+    "log_index": 910,
+    "block": 95788335
+   }
+  ]
  }
 }
