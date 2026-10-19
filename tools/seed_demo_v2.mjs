@@ -150,6 +150,19 @@ await file("D8", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
 await file("D9", "disagree_inconclusive", CB[0], "REVERT:INCONCLUSIVE");
 await file("D10", "other_market_refused", { tx: "0xe4104d7555a51534384418614f6a12af2364e152d48a2764feb86c5f9b906bfc", log_index: 1006 }, "REVERT:NOT_INCIDENT_MARKET");
 
+// D8 paired a Morpho-template incident with an Aave log: the decoder runs before
+// the chain is compared, so that is WRONG_EVENT (nothing recorded). Kept under
+// its real name; D8b shows WRONG_CHAIN with a log of the incident's own template.
+if (S.steps.D8_wrong_chain_refused?.outcome === "REVERT:WRONG_EVENT") {
+  S.steps.D8_other_template_from_other_chain_refused = { ...S.steps.D8_wrong_chain_refused, as_expected: true, note: "the decoder runs before the chain check: an Aave log in a Morpho incident is WRONG_EVENT" };
+  delete S.steps.D8_wrong_chain_refused;
+  save();
+}
+await open("D8b", "aave-wsteth-capo-2026-03", { title: "Demo D8b: wrong chain (Ethereum endpoints for a Base Aave incident)", protocol: "Aave v3 (Base)", chain_id: 8453,
+  emitters: ["0xa238dd80c259a72e81d7e4664a9801593f98d1c5"], rpcs: ["https://rpc.mevblocker.io", "https://gateway.tenderly.co/public/mainnet"],
+  official_list: {}, official_list_sha256: "", price_condition: null, claim_deadline_s: short, claim_window_s: 60 }, GEN / 100n);
+await file("D8b", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
+
 // D11: an event in a block that is not final yet, if one exists right now
 if (!S.steps.D11_unfinalized?.done) {
   const cands = [[8453, "https://base.gateway.tenderly.co", "MORPHO_BLUE", "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb", "morpho-cbeth-base-2025-03"],
