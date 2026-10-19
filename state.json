@@ -690,12 +690,12 @@
     "0x90a2b7fd5d1e54bba73a20150f587d3c96eccdde2c858e8a9ab63976ba383a6c:5": {
      "block": 27072114,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "SUBMITTED",
+     "status": "FILED",
      "attempts": 1,
      "first_seen": 1792423131,
      "tx_hash": "0xaf7ac358771f502812887cf094362012154755f7915d326c370d4e37fa13e66d",
      "submitted_at": 1792423145,
-     "last_error": "re-verifying: counted only once FINALIZED",
+     "last_error": "",
      "filing_id": 5,
      "verdict": "ELIGIBLE",
      "reason": ""
@@ -703,12 +703,12 @@
     "0xe33c71cefae58f1e0b5ae2dd8a6812d4c4364c40a576107e29fa54a2476e6860:14": {
      "block": 27072214,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "SUBMITTED",
+     "status": "FILED",
      "attempts": 1,
      "first_seen": 1792423131,
      "tx_hash": "0x09713a72026e96ef4a13229cde8021e25df36f65c5ddedcefeec759c7ceca570",
      "submitted_at": 1792423162,
-     "last_error": "re-verifying: counted only once FINALIZED",
+     "last_error": "",
      "filing_id": 6,
      "verdict": "ELIGIBLE",
      "reason": ""
@@ -716,12 +716,12 @@
     "0x77b2cf6989255f3d1cefef80fb81c6a85047afa08e08235527e120b5dfab348a:16": {
      "block": 27072248,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "SUBMITTED",
+     "status": "FILED",
      "attempts": 1,
      "first_seen": 1792423131,
      "tx_hash": "0x081f198a6253b1e1b170ded3286c4749428388a86377ab51e8795303ac321afa",
      "submitted_at": 1792423179,
-     "last_error": "re-verifying: counted only once FINALIZED",
+     "last_error": "",
      "filing_id": 7,
      "verdict": "ELIGIBLE",
      "reason": ""
@@ -2675,7 +2675,7 @@
    }
   }
  },
- "updated_at": "2026-10-19T16:22:29.129Z",
+ "updated_at": "2026-10-19T16:23:28.598Z",
  "last_run": {
   "started": 1792423126,
   "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
