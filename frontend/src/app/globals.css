@@ -282,3 +282,5 @@ fieldset.group legend { font-family: var(--serif); font-size: 1.25rem; padding: 
 details > summary { cursor: pointer; font-weight: 600; }
 pre.terms-body { font-family: var(--sans); font-size: 0.875rem; line-height: 1.55; background: var(--sheet); border: 1px solid var(--rule-2); padding: 14px; border-radius: 6px; }
 @media (max-width: 640px) { .lookup-row { flex-direction: column; } }
+code, .mono, a { overflow-wrap: anywhere; }
+section > table.ledger { display: block; overflow-x: auto; }

@@ -31,7 +31,7 @@ export default async function IncidentPage({ params }: { params: Promise<{ ref: 
       <p className="small muted"><Link href="/explorer">Explorer</Link> · {DEP_LABEL[r.dep]} · incident {r.id} · <a href={`/api/incident?ref=${ref}`}>JSON</a></p>
       <h1 className="serif" style={{ marginTop: 6 }}>{inc.title}</h1>
       <p className="lede">{inc.protocol} · {inc.chain} (chain {inc.chain_id}) · <code>{inc.event}</code></p>
-      <p style={{ marginTop: 10 }}><Phase i={inc} now={now} /> {inc.terms_frozen ? <Tag t="OK" /> : null} <span className="small muted">{inc.terms_frozen ? "terms frozen since the first filing" : "terms can still be amended (no filing yet)"} · version {inc.terms_version} · sha256 <span className="mono">{inc.terms_sha256.slice(0, 16)}…</span></span></p>
+      <p style={{ marginTop: 10 }}><Phase i={inc} now={now} /> <span className="small muted">{inc.terms_frozen ? "terms frozen since the first filing" : "terms can still be amended (no filing yet)"} · version {inc.terms_version} · sha256 <span className="mono">{inc.terms_sha256.slice(0, 16)}…</span></span></p>
 
       <dl className="facts" style={{ marginTop: 22 }}>
         <div><dt>Events filed</dt><dd className="num">{inc.filings}</dd></div>

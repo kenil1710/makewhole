@@ -16,6 +16,7 @@ export default async function Reconciliation({ params }: { params: Promise<{ ref
     return <div className="wrap" style={{ paddingTop: 40 }}><h1 className="serif">Reconciliation</h1><p className="lede">The sponsor of <Link href={`/explorer/${ref}`}>{inc.title}</Link> froze no official reimbursement list, so there is nothing to reconcile against.</p></div>;
   }
   const s = rec.summary;
+  const unfiled = rec.items.filter((x) => x.status === "DIFF" && x.eligible_filings === 0).length;
   return (
     <div className="wrap" style={{ paddingTop: 36 }}>
       <p className="small muted"><Link href={`/explorer/${ref}`}>{inc.title}</Link></p>
@@ -23,7 +24,7 @@ export default async function Reconciliation({ params }: { params: Promise<{ ref
       <p className="lede">Code compares each account&rsquo;s computed refund with the amount in the list frozen at creation (sha256 <span className="mono">{rec.sha256}</span>, <a href={rec.source} target="_blank" rel="noreferrer">source</a>). MATCH means within {rec.tolerance_ppb} parts per billion of the listed amount.</p>
       <dl className="facts" style={{ marginTop: 20 }}>
         <div><dt>MATCH</dt><dd className="num">{s.match}</dd></div>
-        <div><dt>DIFF</dt><dd className="num">{s.diff}</dd></div>
+        <div><dt>DIFF</dt><dd className="num">{s.diff}{unfiled ? <small className="muted"> ({unfiled} with no filing yet)</small> : null}</dd></div>
         <div><dt>NOT IN LIST</dt><dd className="num">{s.not_in_list}</dd></div>
         <div><dt>Listed total</dt><dd className="num">{gen(s.list_total_src, 9)} ETH</dd></div>
         <div><dt>Computed total</dt><dd className="num">{gen(s.computed_total_src, 9)} ETH</dd></div>

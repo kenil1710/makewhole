@@ -38,10 +38,13 @@ export default async function Home() {
           ) : (
             <>
               <p className="score">{events}<small>real liquidation events filed by the keeper across {incs.length} incidents on {chains.size} chain{chains.size === 1 ? "" : "s"}.</small></p>
-              {rec?.summary && (
-                <p className="score" style={{ marginTop: 18 }}>{rec.summary.match} of {rec.summary.list_entries}
-                  <small>computed Aave CAPO refunds match the Aave Finance Committee&rsquo;s payout within 1 ppm; {rec.summary.diff} differ, {rec.summary.not_in_list} not in its list.</small></p>
-              )}
+              {rec?.summary && (() => {
+                const unfiled = rec.items.filter((x) => x.status === "DIFF" && x.eligible_filings === 0).length;
+                return (
+                  <p className="score" style={{ marginTop: 18 }}>{rec.summary.match} of {rec.summary.list_entries}
+                    <small>computed Aave CAPO refunds match the Aave Finance Committee&rsquo;s payout within 1 ppm; {rec.summary.diff - unfiled} differ{unfiled ? `, ${unfiled} have no filing yet` : ""}, {rec.summary.not_in_list} not in its list.</small></p>
+                );
+              })()}
               {keeper?.last_run && (
                 <p className="small muted" style={{ marginTop: 14 }}>Keeper last ran {new Date(keeper.last_run.finished * 1000).toUTCString()} · <Link href="/keeper">status</Link></p>
               )}
