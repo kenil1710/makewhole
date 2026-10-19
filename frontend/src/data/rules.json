@@ -1,0 +1,212 @@
+{
+ "bounds": {
+  "MAX_ASSETS": 8,
+  "MAX_BLOCK_SPAN": 5000000,
+  "MAX_EMITTERS": 4,
+  "MAX_LIST": 500,
+  "MAX_MARKETS": 8,
+  "MAX_PAGE": 100,
+  "MAX_RPCS": 5,
+  "MAX_TERMS": 20000,
+  "MAX_WINDOW_S": 34560000,
+  "MIN_SOURCES": 2,
+  "MIN_TERMS": 200
+ },
+ "chains": {
+  "1": "Ethereum",
+  "10": "Optimism",
+  "137": "Polygon",
+  "42161": "Arbitrum",
+  "8453": "Base"
+ },
+ "code": {
+  "compute_owed": "def compute_owed(formula: str, param: int, bps: int, coll: int, debt: int,\n                 debt_rate: int, usd8: int) -> int:\n    \"\"\"The frozen formula. Integer math; every division floors.\"\"\"\n    debt_ref = debt * debt_rate // WAD\n    if formula == F_GAP_PLUS_DEBT_BPS:\n        return coll * param // WAD + debt_ref * bps // BPS\n    if formula == F_TRUE_VALUE_MINUS_DEBT:\n        v = coll * param // WAD - debt_ref\n        return v if v > 0 else 0\n    if formula == F_DEBT_BPS:\n        return debt_ref * bps // BPS\n    if formula == F_COLLATERAL_BPS:\n        return (coll * param // WAD) * bps // BPS\n    if formula == F_USD_VALUE_BPS:\n        return (usd8 * param // (10 ** 8)) * bps // BPS\n    return 0",
+  "cond_holds": "def cond_holds(op: str, answer: int, value: int) -> bool:\n    \"\"\"A missing or reverted answer (-1) never meets a condition.\"\"\"\n    if answer < 0:\n        return False\n    if op == \"EQ\":\n        return answer == value\n    if op == \"NE\":\n        return answer != value\n    if op == \"LT\":\n        return answer < value\n    if op == \"LE\":\n        return answer <= value\n    if op == \"GT\":\n        return answer > value\n    if op == \"GE\":\n        return answer >= value\n    return False",
+  "entitled": "def entitled(owed: int, pool: int, total: int) -> int:\n    \"\"\"What an account may be paid once filings are closed. Depends only on its\n    own owed amount and the two incident totals - never on claim order.\"\"\"\n    if total <= 0 or owed <= 0:\n        return 0\n    if pool >= total:\n        return owed\n    return owed * pool // total",
+  "judge": "def judge(inc: typing.Any, got: dict) -> dict:\n    \"\"\"CODE applies the frozen terms to what the validators read. Returns\n    {\"refuse\": reason} for anything that is not one of the incident's events,\n    else the canonical filing with its verdict and amounts.\"\"\"\n    if int(got.get(\"chain_id\", -1)) != int(inc.chain_id):\n        return {\"refuse\": \"WRONG_CHAIN: the endpoints serve chain \" + str(got.get(\"chain_id\"))\n                + \", the incident's chain is \" + str(int(inc.chain_id))}\n    if got.get(\"receipt_status\") != \"0x1\":\n        return {\"refuse\": \"TX_FAILED: that transaction reverted on chain\"}\n    if got.get(\"emitter\") not in _split(inc.emitters):\n        return {\"refuse\": \"NOT_INCIDENT_EMITTER: the log was emitted by \" + str(got.get(\"emitter\"))\n                + \", which is not one of the incident's contracts\"}\n    blk = int(got.get(\"block\", -1))\n    if blk < int(inc.from_block) or blk > int(inc.to_block):\n        return {\"refuse\": \"OUT_OF_RANGE: block \" + str(blk) + \" is outside \"\n                + str(int(inc.from_block)) + \"-\" + str(int(inc.to_block))}\n    if not got.get(\"finalized\"):\n        return {\"refuse\": \"NOT_FINALIZED: block \" + str(blk) + \" is not final yet; file again later\"}\n    coll_asset = str(got.get(\"collateral_asset\", \"\"))\n    debt_asset = str(got.get(\"debt_asset\", \"\"))\n    if inc.template == T_MORPHO:\n        mk = _kv_markets(inc.markets)\n        m = mk.get(str(got.get(\"market\", \"\")))\n        if m is None:\n            return {\"refuse\": \"NOT_INCIDENT_MARKET: Morpho market \" + str(got.get(\"market\"))\n                    + \" is not one of the incident's markets\"}\n        coll_asset = m[\"collateral\"]\n        debt_asset = m[\"loan\"]\n    if inc.template == T_COMET:\n        debt_asset = COMET_BASE.get(str(got.get(\"emitter\")), \"\")\n    rates = _kv(inc.debt_rates)\n    coll = int(got.get(\"collateral\", \"0\"))\n    debt = int(got.get(\"debt\", \"0\"))\n    usd8 = int(got.get(\"usd_value\", \"0\"))\n    verdict = V_ELIGIBLE\n    reason = \"\"\n    owed = 0\n    if coll_asset not in _split(inc.collateral_assets):\n        verdict, reason = V_NOT_ELIGIBLE, R_COLLATERAL\n    elif debt_asset not in rates:\n        verdict, reason = V_NOT_ELIGIBLE, R_DEBT\n    elif inc.cond_to != \"\" and not cond_holds(inc.cond_op, _as_int(got.get(\"cond_answer\", \"\"), -1),\n                                              int(inc.cond_value)):\n        verdict, reason = V_NOT_ELIGIBLE, R_PRICE\n    else:\n        owed = compute_owed(inc.formula, int(inc.formula_param), int(inc.bonus_bps),\n                            coll, debt, rates[debt_asset], usd8)\n        if owed < int(inc.min_owed_src) or owed <= 0:\n            verdict, reason, owed = V_NOT_ELIGIBLE, R_MIN, 0\n    return {\"verdict\": verdict, \"reason\": reason, \"owed_src\": owed,\n            \"owed_gen\": owed * int(inc.scale_num) // int(inc.scale_den),\n            \"collateral_asset\": coll_asset, \"debt_asset\": debt_asset,\n            \"collateral\": coll, \"debt\": debt, \"usd_value\": usd8, \"block\": blk}",
+  "quorum": "def quorum(rpcs: list, fetch: typing.Any) -> dict:\n    \"\"\"NO SINGLE SOURCE DECIDES. Ask every frozen endpoint; skip one that does\n    not answer. Accept a value only if at least MIN_SOURCES endpoints returned\n    it identically and no endpoint returned anything different.\"\"\"\n    seen = []\n    for url in rpcs:\n        try:\n            v = fetch(url)\n        except Exception:\n            v = None\n        if v is None:\n            continue\n        seen.append(json.dumps(v, sort_keys=True))\n    if len(seen) == 0:\n        return {\"ok\": False, \"why\": \"FEWER_THAN_TWO_SOURCES\"}\n    for x in seen:\n        if x != seen[0]:\n            return {\"ok\": False, \"why\": \"SOURCES_DISAGREE\"}\n    if len(seen) < MIN_SOURCES:\n        return {\"ok\": False, \"why\": \"FEWER_THAN_TWO_SOURCES\"}\n    return {\"ok\": True, \"value\": json.loads(seen[0])}",
+  "reconcile": "def reconcile(listed: int, computed: int, in_list: bool, tol_ppb: int) -> dict:\n    \"\"\"MATCH if |computed - listed| <= listed * tol_ppb / 1e9, else DIFF.\n    An account the list does not name is NOT_IN_LIST.\"\"\"\n    delta = computed - listed\n    if not in_list:\n        return {\"status\": REC_NOT_IN_LIST, \"delta\": str(delta)}\n    mag = delta if delta >= 0 else -delta\n    ok = mag * PPB <= listed * tol_ppb\n    return {\"status\": REC_MATCH if ok else REC_DIFF, \"delta\": str(delta)}"
+ },
+ "comet_base_tokens": {
+  "0x2e44e174f7d53f0212823acc11c01a11d58c5bcb": "0x0b2c639c533813f4aa9d7837caf62653d097ff85",
+  "0x3afdc9bca9213a35503b077a6072f3d0d5ab0840": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  "0x46e6b214b524310239732d51387075e0e70970bf": "0x4200000000000000000000000000000000000006",
+  "0x6f7d514bbd4aff3bcd1140b7344b32f063dee486": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+  "0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+  "0xa17581a9e3356d9a858b789d68b4d866e593ae94": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "0xaeb318360f27748acb200ce616e389a6c9409a07": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+  "0xb125e6687d4313864e53df431d5425969c15eb2f": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "0xc3d688b66703497daa19211eedff47f25384cdc3": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "0xd98be00b5d27fc98112bde293e487f8d4ca57d07": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
+  "0xe36a30d249f7761327fd973001a32010b521b6fd": "0x4200000000000000000000000000000000000006",
+  "0xf25212e676d1f7f89cd72ffee66158f541246445": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"
+ },
+ "cond_ops": [
+  "EQ",
+  "NE",
+  "LT",
+  "LE",
+  "GT",
+  "GE"
+ ],
+ "emitters": {
+  "AAVE_V3": {
+   "1": {
+    "0x0aa97c284e98396202b6a04024f5e2c65026f3c0": "Aave v3 Ethereum EtherFi",
+    "0x4e033931ad43597d96d6bcc25c280717730b58b1": "Aave v3 Ethereum Prime",
+    "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2": "Aave v3 Ethereum Core",
+    "0xc13e21b648a5ee794902342038ff3adab66be987": "SparkLend Ethereum"
+   },
+   "10": {
+    "0x794a61358d6845594f94dc1db02a252b5b4814ad": "Aave v3 Optimism"
+   },
+   "137": {
+    "0x794a61358d6845594f94dc1db02a252b5b4814ad": "Aave v3 Polygon"
+   },
+   "42161": {
+    "0x794a61358d6845594f94dc1db02a252b5b4814ad": "Aave v3 Arbitrum"
+   },
+   "8453": {
+    "0xa238dd80c259a72e81d7e4664a9801593f98d1c5": "Aave v3 Base"
+   }
+  },
+  "COMPOUND_V3": {
+   "1": {
+    "0x3afdc9bca9213a35503b077a6072f3d0d5ab0840": "Compound v3 Ethereum cUSDTv3",
+    "0xa17581a9e3356d9a858b789d68b4d866e593ae94": "Compound v3 Ethereum cWETHv3",
+    "0xc3d688b66703497daa19211eedff47f25384cdc3": "Compound v3 Ethereum cUSDCv3"
+   },
+   "10": {
+    "0x2e44e174f7d53f0212823acc11c01a11d58c5bcb": "Compound v3 Optimism cUSDCv3",
+    "0xe36a30d249f7761327fd973001a32010b521b6fd": "Compound v3 Optimism cWETHv3"
+   },
+   "137": {
+    "0xaeb318360f27748acb200ce616e389a6c9409a07": "Compound v3 Polygon cUSDTv3",
+    "0xf25212e676d1f7f89cd72ffee66158f541246445": "Compound v3 Polygon cUSDCv3"
+   },
+   "42161": {
+    "0x6f7d514bbd4aff3bcd1140b7344b32f063dee486": "Compound v3 Arbitrum cWETHv3",
+    "0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf": "Compound v3 Arbitrum cUSDCv3",
+    "0xd98be00b5d27fc98112bde293e487f8d4ca57d07": "Compound v3 Arbitrum cUSDTv3"
+   },
+   "8453": {
+    "0x46e6b214b524310239732d51387075e0e70970bf": "Compound v3 Base cWETHv3",
+    "0xb125e6687d4313864e53df431d5425969c15eb2f": "Compound v3 Base cUSDCv3"
+   }
+  },
+  "MORPHO_BLUE": {
+   "1": {
+    "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb": "Morpho Blue Ethereum"
+   },
+   "10": {
+    "0xce95afbb8ea029495c66020883f87aae8864af92": "Morpho Blue Optimism"
+   },
+   "137": {
+    "0x1bf0c2541f820e775182832f06c0b7fc27a25f67": "Morpho Blue Polygon"
+   },
+   "42161": {
+    "0x6c247b1f6182318877311737bac0844baa518f5e": "Morpho Blue Arbitrum"
+   },
+   "8453": {
+    "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb": "Morpho Blue Base"
+   }
+  }
+ },
+ "formulas": {
+  "COLLATERAL_BPS": "(c*P/1e18)*bps/1e4",
+  "DEBT_BPS": "(d*rate/1e18)*bps/1e4",
+  "ORACLE_GAP_PLUS_DEBT_BPS": "c*P/1e18 + (d*rate/1e18)*bps/1e4",
+  "TRUE_VALUE_MINUS_DEBT": "max(0, c*P/1e18 - d*rate/1e18)",
+  "USD_VALUE_BPS": "(usd8*P/1e8)*bps/1e4"
+ },
+ "gate_code": {
+  "classify": "def classify(raw: typing.Any, account: str) -> dict:\n    \"\"\"Code alone maps MakeWhole's account status to one state.\"\"\"\n    if not isinstance(raw, dict):\n        return _unavailable(account, \"MakeWhole returned nothing usable\")\n    if raw.get(\"found\") is False:\n        return {\"state\": S_NO_INCIDENT, \"account\": account, \"why\": \"no such incident\", \"made_whole\": False,\n                \"owed_wei\": \"0\", \"entitled_wei\": \"0\", \"paid_wei\": \"0\", \"unpaid_wei\": \"0\"}\n    if raw.get(\"found\") is not True:\n        return _unavailable(account, \"found flag missing\")\n    owed = _nat(raw.get(\"owed_gen\"))\n    ent = _nat(raw.get(\"entitled_gen\"))\n    paid = _nat(raw.get(\"paid_gen\"))\n    elig = _nat(raw.get(\"eligible_filings\"))\n    closed = raw.get(\"closed\")\n    if owed < 0 or ent < 0 or paid < 0 or elig < 0 or not isinstance(closed, bool):\n        return _unavailable(account, \"a field is missing or not a number\")\n    if ent > owed or paid > owed or (elig == 0 and owed > 0) or (elig > 0 and owed == 0):\n        return _unavailable(account, \"fields are inconsistent\")\n    out = {\"account\": account, \"owed_wei\": str(owed), \"entitled_wei\": str(ent), \"paid_wei\": str(paid),\n           \"unpaid_wei\": str(ent - paid if ent > paid else 0), \"eligible_filings\": elig, \"closed\": closed,\n           \"made_whole\": False, \"why\": \"\"}\n    if elig == 0:\n        out[\"state\"] = S_NOT_ELIGIBLE\n        return out\n    if ent > 0 and paid >= ent:\n        out[\"state\"] = S_PAID\n        out[\"made_whole\"] = paid >= owed\n        return out\n    out[\"state\"] = S_CLOSED if closed else S_UNPAID\n    return out"
+ },
+ "gate_states": {
+  "CLOSED": "the incident closed before the account was paid; what was left went back to the sponsor",
+  "ELIGIBLE_UNPAID": "owed something, not (fully) paid yet",
+  "NOT_ELIGIBLE": "the incident has no eligible filing for this account",
+  "NO_INCIDENT": "there is no such incident",
+  "PAID": "paid its whole entitlement (made_whole says whether the entitlement was the full amount owed, i.e. no pro-rata cut)",
+  "UNAVAILABLE": "MakeWhole could not be read, or answered with missing or malformed fields"
+ },
+ "header": "# MakeWhole v2 - refunds computed from on-chain liquidation events under\n# frozen terms.\n#\n# A SPONSOR opens an incident and funds its pool in one transaction. The\n# terms name a protocol template, a chain, the official contracts that emit\n# the event, the block range, eligibility filters (collateral and debt assets,\n# a minimum amount, an optional price-source condition), the refund formula,\n# the claim deadline and the claim window, and optionally the sponsor's own\n# official reimbursement list (frozen by its sha256). After the first filing\n# the sponsor can only top the pool up or extend the deadline.\n#\n# ANYONE (in practice the keeper bot) files an event as (tx hash, log index).\n# Every validator reads the receipt from every frozen RPC of the incident's\n# chain; a value counts only if at least two endpoints return it identically\n# and none disagrees, the endpoints serve the incident's chain, the block is\n# final on each of them and inside the range. Code decodes the log with the\n# template's decoder, applies the filters, computes the refund and records\n# it. The refund is always owed to the borrower in the log.\n#\n# Payouts are pushed to the borrower's address by whoever calls claim() (the\n# caller pays the fee of the value message). The amount is the same whatever\n# order claims arrive in:\n#     entitled = owed                       if pool >= total owed\n#     entitled = floor(owed * pool / total) otherwise\n# A top-up raises every entitlement; an account already paid can be paid the\n# difference. After the claim window, close() sends everything still held to\n# the sponsor. No GEN can stay in the contract.\n#\n# WHERE THE LINE IS\n#   code    everything: fetching (two-source quorum), decoding, every filter,\n#           every amount, duplicates, deadlines, pro-rata, every transfer,\n#           reconciliation against the sponsor's list. No model is called.\n#\n# RULES\n#   1. Evidence is fetched by every validator from the incident's frozen\n#      RPCs. Nobody uploads a receipt.\n#   2. Strict equality on everything that moves money.\n#   3. Every check that can refuse runs before the first write. A refused\n#      filing leaves no trace; counters move only after all checks pass.\n#   4. Terms are frozen at the first filing. No owner, no admin, no pause.\n#   5. Payable methods never raise: a refused call leaves its value\n#      withdrawable by the sender (withdraw_refused).\n#   6. Every wei has an exit: books == eth_getBalance after every method.\n#   7. Value leaves only through gl.evm.Account(to).emit_call(amount, b\"\")\n#      (an external value message, delivered at finalization).\n#\n# The runner rejects the str replace method; slice around find() instead.",
+ "payout_kinds": [
+  "CLAIM",
+  "SURPLUS_TO_SPONSOR",
+  "UNCLAIMED_TO_SPONSOR",
+  "REFUSED_VALUE_RETURNED"
+ ],
+ "reconciliation": [
+  "MATCH",
+  "DIFF",
+  "NOT_IN_LIST"
+ ],
+ "refusals": {
+  "ALREADY_PAID": "",
+  "BAD_CONFIG": "config is not JSON",
+  "BAD_LOG_INDEX": "log_index must be a non-negative integer",
+  "BAD_TX": "tx_hash must be 32 bytes of hex",
+  "CLAIM_WINDOW_OPEN": "close is possible from",
+  "CLAIM_WINDOW_OVER": "incident #",
+  "CLOSED": "incident #",
+  "DEADLINE_PASSED": "the incident can no longer be amended",
+  "DUPLICATE": "this event is already filing #",
+  "FILINGS_OPEN": "payouts start at the claim deadline",
+  "INCONCLUSIVE": "fewer than two of the incident's endpoints returned this",
+  "NOTHING_TO_WITHDRAW": "no refused value for",
+  "NOT_ELIGIBLE": "",
+  "NOT_FINALIZED": "block",
+  "NOT_INCIDENT_EMITTER": "the log was emitted by",
+  "NOT_INCIDENT_MARKET": "Morpho market",
+  "NOT_LATER": "the new deadline must be later than",
+  "NOT_SPONSOR": "only the sponsor may amend",
+  "NO_INCIDENT": "no incident #",
+  "NO_SUCH_LOG": "that transaction has no log at index",
+  "NO_SURPLUS": "the pool does not exceed the total owed",
+  "OUT_OF_RANGE": "block",
+  "TERMS_FROZEN": "the terms are frozen since the first filing",
+  "TOO_LATE": "at most",
+  "TX_FAILED": "that transaction reverted on chain",
+  "UNREADABLE": "the receipt could not be read (",
+  "WRONG_CHAIN": "the endpoints serve chain",
+  "WRONG_EVENT": "that log is not a"
+ },
+ "templates": {
+  "AAVE_V3": {
+   "event": "LiquidationCall(address,address,address,uint256,uint256,address,bool)",
+   "formulas": [
+    "ORACLE_GAP_PLUS_DEBT_BPS",
+    "TRUE_VALUE_MINUS_DEBT",
+    "DEBT_BPS",
+    "COLLATERAL_BPS"
+   ],
+   "topic0": "0xe413a321e8681d831f4dbccbca790d2952b56f977908e45be37335533e005286"
+  },
+  "COMPOUND_V3": {
+   "event": "AbsorbCollateral(address,address,address,uint256,uint256)",
+   "formulas": [
+    "COLLATERAL_BPS",
+    "USD_VALUE_BPS"
+   ],
+   "topic0": "0x9850ab1af75177e4a9201c65a2cf7976d5d28e40ef63494b44366f86b2f9412e"
+  },
+  "MORPHO_BLUE": {
+   "event": "Liquidate(bytes32,address,address,uint256,uint256,uint256,uint256,uint256)",
+   "formulas": [
+    "ORACLE_GAP_PLUS_DEBT_BPS",
+    "TRUE_VALUE_MINUS_DEBT",
+    "DEBT_BPS",
+    "COLLATERAL_BPS"
+   ],
+   "topic0": "0xa4946ede45d0c6f06a0f5ce92c9ad3b4751452d2fe0e25010783bcab57a67e41"
+  }
+ },
+ "verdict_reasons": [
+  "COLLATERAL_NOT_COVERED",
+  "DEBT_ASSET_NOT_COVERED",
+  "PRICE_CONDITION_NOT_MET",
+  "BELOW_MIN_AMOUNT"
+ ],
+ "version": "2.0.0"
+}

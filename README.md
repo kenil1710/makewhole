@@ -18,6 +18,15 @@ cases, pull payouts — on GenLayer.
 
 More: [research](docs/RESEARCH.md) · [threat model](docs/THREAT_MODEL.md) · [seeds](docs/SEEDS.md) · [addresses](ADDRESSES.md) · [tasks](docs/TASKS.md) · superseded [v1](docs/superseded/v1/README.md), [v1.1](docs/superseded/v1.1/README.md), [v1.2](docs/superseded/v1.2/README.md)
 
+## Scope
+
+MakeWhole computes refunds from on-chain events under frozen terms. It does not decide who caused an incident, and it
+does not judge whether a liquidation was fair: the sponsor's terms say which events count and how much each is owed,
+and code applies them. Only the listed templates and chains count: Aave v3 `LiquidationCall` (including SparkLend),
+Compound v3 `AbsorbCollateral` and Morpho Blue `Liquidate`, emitted by the official contracts on Ethereum, Arbitrum,
+Base, Optimism and Polygon ([the full registry](docs/RULES_V2.md#official-emitters)). Refunds are paid in GEN on
+GenLayer Studio Dev to the borrower address recorded in each event.
+
 ## The problem
 
 On **10 March 2026** a misconfigured CAPO price cap made Aave value wstETH **2.84% below** its real exchange rate on its
