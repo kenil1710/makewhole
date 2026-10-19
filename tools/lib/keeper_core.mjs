@@ -163,7 +163,11 @@ export async function runKeeper({ mw, src, state, opts }) {
       const byKey = new Map(filings.map((f) => [`${f.tx_hash}:${f.log_index}`, f]));
       for (const [k, e] of Object.entries(st.events)) {
         const f = byKey.get(k);
-        if (f) { e.status = "FILED"; e.filing_id = f.filing_id; e.verdict = f.verdict; e.reason = f.reason; }
+        if (f && e.status === "SUBMITTED") {
+          // our own transaction: visible in state at ACCEPTED, but it counts only
+          // once it is FINALIZED (checked in step 2 of a later run)
+          e.verdict = f.verdict; e.reason = f.reason;
+        } else if (f) { e.status = "FILED"; e.filing_id = f.filing_id; e.verdict = f.verdict; e.reason = f.reason; }
         else if (e.status === "FILED") {
           // the contract is the source of truth: a state file that says FILED
           // for an event the contract does not have is wrong, so file it again

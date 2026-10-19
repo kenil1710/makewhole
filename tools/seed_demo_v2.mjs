@@ -162,6 +162,19 @@ await open("D8b", "aave-wsteth-capo-2026-03", { title: "Demo D8b: wrong chain (E
   emitters: ["0xa238dd80c259a72e81d7e4664a9801593f98d1c5"], rpcs: ["https://rpc.mevblocker.io", "https://gateway.tenderly.co/public/mainnet"],
   official_list: {}, official_list_sha256: "", price_condition: null, claim_deadline_s: short, claim_window_s: 60 }, GEN / 100n);
 await file("D8b", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
+if (S.steps.D8b_wrong_chain_refused.outcome === "REVERT:INCONCLUSIVE") {
+  // one Ethereum endpoint did not answer, so fewer than two agreed and nothing was
+  // recorded (the INCONCLUSIVE path, live). Kept as such; D8c tries with three endpoints.
+  S.steps.D8b_inconclusive_one_endpoint_silent = { ...S.steps.D8b_wrong_chain_refused, as_expected: true, note: "fewer than two endpoints answered; nothing recorded" };
+  delete S.steps.D8b_wrong_chain_refused;
+  save();
+}
+if (!S.steps.D8b_wrong_chain_refused) {
+  await open("D8c", "aave-wsteth-capo-2026-03", { title: "Demo D8c: wrong chain (three Ethereum endpoints for a Base Aave incident)", protocol: "Aave v3 (Base)", chain_id: 8453,
+    emitters: ["0xa238dd80c259a72e81d7e4664a9801593f98d1c5"], rpcs: ["https://rpc.mevblocker.io", "https://gateway.tenderly.co/public/mainnet", "https://eth.drpc.org"],
+    official_list: {}, official_list_sha256: "", price_condition: null, claim_deadline_s: short, claim_window_s: 60 }, GEN / 100n);
+  await file("D8c", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
+}
 
 // D3's claim reached the contract after D3's claim window (the seed was still
 // paying D1 and D2): the contract refused it, CLAIM_WINDOW_OVER, and close()
@@ -248,7 +261,7 @@ await gateStep("gate_PAID_after_top_up_whole", "D2", d2a[0].borrower, "PAID/true
 const d2 = await inc("D2");
 await payout("D2_refund_surplus", "SURPLUS_TO_SPONSOR", "D2", () => claimer.pushTo("refund_surplus", [iid("D2")], sponsor.me), sponsor.me, BigInt(d2.pool_wei) - BigInt(d2.owed_gen_total_wei));
 const d3a = (await claimer.view("get_accounts", [iid("D3"), 0, 10])).items;
-for (const a of d3a) await payout(`D3_claim_${a.borrower.slice(0, 8)}`, "CLAIM", "D3", () => claimer.pushTo("claim", [iid("D3"), a.borrower], a.borrower), a.borrower, BigInt(a.due_gen));
+if (!S.steps.D3_claim_after_window_refused) for (const a of d3a) await payout(`D3_claim_${a.borrower.slice(0, 8)}`, "CLAIM", "D3", () => claimer.pushTo("claim", [iid("D3"), a.borrower], a.borrower), a.borrower, BigInt(a.due_gen));
 await untilTime((await inc("D3b")).claim_deadline);
 for (const a of (await claimer.view("get_accounts", [iid("D3b"), 0, 10])).items)
   await payout(`D3b_claim_${a.borrower.slice(0, 8)}`, "CLAIM", "D3b", () => claimer.pushTo("claim", [iid("D3b"), a.borrower], a.borrower), a.borrower, BigInt(a.due_gen));

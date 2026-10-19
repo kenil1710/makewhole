@@ -561,3 +561,20 @@ test("K5: a lying getLogs answer (a non-array) never advances the cursor", async
   assert.ok(r.errors.length > 0);
   assert.equal(st.incidents[1].cursors[AAVE], undefined);
 });
+
+test("K6: a filing visible in state while our tx is only ACCEPTED is not counted until FINALIZED", async () => {
+  const src = fakeSource({ events: evs(3) });
+  const mw = fakeMW({ incidents: [inc(1)], acceptedPolls: 1 });
+  const realTx = mw.tx;
+  mw.tx = async (h) => {                       // state shows the filing as soon as the tx is ACCEPTED
+    const t = mw.txs.get(h);
+    if (t && !mw.store.has(t.key)) mw.store.set(t.key, { filing_id: 900 + mw.store.size, incident_id: t.iid, tx_hash: t.tx, log_index: t.li, verdict: "ELIGIBLE" });
+    return realTx(h);
+  };
+  const st = emptyState();
+  await run(mw, src, st);
+  assert.equal(st.incidents[1].coverage.filed, 0);
+  assert.equal(st.incidents[1].coverage.submitted, 3);
+  await run(mw, src, st);
+  assert.equal(st.incidents[1].coverage.filed, 3);
+});
