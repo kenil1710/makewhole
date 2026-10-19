@@ -163,6 +163,26 @@ await open("D8b", "aave-wsteth-capo-2026-03", { title: "Demo D8b: wrong chain (E
   official_list: {}, official_list_sha256: "", price_condition: null, claim_deadline_s: short, claim_window_s: 60 }, GEN / 100n);
 await file("D8b", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
 
+// D3's claim reached the contract after D3's claim window (the seed was still
+// paying D1 and D2): the contract refused it, CLAIM_WINDOW_OVER, and close()
+// later returned D3's pool. Recorded as what it was; D3b pays the Compound refund.
+const d3p = S.payouts.findIndex((p) => p.name.startsWith("D3_claim_") && !p.delivered);
+if (d3p >= 0) {
+  const p = S.payouts[d3p];
+  S.steps.D3_claim_after_window_refused = { done: true, tx: p.tx, outcome: "REVERT:CLAIM_WINDOW_OVER", reason: "CLAIM_WINDOW_OVER: incident #" + p.incident + " no longer pays", as_expected: true,
+    note: "sent after D3's claim window ended; nothing was paid and close() returned D3's whole pool to the sponsor" };
+  delete S.steps[p.name];
+  S.payouts.splice(d3p, 1);
+  save();
+}
+const cometOver = { title: "Demo D3b: Compound v3 template (a real Base absorb), paid", protocol: "Compound v3 (Base)", template: "COMPOUND_V3",
+  emitters: ["0xb125e6687d4313864e53df431d5425969c15eb2f"], markets: [], collateral_assets: ["0x" + comet.topics[3].slice(26)],
+  debt_rates: { "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": "1" }, formula: "USD_VALUE_BPS", formula_param: "400000000000000", bonus_bps: 500,
+  from_block: parseInt(comet.blockNumber), to_block: parseInt(comet.blockNumber), price_condition: null, sources: ["https://basescan.org/tx/0xf557116bec1b32e82aa128d477a9906be63c94e3097d57bd15227fc894f50c6a"],
+  claim_deadline_s: 180, claim_window_s: 1200, __terms: cometTerms };
+await open("D3b", "morpho-cbeth-base-2025-03", cometOver, GEN / 10n);
+await file("D3b", "file_1", { tx: "0xf557116bec1b32e82aa128d477a9906be63c94e3097d57bd15227fc894f50c6a", log_index: 591 }, "OK");
+
 // D11: an event in a block that is not final yet, if one exists right now
 if (!S.steps.D11_unfinalized?.done) {
   const cands = [[8453, "https://base.gateway.tenderly.co", "MORPHO_BLUE", "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb", "morpho-cbeth-base-2025-03"],
@@ -229,6 +249,9 @@ const d2 = await inc("D2");
 await payout("D2_refund_surplus", "SURPLUS_TO_SPONSOR", "D2", () => claimer.pushTo("refund_surplus", [iid("D2")], sponsor.me), sponsor.me, BigInt(d2.pool_wei) - BigInt(d2.owed_gen_total_wei));
 const d3a = (await claimer.view("get_accounts", [iid("D3"), 0, 10])).items;
 for (const a of d3a) await payout(`D3_claim_${a.borrower.slice(0, 8)}`, "CLAIM", "D3", () => claimer.pushTo("claim", [iid("D3"), a.borrower], a.borrower), a.borrower, BigInt(a.due_gen));
+await untilTime((await inc("D3b")).claim_deadline);
+for (const a of (await claimer.view("get_accounts", [iid("D3b"), 0, 10])).items)
+  await payout(`D3b_claim_${a.borrower.slice(0, 8)}`, "CLAIM", "D3b", () => claimer.pushTo("claim", [iid("D3b"), a.borrower], a.borrower), a.borrower, BigInt(a.due_gen));
 await payout("outsider_withdraw_refused_value", "REFUSED_VALUE_RETURNED", null, () => outsider.pushTo("withdraw_refused", [], outsider.me), outsider.me, GEN / 100n, true);
 
 // ---------------------------------------------------------------- close everything
