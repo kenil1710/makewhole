@@ -1,0 +1,188 @@
+15:21:59 D1_open                              ok  OK >claim_deadline��ǵ5	claim_end��ǵ5incident_id	official_list_sha256�2ec396a9432ef84c211f
+15:22:20 D1_amend_before_first_filing         ok  OK &incident_id	statusOKterms_sha256�5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa
+15:22:36 D2_open                              ok  OK >claim_deadline�ǵ5	claim_end��ǵ5incident_idofficial_list_sha256pool_wei�50000000000
+15:22:51 D3_open                              ok  OK >claim_deadline�ǵ5	claim_end��ǵ5incident_idofficial_list_sha256pool_wei�10000000000
+15:23:05 D4_open                              ok  OK >claim_deadline��ǵ5	claim_end��ǵ5incident_id!official_list_sha256pool_wei�1000000000
+15:23:21 D5_open                              ok  OK >claim_deadline��ǵ5	claim_end��ǵ5incident_id)official_list_sha256�2ec396a9432ef84c211f
+15:23:34 D6_open                              ok  OK >claim_deadline��ǵ5	claim_end��ǵ5incident_id1official_list_sha256pool_wei�1000000000
+15:23:49 D7_open                              ok  OK >claim_deadline��ǵ5	claim_end��ǵ5incident_id9official_list_sha256pool_wei�1000000000
+15:24:03 D8_open                              ok  OK >claim_deadline��ǵ5	claim_end�ǵ5incident_idAofficial_list_sha256pool_wei�10000000000
+15:24:18 D9_open                              ok  OK >claim_deadline��ǵ5	claim_end�ǵ5incident_idIofficial_list_sha256pool_wei�10000000000
+15:24:34 D10_open                             ok  OK >claim_deadline��ǵ5	claim_end�ǵ5incident_idQofficial_list_sha256pool_wei�10000000000
+15:25:04 D1_file_1                            ok  OK Fborrower�0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f	filing_id	incident_id	owed_gen_we
+15:25:29 D1_file_2                            ok  OK Fborrower�0x4bacce55f0991cfc4d919f7f50edb8be028e37df	filing_idincident_id	owed_gen_we
+15:25:49 D1_file_3                            ok  OK Fborrower�0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de	filing_idincident_id	owed_gen_we
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:26:02 D1_dup_refused                       ok  REVERT:DUPLICATE DUPLICATE: this event is already filing #1
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:26:14 D1_dup_other_spelling_refused        ok  REVERT:DUPLICATE DUPLICATE: this event is already filing #1
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:26:33 D1_no_such_log_refused               ok  REVERT:NO_SUCH_LOG NO_SUCH_LOG: that transaction has no log at index 99999
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:26:46 D1_wrong_event_refused               ok  REVERT:WRONG_EVENT WRONG_EVENT: that log is not a LiquidationCall(address,address,address,uint256,uint256,add
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:27:06 D1_out_of_range_refused              ok  REVERT:OUT_OF_RANGE OUT_OF_RANGE: block 24626867 is outside 24626860-24626861
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:27:28 D1_spark_emitter_refused             ok  REVERT:NOT_INCIDENT_EMITTER NOT_INCIDENT_EMITTER: the log was emitted by 0xc13e21b648a5ee794902342038ff3adab66be987, w
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:27:43 D1_bad_tx_refused                    ok  REVERT:BAD_TX BAD_TX: tx_hash must be 32 bytes of hex
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for amend_incident (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:27:56 D1_amend_after_filing_refused        ok  REVERT:TERMS_FROZEN TERMS_FROZEN: the terms are frozen since the first filing
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for extend_deadline (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:28:08 D1_extend_by_outsider_refused        ok  REVERT:NOT_SPONSOR NOT_SPONSOR: only the sponsor may extend the deadline
+15:28:22 D1_top_up_by_outsider_refused        ok  REFUSED:NOT_SPONSOR reason�NOT_SPONSOR: only the sponsor may top upstatus<REFUSEDvalue_withdrawable�100000
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for claim (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:28:33 D1_claim_before_deadline_refused     ok  REVERT:FILINGS_OPEN FILINGS_OPEN: payouts start at the claim deadline 1792424808
+15:28:49 D2_file_1                            ok  OK Fborrower�0xca686974913389d42f3c5f61010503daccdb487a	filing_id!incident_idowed_gen_we
+15:29:05 D2_file_2                            ok  OK Fborrower�0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c	filing_id)incident_idowed_gen_we
+15:29:23 D2_file_3                            ok  OK Fborrower�0x04b616cfdb3b57e867f6915bfcedef07a3987a80	filing_id1incident_idowed_gen_we
+15:29:47 D3_file_1                            ok  OK Fborrower�0x84c196c53fb80185083e7928f1eee089a6180ce0	filing_id9incident_idowed_gen_we
+15:30:07 D4_file_1                            ok  OK Fborrower�0xca686974913389d42f3c5f61010503daccdb487a	filing_idAincident_id!owed_gen_we
+15:30:23 D4_file_2                            ok  OK Fborrower�0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c	filing_idIincident_id!owed_gen_we
+15:30:40 D4_file_3                            ok  OK Fborrower�0x04b616cfdb3b57e867f6915bfcedef07a3987a80	filing_idQincident_id!owed_gen_we
+15:30:56 D5_file_1                            ok  OK Fborrower�0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f	filing_idYincident_id)owed_gen_we
+15:31:26 D6_file_1                            ok  OK Fborrower�0x79904d39117d5fec74ce78ef08ba0e90e426e8d3	filing_idaincident_id1owed_gen_we
+15:31:44 D7_file_1                            ok  OK Fborrower�0x9e990c8dc9768f959b5abf7910f5fd3b965ccf24	filing_idiincident_id9owed_gen_we
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:31:57 D8_wrong_chain_refused               UNEXPECTED REVERT:WRONG_EVENT WRONG_EVENT: that log is not a Liquidate(bytes32,address,address,uint256,uint256,uint256,u
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:32:10 D9_disagree_inconclusive             ok  REVERT:INCONCLUSIVE INCONCLUSIVE: fewer than two of the incident's endpoints returned this event identically (
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:32:22 D10_other_market_refused             ok  REVERT:NOT_INCIDENT_MARKET NOT_INCIDENT_MARKET: Morpho market 0x9125d0fa03c3137166df68bcc72283477830de2a4a5536512374c
+15:32:33 D11_unfinalized                      none found right now (offline test covers it)
+15:32:36 gate_ELIGIBLE_UNPAID                 ok  ELIGIBLE_UNPAID false
+15:32:37 gate_NO_INCIDENT                     ok  NO_INCIDENT false
+15:32:38 gate_NOT_ELIGIBLE_stranger           ok  NOT_ELIGIBLE false
+15:32:39 gate_UNAVAILABLE_bad_address         ok  UNAVAILABLE false
+15:47:19 D1_late_filing_refused               ok  REVERT:DEADLINE_PASSED DEADLINE_PASSED: filings for incident #1 are closed
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:48:13 D1_claim_0x4f962b                    ok  CLAIM 2494787941017015246 0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:49:02 D1_claim_0x4bacce                    ok  CLAIM 877714041173915609 0x4bacce55f0991cfc4d919f7f50edb8be028e37df  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for claim (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:49:13 D1_claim_again_refused               ok  REVERT:ALREADY_PAID ALREADY_PAID: 0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f has been paid its entitlement
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for claim (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:49:25 D1_claim_stranger_refused            ok  REVERT:NOT_ELIGIBLE NOT_ELIGIBLE: 0x1111111111111111111111111111111111111111 has no eligible filing in inciden
+15:49:26 gate_PAID_made_whole                 ok  PAID true
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:50:15 D1_refund_surplus                    ok  SURPLUS_TO_SPONSOR 1086800166628703799 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for refund_surplus (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:50:26 D1_refund_surplus_again_refused      ok  REVERT:NO_SURPLUS NO_SURPLUS: the pool does not exceed the total owed
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for close (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:50:38 D1_close_early_refused               ok  REVERT:CLAIM_WINDOW_OPEN CLAIM_WINDOW_OPEN: close is possible from 1792425228
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:51:30 D2_claim_pro_rata                    ok  CLAIM 49911750249963696 0xca686974913389d42f3c5f61010503daccdb487a  
+15:51:31 gate_PAID_pro_rata_not_whole         ok  PAID false
+15:51:45 D2_top_up                            ok  OK incident_idpool_wei�150000000000000000statusOK
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:52:35 D2_claim_after_top_up_0xca6869       ok  CLAIM 67232540146263378 0xca686974913389d42f3c5f61010503daccdb487a  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:53:24 D2_claim_after_top_up_0xff7690       ok  CLAIM 198235818662261 0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:54:13 D2_claim_after_top_up_0x04b616       ok  CLAIM 8888842241705 0x04b616cfdb3b57e867f6915bfcedef07a3987a80  
+15:54:14 gate_PAID_after_top_up_whole         ok  PAID true
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:55:03 D2_refund_surplus                    ok  SURPLUS_TO_SPONSOR 32648584942868960 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:55:51 D3_claim_0x84c196                    UNEXPECTED CLAIM 850300000 0x84c196c53fb80185083e7928f1eee089a6180ce0 not delivered no message to the payee for the amount
+15:56:44 outsider_withdraw_refused_value      ok  REFUSED_VALUE_RETURNED 10000000000000000 0xbaddFf0f11EB7A3C9825c1aDC180FAC9cf0885e0  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:57:33 D1_close                             ok  UNCLAIMED_TO_SPONSOR 540697851180365346 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for close (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+15:57:47 D2_close                             ok  OK &incident_id	payout_idreturned_to_sponsor_wei0statusOK
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:58:38 D3_close                             ok  UNCLAIMED_TO_SPONSOR 1000000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+15:59:27 D4_close                             ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:00:16 D5_close                             ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:01:08 D6_close                             ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:02:06 D7_close                             ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:02:59 D8_close                             ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:03:52 D9_close                             ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:04:48 D10_close                            ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+16:04:49 gate_CLOSED_unclaimed                ok  CLOSED false
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for claim (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+16:05:03 D1_claim_after_close_refused         ok  REVERT:CLAIM_WINDOW_OVER CLAIM_WINDOW_OVER: incident #1 no longer pays
+16:05:10 final {"ledger":{"books_wei":"0","identity_holds":true,"on_chain_balance_wei":"0","paid_out_wei":"3489853397248061895","pools_in_wei":"6220000000000000000","refunded_out_wei":"2730146602751938105","refused_in_wei":"10000000000000000","refused_out_wei":"10000000000000000"},"eth_getBalance":"0","reconciliation_D1":{"computed_total_src":"391319983337129620193","diff":32,"list_entries":35,"list_total_src":"512192859825188850000","match":3,"not_in_list":0,"total_delta_src":"-120872876488059229807"},"steps":74,"unexpected":["D8_wrong_chain_refused","D3_claim_0x84c196"],"payouts":19,"payouts_delivered":18}

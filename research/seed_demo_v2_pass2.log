@@ -1,0 +1,18 @@
+16:05:52 D8b_open                             ok  OK >claim_deadline�ȵ5	claim_end��ȵ5incident_idYofficial_list_sha256pool_wei�10000000000
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+16:06:21 D8b_wrong_chain_refused              UNEXPECTED REVERT:INCONCLUSIVE INCONCLUSIVE: fewer than two of the incident's endpoints returned this event identically (
+16:06:44 D3b_open                             ok  OK >claim_deadline��ȵ5	claim_end��ȵ5incident_idaofficial_list_sha256pool_wei�1000000000
+16:07:01 D3b_file_1                           ok  OK Fborrower�0x84c196c53fb80185083e7928f1eee089a6180ce0	filing_idqincident_idaowed_gen_we
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:08:01 D3_claim_0x84c196                    UNEXPECTED CLAIM 850300000 0x84c196c53fb80185083e7928f1eee089a6180ce0 not delivered no message to the payee for the amount
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:10:35 D3b_claim_0x84c196                   ok  CLAIM 850300000 0x84c196c53fb80185083e7928f1eee089a6180ce0  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:17:41 D8b_close                            ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:30:38 D3b_close                            ok  UNCLAIMED_TO_SPONSOR 99999999149700000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+16:30:43 final {"ledger":{"books_wei":"0","identity_holds":true,"on_chain_balance_wei":"0","paid_out_wei":"3489853398098361895","pools_in_wei":"6330000000000000000","refunded_out_wei":"2840146601901638105","refused_in_wei":"10000000000000000","refused_out_wei":"10000000000000000"},"eth_getBalance":"0","reconciliation_D1":{"computed_total_src":"391319983337129620193","diff":32,"list_entries":35,"list_total_src":"512192859825188850000","match":3,"not_in_list":0,"total_delta_src":"-120872876488059229807"},"steps":82,"unexpected":["D8b_wrong_chain_refused","D3_claim_0x84c196"],"payouts":22,"payouts_delivered":21}

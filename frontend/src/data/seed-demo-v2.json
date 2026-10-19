@@ -7,7 +7,7 @@
    "tx": "0x662f63afd01afd447fd0ce9f81b5555f7248522a7c3c463ce85937168cc2d6b2",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id\t\u0014official_list_sha256�\u00042ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c\bpool_wei�\u00015000000000000000000\u0006status\u0014OK\fterms_sha256�\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id\t\u0014official_list_sha256\ufffd\u00042ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c\bpool_wei\ufffd\u00015000000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
    "result": {
     "claim_deadline": 1792424808,
     "claim_end": 1792425228,
@@ -24,7 +24,7 @@
    "tx": "0xe5644483eaade165e270eeee06f99fbf98cddbb3b2547040e7e3d5fc34a7f8f5",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": "&\u000bincident_id\t\u0006status\u0014OK\fterms_sha256�\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f\rterms_version\u0011",
+   "reason": "&\u000bincident_id\t\u0006status\u0014OK\fterms_sha256\ufffd\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f\rterms_version\u0011",
    "result": {
     "incident_id": 1,
     "status": "OK",
@@ -38,7 +38,7 @@
    "tx": "0xea516f930ab583a77d9b356cddde4ec0d2dc55820aba7884c91c8adac482f716",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline�ǵ5\tclaim_end��ǵ5\u000bincident_id\u0011\u0014official_list_sha256\u0004\bpool_wei�\u000150000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "reason": ">\u000eclaim_deadline\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id\u0011\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000150000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
    "result": {
     "claim_deadline": 1792424845,
     "claim_end": 1792425265,
@@ -55,7 +55,7 @@
    "tx": "0x58c227f8beb04fc6697a53ecee54d993449472cac5b0603eea7c3018beaa3d2e",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline�ǵ5\tclaim_end��ǵ5\u000bincident_id\u0019\u0014official_list_sha256\u0004\bpool_wei�\u00011000000000000000000\u0006status\u0014OK\fterms_sha256�\u00042b938196670f4fcade9281b01b0364320eb728cd4915bb086c009323e011ca5d",
+   "reason": ">\u000eclaim_deadline\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id\u0019\u0014official_list_sha256\u0004\bpool_wei\ufffd\u00011000000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u00042b938196670f4fcade9281b01b0364320eb728cd4915bb086c009323e011ca5d",
    "result": {
     "claim_deadline": 1792424862,
     "claim_end": 1792425282,
@@ -72,7 +72,7 @@
    "tx": "0x6938b9a33f60b0e876c293511989130cfbaa993376d2ee2283e610543c214bfb",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id!\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id!\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
    "result": {
     "claim_deadline": 1792423976,
     "claim_end": 1792424036,
@@ -89,7 +89,7 @@
    "tx": "0x4a336c709e97d307ab0202f1391a126a545d0f9edea51002be0d86d066356065",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id)\u0014official_list_sha256�\u00042ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id)\u0014official_list_sha256\ufffd\u00042ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
    "result": {
     "claim_deadline": 1792423992,
     "claim_end": 1792424052,
@@ -106,7 +106,7 @@
    "tx": "0x99da45418ed821035c54fe0b3ecff07bd1efed18dfff6b298a062aecac2c65d0",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id1\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u000432f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id1\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u000432f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
    "result": {
     "claim_deadline": 1792424005,
     "claim_end": 1792424065,
@@ -123,7 +123,7 @@
    "tx": "0x6996c60f3aa3127efb20abb7e9efaad8e1d7db267a578ac2d837d3c089e49f83",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id9\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u000432f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\ufffd\u01f55\u000bincident_id9\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u000432f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
    "result": {
     "claim_deadline": 1792424019,
     "claim_end": 1792424079,
@@ -140,7 +140,7 @@
    "tx": "0x63c41306e9a34cc38f843b2b8fd831824042fce6671f79732fd2851e8e77d69a",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end�ǵ5\u000bincident_idA\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\u01f55\u000bincident_idA\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
    "result": {
     "claim_deadline": 1792424034,
     "claim_end": 1792424094,
@@ -157,7 +157,7 @@
    "tx": "0xfbf90090502349ed1a8732cf83fa7955e80ea23ed0f2eab1d690c6118bb67cc5",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end�ǵ5\u000bincident_idI\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\u01f55\u000bincident_idI\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
    "result": {
     "claim_deadline": 1792424048,
     "claim_end": 1792424108,
@@ -174,7 +174,7 @@
    "tx": "0x282843aae016e12e6101eaf8a59e4b45dc0c6e0b9620b81facb0170747304207",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end�ǵ5\u000bincident_idQ\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u01f55\tclaim_end\ufffd\u01f55\u000bincident_idQ\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
    "result": {
     "claim_deadline": 1792424064,
     "claim_end": 1792424124,
@@ -191,7 +191,7 @@
    "tx": "0x682741a2a3d70c72055d9c75ee5f82049eba75522a2c1d556b4c5a3b6c65a956",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": "F\bborrower�\u00020x4f962bb0ea0785c539f8ab52a17f1f873ddc355f\tfiling_id\t\u000bincident_id\t\fowed_gen_wei�\u00012494787941017015246\fowed_src_wei�\u0001249478794101701524600\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "reason": "F\bborrower\ufffd\u00020x4f962bb0ea0785c539f8ab52a17f1f873ddc355f\tfiling_id\t\u000bincident_id\t\fowed_gen_wei\ufffd\u00012494787941017015246\fowed_src_wei\ufffd\u0001249478794101701524600\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
    "result": {
     "borrower": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
     "filing_id": 1,
@@ -209,7 +209,7 @@
    "tx": "0x634c8014d9f29cb8e65d6ee136a0b3fe54312174187cc9b87a73e293a72d2681",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": "F\bborrower�\u00020x4bacce55f0991cfc4d919f7f50edb8be028e37df\tfiling_id\u0011\u000bincident_id\t\fowed_gen_wei�\u0001877714041173915609\fowed_src_wei�\u000187771404117391560911\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "reason": "F\bborrower\ufffd\u00020x4bacce55f0991cfc4d919f7f50edb8be028e37df\tfiling_id\u0011\u000bincident_id\t\fowed_gen_wei\ufffd\u0001877714041173915609\fowed_src_wei\ufffd\u000187771404117391560911\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
    "result": {
     "borrower": "0x4bacce55f0991cfc4d919f7f50edb8be028e37df",
     "filing_id": 2,
@@ -227,7 +227,7 @@
    "tx": "0x96f314c9be7d888080a1c00be84efbab57e976fe8f120f03c251219db1264946",
    "status": "ACCEPTED",
    "outcome": "OK",
-   "reason": "F\bborrower�\u00020xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de\tfiling_id\u0019\u000bincident_id\t\fowed_gen_wei�\u0001540697851180365346\fowed_src_wei�\u000154069785118036534682\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "reason": "F\bborrower\ufffd\u00020xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de\tfiling_id\u0019\u000bincident_id\t\fowed_gen_wei\ufffd\u0001540697851180365346\fowed_src_wei\ufffd\u000154069785118036534682\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
    "result": {
     "borrower": "0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de",
     "filing_id": 3,
@@ -275,9 +275,1254 @@
    "reason": "WRONG_EVENT: that log is not a LiquidationCall(address,address,address,uint256,uint256,address,bool) event",
    "result": null,
    "as_expected": true
+  },
+  "D1_out_of_range_refused": {
+   "done": true,
+   "tx": "0xe32447afaa6b38197199bb6045b21fcde3db95ca054a610cc689f764d554c29b",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:OUT_OF_RANGE",
+   "reason": "OUT_OF_RANGE: block 24626867 is outside 24626860-24626861",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_spark_emitter_refused": {
+   "done": true,
+   "tx": "0x7e4270b9921641d83fe436ce56a3c9dc75489c47fa99f94cd129234b1f1e5e28",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:NOT_INCIDENT_EMITTER",
+   "reason": "NOT_INCIDENT_EMITTER: the log was emitted by 0xc13e21b648a5ee794902342038ff3adab66be987, which is not one of the incident's contracts",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_bad_tx_refused": {
+   "done": true,
+   "tx": "0x07f5813c28c909b7cedef8131566d1cdbea413080960f7df66842e4cacd42e95",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:BAD_TX",
+   "reason": "BAD_TX: tx_hash must be 32 bytes of hex",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_amend_after_filing_refused": {
+   "done": true,
+   "tx": "0x8ebd2d2df31977d14a7fce971b90bc63a85d22fffc1cefdc2e95d82f91a484bb",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:TERMS_FROZEN",
+   "reason": "TERMS_FROZEN: the terms are frozen since the first filing",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_extend_by_outsider_refused": {
+   "done": true,
+   "tx": "0xafb09e42553f53011741d580edf06cea69e9b6b7171a864c2281ac1454e295af",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:NOT_SPONSOR",
+   "reason": "NOT_SPONSOR: only the sponsor may extend the deadline",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_top_up_by_outsider_refused": {
+   "done": true,
+   "tx": "0x925986e4dfc2864f37a80ce5d5de7d708ce740efc222cd128a5b15603666d152",
+   "status": "ACCEPTED",
+   "outcome": "REFUSED:NOT_SPONSOR",
+   "reason": "reason\ufffd\u0002NOT_SPONSOR: only the sponsor may top up\u0006status<REFUSED\u0012value_withdrawable\ufffd\u000110000000000000000",
+   "result": {
+    "reason": "NOT_SPONSOR: only the sponsor may top up",
+    "status": "REFUSED",
+    "value_withdrawable": "10000000000000000"
+   },
+   "as_expected": true
+  },
+  "D1_claim_before_deadline_refused": {
+   "done": true,
+   "tx": "0x190a2312d53dd31049b10e40bf94f9c5cc480028df27f158ea3acc5138bde723",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:FILINGS_OPEN",
+   "reason": "FILINGS_OPEN: payouts start at the claim deadline 1792424808",
+   "result": null,
+   "as_expected": true
+  },
+  "D2_file_1": {
+   "done": true,
+   "tx": "0x54e54d6e0f6b3572acd61a5692c920343262a500c6a13b0192cc85e3bf2b99d0",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020xca686974913389d42f3c5f61010503daccdb487a\tfiling_id!\u000bincident_id\u0011\fowed_gen_wei\ufffd\u0001117144290396227074\fowed_src_wei\ufffd\u000111714429039622707444\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0xca686974913389d42f3c5f61010503daccdb487a",
+    "filing_id": 4,
+    "incident_id": 2,
+    "owed_gen_wei": "117144290396227074",
+    "owed_src_wei": "11714429039622707444",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D2_file_2": {
+   "done": true,
+   "tx": "0x511e013c8954ff318ee73abb575f9f2cc101a9535c9db9081d0dddf0c6c3b774",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c\tfiling_id)\u000bincident_id\u0011\fowed_gen_wei|198235818662261\fowed_src_wei\ufffd\u000119823581866226104\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c",
+    "filing_id": 5,
+    "incident_id": 2,
+    "owed_gen_wei": "198235818662261",
+    "owed_src_wei": "19823581866226104",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D2_file_3": {
+   "done": true,
+   "tx": "0x255ef08b264ed5a1cf545dc3e450f1954a3ae23d10774c798fd3e7272e0a875a",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x04b616cfdb3b57e867f6915bfcedef07a3987a80\tfiling_id1\u000bincident_id\u0011\fowed_gen_weil8888842241705\fowed_src_wei|888884224170558\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0x04b616cfdb3b57e867f6915bfcedef07a3987a80",
+    "filing_id": 6,
+    "incident_id": 2,
+    "owed_gen_wei": "8888842241705",
+    "owed_src_wei": "888884224170558",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D3_file_1": {
+   "done": true,
+   "tx": "0xb54f6420b88ae243974079ba5d30eaebe408fd24059e9d04af790400912704df",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x84c196c53fb80185083e7928f1eee089a6180ce0\tfiling_id9\u000bincident_id\u0019\fowed_gen_weiL850300000\fowed_src_wei\\85030000000\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0x84c196c53fb80185083e7928f1eee089a6180ce0",
+    "filing_id": 7,
+    "incident_id": 3,
+    "owed_gen_wei": "850300000",
+    "owed_src_wei": "85030000000",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D4_file_1": {
+   "done": true,
+   "tx": "0x16fe79106674b4ea29d74c25aafa7233e64706ccec351aeb4ca6c65e4f5984a6",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020xca686974913389d42f3c5f61010503daccdb487a\tfiling_idA\u000bincident_id!\fowed_gen_wei\f0\fowed_src_wei\f0\u0006reason\ufffd\u0001PRICE_CONDITION_NOT_MET\u0006status\u0014OK\u0007verdictdNOT_ELIGIBLE",
+   "result": {
+    "borrower": "0xca686974913389d42f3c5f61010503daccdb487a",
+    "filing_id": 8,
+    "incident_id": 4,
+    "owed_gen_wei": "0",
+    "owed_src_wei": "0",
+    "reason": "PRICE_CONDITION_NOT_MET",
+    "status": "OK",
+    "verdict": "NOT_ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D4_file_2": {
+   "done": true,
+   "tx": "0xc84371d835c0e186f693efe1fc1f5da6e17fa356d56db352dff6ceb5ac164a69",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c\tfiling_idI\u000bincident_id!\fowed_gen_wei\f0\fowed_src_wei\f0\u0006reason\ufffd\u0001PRICE_CONDITION_NOT_MET\u0006status\u0014OK\u0007verdictdNOT_ELIGIBLE",
+   "result": {
+    "borrower": "0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c",
+    "filing_id": 9,
+    "incident_id": 4,
+    "owed_gen_wei": "0",
+    "owed_src_wei": "0",
+    "reason": "PRICE_CONDITION_NOT_MET",
+    "status": "OK",
+    "verdict": "NOT_ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D4_file_3": {
+   "done": true,
+   "tx": "0x875ea3e2cca4172871cf62682e02cf77a92b21da9e2c04ebe98832714040fcd9",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x04b616cfdb3b57e867f6915bfcedef07a3987a80\tfiling_idQ\u000bincident_id!\fowed_gen_weil8888842241705\fowed_src_wei|888884224170558\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0x04b616cfdb3b57e867f6915bfcedef07a3987a80",
+    "filing_id": 10,
+    "incident_id": 4,
+    "owed_gen_wei": "8888842241705",
+    "owed_src_wei": "888884224170558",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D5_file_1": {
+   "done": true,
+   "tx": "0x530d2bb5b0a2e7f3f90d2be37fb80baff765ee4c971010a0d79d7152c7851140",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x4f962bb0ea0785c539f8ab52a17f1f873ddc355f\tfiling_idY\u000bincident_id)\fowed_gen_wei\f0\fowed_src_wei\f0\u0006reason\ufffd\u0001DEBT_ASSET_NOT_COVERED\u0006status\u0014OK\u0007verdictdNOT_ELIGIBLE",
+   "result": {
+    "borrower": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+    "filing_id": 11,
+    "incident_id": 5,
+    "owed_gen_wei": "0",
+    "owed_src_wei": "0",
+    "reason": "DEBT_ASSET_NOT_COVERED",
+    "status": "OK",
+    "verdict": "NOT_ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D6_file_1": {
+   "done": true,
+   "tx": "0x5563cb723f6d44ca5e6dbd30b9cfcecfe63aa70739cb7d7102e47929bfcc3b8c",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x79904d39117d5fec74ce78ef08ba0e90e426e8d3\tfiling_ida\u000bincident_id1\fowed_gen_wei\f0\fowed_src_wei\f0\u0006reason\ufffd\u0001COLLATERAL_NOT_COVERED\u0006status\u0014OK\u0007verdictdNOT_ELIGIBLE",
+   "result": {
+    "borrower": "0x79904d39117d5fec74ce78ef08ba0e90e426e8d3",
+    "filing_id": 12,
+    "incident_id": 6,
+    "owed_gen_wei": "0",
+    "owed_src_wei": "0",
+    "reason": "COLLATERAL_NOT_COVERED",
+    "status": "OK",
+    "verdict": "NOT_ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D7_file_1": {
+   "done": true,
+   "tx": "0xc2d8b8817d6cd4d09aa58e0598d994d284b41ca3fef4e8932fbcaaae574effc6",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x9e990c8dc9768f959b5abf7910f5fd3b965ccf24\tfiling_idi\u000bincident_id9\fowed_gen_wei\f0\fowed_src_wei\f0\u0006reason\ufffd\u0001BELOW_MIN_AMOUNT\u0006status\u0014OK\u0007verdictdNOT_ELIGIBLE",
+   "result": {
+    "borrower": "0x9e990c8dc9768f959b5abf7910f5fd3b965ccf24",
+    "filing_id": 13,
+    "incident_id": 7,
+    "owed_gen_wei": "0",
+    "owed_src_wei": "0",
+    "reason": "BELOW_MIN_AMOUNT",
+    "status": "OK",
+    "verdict": "NOT_ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D9_disagree_inconclusive": {
+   "done": true,
+   "tx": "0x63531373c58406767c489470ddf79b6349724de631634f4172ff2cf295de15ad",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:INCONCLUSIVE",
+   "reason": "INCONCLUSIVE: fewer than two of the incident's endpoints returned this event identically (FEWER_THAN_TWO_SOURCES); nothing was recorded, file again",
+   "result": null,
+   "as_expected": true
+  },
+  "D10_other_market_refused": {
+   "done": true,
+   "tx": "0xbabc588887fe1df2f093ecea97af3d0b81c36eb15826ee842efdcb0190cd6cae",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:NOT_INCIDENT_MARKET",
+   "reason": "NOT_INCIDENT_MARKET: Morpho market 0x9125d0fa03c3137166df68bcc72283477830de2a4a5536512374c573ad4583c3 is not one of the incident's markets",
+   "result": null,
+   "as_expected": true
+  },
+  "D11_unfinalized": {
+   "done": true,
+   "outcome": "NOT_OBSERVED",
+   "as_expected": true,
+   "note": "no template event in an unfinalized block on Base, Arbitrum or Ethereum when the seed ran; covered offline by test_unfinalized_block_refused_then_accepted"
+  },
+  "gate_ELIGIBLE_UNPAID": {
+   "done": true,
+   "outcome": "ELIGIBLE_UNPAID",
+   "made_whole": false,
+   "result": {
+    "account": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+    "closed": false,
+    "eligible_filings": 1,
+    "entitled_wei": "2494787941017015246",
+    "incident_id": 1,
+    "made_whole": false,
+    "owed_wei": "2494787941017015246",
+    "paid_wei": "0",
+    "state": "ELIGIBLE_UNPAID",
+    "unpaid_wei": "2494787941017015246",
+    "why": ""
+   },
+   "as_expected": true
+  },
+  "gate_NO_INCIDENT": {
+   "done": true,
+   "outcome": "NO_INCIDENT",
+   "made_whole": false,
+   "result": {
+    "account": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+    "entitled_wei": "0",
+    "incident_id": 999,
+    "made_whole": false,
+    "owed_wei": "0",
+    "paid_wei": "0",
+    "state": "NO_INCIDENT",
+    "unpaid_wei": "0",
+    "why": "no such incident"
+   },
+   "as_expected": true
+  },
+  "gate_NOT_ELIGIBLE_stranger": {
+   "done": true,
+   "outcome": "NOT_ELIGIBLE",
+   "made_whole": false,
+   "result": {
+    "account": "0x1111111111111111111111111111111111111111",
+    "closed": false,
+    "eligible_filings": 0,
+    "entitled_wei": "0",
+    "incident_id": 1,
+    "made_whole": false,
+    "owed_wei": "0",
+    "paid_wei": "0",
+    "state": "NOT_ELIGIBLE",
+    "unpaid_wei": "0",
+    "why": ""
+   },
+   "as_expected": true
+  },
+  "gate_UNAVAILABLE_bad_address": {
+   "done": true,
+   "outcome": "UNAVAILABLE",
+   "made_whole": false,
+   "result": {
+    "account": "not-an-address",
+    "entitled_wei": "0",
+    "made_whole": false,
+    "owed_wei": "0",
+    "paid_wei": "0",
+    "state": "UNAVAILABLE",
+    "unpaid_wei": "0",
+    "why": "not an address"
+   },
+   "as_expected": true
+  },
+  "D1_late_filing_refused": {
+   "done": true,
+   "tx": "0xf8eb894ae51733e51ed47ed5e5b8c49d5e8f2308dd5df98344a0a73c82fd2c37",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:DEADLINE_PASSED",
+   "reason": "DEADLINE_PASSED: filings for incident #1 are closed",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_claim_0x4f962b": {
+   "done": true,
+   "tx": "0x00447892ea7fddbf80f4a28f1b1dce09e3b0b03b6bc0312e970faf0a3d291209",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D1_claim_0x4bacce": {
+   "done": true,
+   "tx": "0xa0e5c28688cd2ba34cc0a789477479594a693b5483112e6887e087bcedbc2d76",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D1_claim_again_refused": {
+   "done": true,
+   "tx": "0x32d3f40832dbd138432ee9b009df1dbb4bf72f34e4347e2d912e05cb8a3e9da7",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:ALREADY_PAID",
+   "reason": "ALREADY_PAID: 0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f has been paid its entitlement",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_claim_stranger_refused": {
+   "done": true,
+   "tx": "0xec4d4eb37fd830ac31dd1cf9d8661296af200b7681837e6b464e83ab9277de43",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:NOT_ELIGIBLE",
+   "reason": "NOT_ELIGIBLE: 0x1111111111111111111111111111111111111111 has no eligible filing in incident #1",
+   "result": null,
+   "as_expected": true
+  },
+  "gate_PAID_made_whole": {
+   "done": true,
+   "outcome": "PAID",
+   "made_whole": true,
+   "result": {
+    "account": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+    "closed": false,
+    "eligible_filings": 1,
+    "entitled_wei": "2494787941017015246",
+    "incident_id": 1,
+    "made_whole": true,
+    "owed_wei": "2494787941017015246",
+    "paid_wei": "2494787941017015246",
+    "state": "PAID",
+    "unpaid_wei": "0",
+    "why": ""
+   },
+   "as_expected": true
+  },
+  "D1_refund_surplus": {
+   "done": true,
+   "tx": "0x705c1aced85c5bc9281e5b3661663518d548d41716d47c2ac36a0d9fdac05bb9",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D1_refund_surplus_again_refused": {
+   "done": true,
+   "tx": "0xb08f65a539ccd68d9551998773ec3d92847b5dc54c698bf3f3ae7752cf8d6d3b",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:NO_SURPLUS",
+   "reason": "NO_SURPLUS: the pool does not exceed the total owed",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_close_early_refused": {
+   "done": true,
+   "tx": "0xb3d070da8793556082f3ef5f8a083724282b36397966eabc6d71d53bee486106",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:CLAIM_WINDOW_OPEN",
+   "reason": "CLAIM_WINDOW_OPEN: close is possible from 1792425228",
+   "result": null,
+   "as_expected": true
+  },
+  "D2_claim_pro_rata": {
+   "done": true,
+   "tx": "0xd5644040fcd56d2bd2f6d9319df5fcd6418eea15f0d800e9bfbababf2c32098b",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "gate_PAID_pro_rata_not_whole": {
+   "done": true,
+   "outcome": "PAID",
+   "made_whole": false,
+   "result": {
+    "account": "0xca686974913389d42f3c5f61010503daccdb487a",
+    "closed": false,
+    "eligible_filings": 1,
+    "entitled_wei": "49911750249963696",
+    "incident_id": 2,
+    "made_whole": false,
+    "owed_wei": "117144290396227074",
+    "paid_wei": "49911750249963696",
+    "state": "PAID",
+    "unpaid_wei": "0",
+    "why": ""
+   },
+   "as_expected": true
+  },
+  "D2_top_up": {
+   "done": true,
+   "tx": "0x0af405971d75bb6c5da528a8296f1e2052cb3d203f3e738423d0d21db9a85218",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "incident_id\u0011\bpool_wei\ufffd\u0001150000000000000000\u0006status\u0014OK",
+   "result": {
+    "incident_id": 2,
+    "pool_wei": "150000000000000000",
+    "status": "OK"
+   },
+   "as_expected": true
+  },
+  "D2_claim_after_top_up_0xca6869": {
+   "done": true,
+   "tx": "0x469c3c0f3d701173c4e6ebdeeb41d266b750b096c51421e61b4c54f96c3fb6aa",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D2_claim_after_top_up_0xff7690": {
+   "done": true,
+   "tx": "0x271fb6179e0369c33bf6255e841b1b9bee17cbacffc4a9c58262a7d73fc8b247",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D2_claim_after_top_up_0x04b616": {
+   "done": true,
+   "tx": "0x1406d58cd41126fdb58a63938232edfaa1c00484206deb9f3b11a89ba390a394",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "gate_PAID_after_top_up_whole": {
+   "done": true,
+   "outcome": "PAID",
+   "made_whole": true,
+   "result": {
+    "account": "0xca686974913389d42f3c5f61010503daccdb487a",
+    "closed": false,
+    "eligible_filings": 1,
+    "entitled_wei": "117144290396227074",
+    "incident_id": 2,
+    "made_whole": true,
+    "owed_wei": "117144290396227074",
+    "paid_wei": "117144290396227074",
+    "state": "PAID",
+    "unpaid_wei": "0",
+    "why": ""
+   },
+   "as_expected": true
+  },
+  "D2_refund_surplus": {
+   "done": true,
+   "tx": "0xb75fc40f174ea02c69fee6357fd77611644b7e1ccab649aaa6c5cb1fa3d35c67",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "outsider_withdraw_refused_value": {
+   "done": true,
+   "tx": "0xb3a7260f41113b60dae4a1f69616208acafb667f70195cb05f9a81b6ac72aa43",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D1_close": {
+   "done": true,
+   "tx": "0x0baf6fdebb491048cdac082011b43178ace32c421e42b2ff89e1375787306f90",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D2_close": {
+   "done": true,
+   "tx": "0x7af4864b580ca4b249e901f512332f635fb1b6485645decda3745da263d45695",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "&\u000bincident_id\u0011\tpayout_id\u0001\u0017returned_to_sponsor_wei\f0\u0006status\u0014OK",
+   "result": {
+    "incident_id": 2,
+    "payout_id": 0,
+    "returned_to_sponsor_wei": "0",
+    "status": "OK"
+   },
+   "as_expected": true
+  },
+  "D3_close": {
+   "done": true,
+   "tx": "0xb9d3ef6dd75a0de71f69c236dffbcfbf764e7755674264f4adbdf06d3e4cf094",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D4_close": {
+   "done": true,
+   "tx": "0x35f17cf930885b55ca5df84cec7a94670f03bf5fee6c5bf1005898f529e4d745",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D5_close": {
+   "done": true,
+   "tx": "0x1e9990e4d71c8317442d9d12749e286496c838afbdfabb1fba60807d0462a3ae",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D6_close": {
+   "done": true,
+   "tx": "0x00dda5b4c3398f2549870b3774c7fab04d796cbfc910545bbbc39c9b94a5f923",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D7_close": {
+   "done": true,
+   "tx": "0x8fbf2e78ef05bec3c4789a744063cbd8cd05ba6463d4c77ffc81390e56d90e86",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D8_close": {
+   "done": true,
+   "tx": "0xad921640a908cd954436dc9bfa76b85612a20d206b60947e8738e6b98ba43453",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D9_close": {
+   "done": true,
+   "tx": "0x4b803146a9a10e4b9479f401eb8582fef478ffa0b1cdb752bb8d06ebc2bcb98e",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D10_close": {
+   "done": true,
+   "tx": "0x6b0e7c94b26e09079a55f1c552dfc8c21266011764409e0487747f609f47f9c9",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "gate_CLOSED_unclaimed": {
+   "done": true,
+   "outcome": "CLOSED",
+   "made_whole": false,
+   "result": {
+    "account": "0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de",
+    "closed": true,
+    "eligible_filings": 1,
+    "entitled_wei": "540697851180365346",
+    "incident_id": 1,
+    "made_whole": false,
+    "owed_wei": "540697851180365346",
+    "paid_wei": "0",
+    "state": "CLOSED",
+    "unpaid_wei": "540697851180365346",
+    "why": ""
+   },
+   "as_expected": true
+  },
+  "D1_claim_after_close_refused": {
+   "done": true,
+   "tx": "0x8be516eb190a000f775350c7e0c476e1308fe55afe7883dd17d969ac60c4372a",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:CLAIM_WINDOW_OVER",
+   "reason": "CLAIM_WINDOW_OVER: incident #1 no longer pays",
+   "result": null,
+   "as_expected": true
+  },
+  "D8_other_template_from_other_chain_refused": {
+   "done": true,
+   "tx": "0x3035a04cecfdf12895cdb854a00a9dd7592a2ffae9d0b86e5a22bfc84b7fb2a5",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:WRONG_EVENT",
+   "reason": "WRONG_EVENT: that log is not a Liquidate(bytes32,address,address,uint256,uint256,uint256,uint256,uint256) event",
+   "result": null,
+   "as_expected": true,
+   "note": "the decoder runs before the chain check: an Aave log in a Morpho incident is WRONG_EVENT"
+  },
+  "D8b_open": {
+   "done": true,
+   "tx": "0xcf77e19565e67c47ff1d25f67367754b6700dc3b13224f76fdb9797c34611cdd",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline\ufffd\u02355\tclaim_end\ufffd\ufffd\u02355\u000bincident_idY\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "result": {
+    "claim_deadline": 1792426540,
+    "claim_end": 1792426600,
+    "incident_id": 11,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f"
+   },
+   "as_expected": true
+  },
+  "D3_claim_after_window_refused": {
+   "done": true,
+   "tx": "0xd6ac5aaaf2a7c6288d31883191381271d2698e874dfb53c23f2170f10f033c2f",
+   "outcome": "REVERT:CLAIM_WINDOW_OVER",
+   "reason": "CLAIM_WINDOW_OVER: incident #3 no longer pays",
+   "as_expected": true,
+   "note": "sent after D3's claim window ended; nothing was paid and close() returned D3's whole pool to the sponsor"
+  },
+  "D3b_open": {
+   "done": true,
+   "tx": "0xf2fca66218ed439b8dd301eda4e4dbfb57711c61d2f33fc0d77835a96d929f66",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u02355\tclaim_end\ufffd\ufffd\u02355\u000bincident_ida\u0014official_list_sha256\u0004\bpool_wei\ufffd\u0001100000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u00042b938196670f4fcade9281b01b0364320eb728cd4915bb086c009323e011ca5d",
+   "result": {
+    "claim_deadline": 1792426167,
+    "claim_end": 1792427367,
+    "incident_id": 12,
+    "official_list_sha256": "",
+    "pool_wei": "100000000000000000",
+    "status": "OK",
+    "terms_sha256": "2b938196670f4fcade9281b01b0364320eb728cd4915bb086c009323e011ca5d"
+   },
+   "as_expected": true
+  },
+  "D3b_file_1": {
+   "done": true,
+   "tx": "0xce630c33d40984e9c590d63b0a1d8e826126ac0c63b71d414ec63b1823b39dbd",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower\ufffd\u00020x84c196c53fb80185083e7928f1eee089a6180ce0\tfiling_idq\u000bincident_ida\fowed_gen_weiL850300000\fowed_src_wei\\85030000000\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0x84c196c53fb80185083e7928f1eee089a6180ce0",
+    "filing_id": 14,
+    "incident_id": 12,
+    "owed_gen_wei": "850300000",
+    "owed_src_wei": "85030000000",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D3b_claim_0x84c196": {
+   "done": true,
+   "tx": "0xde0b9848f1e5301676b9fe7f3bd9e47cbf625ff343a269d69453c45941a11058",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D8b_close": {
+   "done": true,
+   "tx": "0x4e9a66da5edf762f6e16ae74800099ef464b949542d94f6b33d7e4ef89dc354b",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D3b_close": {
+   "done": true,
+   "tx": "0x04c473a5d3517b268c10cb3bcab84ba00f9ce83425b5536dafdf8f89610b949c",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D8b_inconclusive_one_endpoint_silent": {
+   "done": true,
+   "tx": "0x9ed3a4070a29297b97996cf29cf21400071488d3fcfa15c6f71bff74bd5a05b6",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:INCONCLUSIVE",
+   "reason": "INCONCLUSIVE: fewer than two of the incident's endpoints returned this event identically (FEWER_THAN_TWO_SOURCES); nothing was recorded, file again",
+   "result": null,
+   "as_expected": true,
+   "note": "fewer than two endpoints answered; nothing recorded"
+  },
+  "D8c_open": {
+   "done": true,
+   "tx": "0x3abbdee9a7527b0223267246700e9d046fbda6f1133ed8e13e631f7cfec4315c",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline\ufffd\ufffd\u02755\tclaim_end\ufffd\ufffd\u02755\u000bincident_idi\u0014official_list_sha256\u0004\bpool_wei\ufffd\u000110000000000000000\u0006status\u0014OK\fterms_sha256\ufffd\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "result": {
+    "claim_deadline": 1792428231,
+    "claim_end": 1792428291,
+    "incident_id": 13,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f"
+   },
+   "as_expected": true
+  },
+  "D8c_wrong_chain_refused": {
+   "done": true,
+   "tx": "0xca8df25e142833e9215b058fc679397d7cd4a75e52e73b915e05679a621dd87f",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:WRONG_CHAIN",
+   "reason": "WRONG_CHAIN: the endpoints serve chain 1, the incident's chain is 8453",
+   "result": null,
+   "as_expected": true
+  },
+  "D8c_close": {
+   "done": true,
+   "tx": "0xb31cf5a7f715b78806c19ec225384d4837984e6d0bf115fbadb29d15c0c81cf1",
+   "outcome": "OK",
+   "as_expected": true
+  },
+  "D8_resent_after_deadline_refused": {
+   "done": true,
+   "tx": "0xed04bf43392a75a069bc3bb7ed9916d04acdb1252403a4119c1677249361e0bc",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:DEADLINE_PASSED",
+   "reason": "DEADLINE_PASSED: filings for incident #8 are closed",
+   "result": null,
+   "as_expected": true,
+   "note": "the seed re-sent D8's filing after D8's deadline: DEADLINE_PASSED, nothing recorded"
   }
  },
- "payouts": [],
+ "payouts": [
+  {
+   "name": "D1_claim_0x4f962b",
+   "kind": "CLAIM",
+   "incident": 1,
+   "tx": "0x00447892ea7fddbf80f4a28f1b1dce09e3b0b03b6bc0312e970faf0a3d291209",
+   "to": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+   "amount": "2494787941017015246",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "6130000000000000000",
+   "contract_after": "3635212058982984754",
+   "payee_before": "0",
+   "payee_after": "2494787941017015246",
+   "result": {
+    "borrower": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+    "incident_id": 1,
+    "paid_total_wei": "2494787941017015246",
+    "paid_wei": "2494787941017015246",
+    "payout_id": 1,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D1_claim_0x4bacce",
+   "kind": "CLAIM",
+   "incident": 1,
+   "tx": "0xa0e5c28688cd2ba34cc0a789477479594a693b5483112e6887e087bcedbc2d76",
+   "to": "0x4bacce55f0991cfc4d919f7f50edb8be028e37df",
+   "amount": "877714041173915609",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "3635212058982984754",
+   "contract_after": "2757498017809069145",
+   "payee_before": "0",
+   "payee_after": "877714041173915609",
+   "result": {
+    "borrower": "0x4bacce55f0991cfc4d919f7f50edb8be028e37df",
+    "incident_id": 1,
+    "paid_total_wei": "877714041173915609",
+    "paid_wei": "877714041173915609",
+    "payout_id": 2,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D1_refund_surplus",
+   "kind": "SURPLUS_TO_SPONSOR",
+   "incident": 1,
+   "tx": "0x705c1aced85c5bc9281e5b3661663518d548d41716d47c2ac36a0d9fdac05bb9",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "1086800166628703799",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "2757498017809069145",
+   "contract_after": "1670697851180365346",
+   "payee_before": "1758573294279749961084",
+   "payee_after": "1759660094446378664883",
+   "result": {
+    "incident_id": 1,
+    "payout_id": 3,
+    "refunded_wei": "1086800166628703799",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D2_claim_pro_rata",
+   "kind": "CLAIM",
+   "incident": 2,
+   "tx": "0xd5644040fcd56d2bd2f6d9319df5fcd6418eea15f0d800e9bfbababf2c32098b",
+   "to": "0xca686974913389d42f3c5f61010503daccdb487a",
+   "amount": "49911750249963696",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1670697851180365346",
+   "contract_after": "1620786100930401650",
+   "payee_before": "99823500499927393",
+   "payee_after": "149735250749891089",
+   "result": {
+    "borrower": "0xca686974913389d42f3c5f61010503daccdb487a",
+    "incident_id": 2,
+    "paid_total_wei": "49911750249963696",
+    "paid_wei": "49911750249963696",
+    "payout_id": 4,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D2_claim_after_top_up_0xca6869",
+   "kind": "CLAIM",
+   "incident": 2,
+   "tx": "0x469c3c0f3d701173c4e6ebdeeb41d266b750b096c51421e61b4c54f96c3fb6aa",
+   "to": "0xca686974913389d42f3c5f61010503daccdb487a",
+   "amount": "67232540146263378",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1720786100930401650",
+   "contract_after": "1653553560784138272",
+   "payee_before": "149735250749891089",
+   "payee_after": "216967790896154467",
+   "result": {
+    "borrower": "0xca686974913389d42f3c5f61010503daccdb487a",
+    "incident_id": 2,
+    "paid_total_wei": "117144290396227074",
+    "paid_wei": "67232540146263378",
+    "payout_id": 5,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D2_claim_after_top_up_0xff7690",
+   "kind": "CLAIM",
+   "incident": 2,
+   "tx": "0x271fb6179e0369c33bf6255e841b1b9bee17cbacffc4a9c58262a7d73fc8b247",
+   "to": "0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c",
+   "amount": "198235818662261",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1653553560784138272",
+   "contract_after": "1653355324965476011",
+   "payee_before": "198235818662261",
+   "payee_after": "396471637324522",
+   "result": {
+    "borrower": "0xff7690b1963171db50ce9a1e3ac58cf25c8dfb4c",
+    "incident_id": 2,
+    "paid_total_wei": "198235818662261",
+    "paid_wei": "198235818662261",
+    "payout_id": 6,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D2_claim_after_top_up_0x04b616",
+   "kind": "CLAIM",
+   "incident": 2,
+   "tx": "0x1406d58cd41126fdb58a63938232edfaa1c00484206deb9f3b11a89ba390a394",
+   "to": "0x04b616cfdb3b57e867f6915bfcedef07a3987a80",
+   "amount": "8888842241705",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1653355324965476011",
+   "contract_after": "1653346436123234306",
+   "payee_before": "0",
+   "payee_after": "8888842241705",
+   "result": {
+    "borrower": "0x04b616cfdb3b57e867f6915bfcedef07a3987a80",
+    "incident_id": 2,
+    "paid_total_wei": "8888842241705",
+    "paid_wei": "8888842241705",
+    "payout_id": 7,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D2_refund_surplus",
+   "kind": "SURPLUS_TO_SPONSOR",
+   "incident": 2,
+   "tx": "0xb75fc40f174ea02c69fee6357fd77611644b7e1ccab649aaa6c5cb1fa3d35c67",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "32648584942868960",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1653346436123234306",
+   "contract_after": "1620697851180365346",
+   "payee_before": "1759560015816128664060",
+   "payee_after": "1759592664401071533020",
+   "result": {
+    "incident_id": 2,
+    "payout_id": 8,
+    "refunded_wei": "32648584942868960",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "outsider_withdraw_refused_value",
+   "kind": "REFUSED_VALUE_RETURNED",
+   "incident": 0,
+   "tx": "0xb3a7260f41113b60dae4a1f69616208acafb667f70195cb05f9a81b6ac72aa43",
+   "to": "0xbaddFf0f11EB7A3C9825c1aDC180FAC9cf0885e0",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1620697851180365346",
+   "contract_after": "1610697851180365346",
+   "payee_before": "99989762257499997531",
+   "payee_after": "99999635947999996708",
+   "result": {
+    "paid_wei": "10000000000000000",
+    "payout_id": 9,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D1_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 1,
+   "tx": "0x0baf6fdebb491048cdac082011b43178ace32c421e42b2ff89e1375787306f90",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "540697851180365346",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1610697851180365346",
+   "contract_after": "1070000000000000000",
+   "payee_before": "1759592664401071533020",
+   "payee_after": "1760133362252251898366",
+   "result": {
+    "incident_id": 1,
+    "payout_id": 10,
+    "returned_to_sponsor_wei": "540697851180365346",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D3_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 3,
+   "tx": "0xb9d3ef6dd75a0de71f69c236dffbcfbf764e7755674264f4adbdf06d3e4cf094",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "1000000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "1070000000000000000",
+   "contract_after": "70000000000000000",
+   "payee_before": "1760133362252251898366",
+   "payee_after": "1761133362252251898366",
+   "result": {
+    "incident_id": 3,
+    "payout_id": 11,
+    "returned_to_sponsor_wei": "1000000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D4_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 4,
+   "tx": "0x35f17cf930885b55ca5df84cec7a94670f03bf5fee6c5bf1005898f529e4d745",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "70000000000000000",
+   "contract_after": "60000000000000000",
+   "payee_before": "1761133362252251898366",
+   "payee_after": "1761143362252251898366",
+   "result": {
+    "incident_id": 4,
+    "payout_id": 12,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D5_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 5,
+   "tx": "0x1e9990e4d71c8317442d9d12749e286496c838afbdfabb1fba60807d0462a3ae",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "60000000000000000",
+   "contract_after": "50000000000000000",
+   "payee_before": "1761143362252251898366",
+   "payee_after": "1761153362252251898366",
+   "result": {
+    "incident_id": 5,
+    "payout_id": 13,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D6_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 6,
+   "tx": "0x00dda5b4c3398f2549870b3774c7fab04d796cbfc910545bbbc39c9b94a5f923",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "50000000000000000",
+   "contract_after": "40000000000000000",
+   "payee_before": "1761153362252251898366",
+   "payee_after": "1761163362252251898366",
+   "result": {
+    "incident_id": 6,
+    "payout_id": 14,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D7_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 7,
+   "tx": "0x8fbf2e78ef05bec3c4789a744063cbd8cd05ba6463d4c77ffc81390e56d90e86",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "40000000000000000",
+   "contract_after": "30000000000000000",
+   "payee_before": "1761163362252251898366",
+   "payee_after": "1761173362252251898366",
+   "result": {
+    "incident_id": 7,
+    "payout_id": 15,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D8_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 8,
+   "tx": "0xad921640a908cd954436dc9bfa76b85612a20d206b60947e8738e6b98ba43453",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "30000000000000000",
+   "contract_after": "20000000000000000",
+   "payee_before": "1761173362252251898366",
+   "payee_after": "1761183362252251898366",
+   "result": {
+    "incident_id": 8,
+    "payout_id": 16,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D9_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 9,
+   "tx": "0x4b803146a9a10e4b9479f401eb8582fef478ffa0b1cdb752bb8d06ebc2bcb98e",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "20000000000000000",
+   "contract_after": "10000000000000000",
+   "payee_before": "1761183362252251898366",
+   "payee_after": "1761193362252251898366",
+   "result": {
+    "incident_id": 9,
+    "payout_id": 17,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D10_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 10,
+   "tx": "0x6b0e7c94b26e09079a55f1c552dfc8c21266011764409e0487747f609f47f9c9",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "10000000000000000",
+   "contract_after": "0",
+   "payee_before": "1761193362252251898366",
+   "payee_after": "1761203362252251898366",
+   "result": {
+    "incident_id": 10,
+    "payout_id": 18,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D3b_claim_0x84c196",
+   "kind": "CLAIM",
+   "incident": 12,
+   "tx": "0xde0b9848f1e5301676b9fe7f3bd9e47cbf625ff343a269d69453c45941a11058",
+   "to": "0x84c196c53fb80185083e7928f1eee089a6180ce0",
+   "amount": "850300000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "110000000000000000",
+   "contract_after": "109999999149700000",
+   "payee_before": "0",
+   "payee_after": "850300000",
+   "result": {
+    "borrower": "0x84c196c53fb80185083e7928f1eee089a6180ce0",
+    "incident_id": 12,
+    "paid_total_wei": "850300000",
+    "paid_wei": "850300000",
+    "payout_id": 19,
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D8b_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 11,
+   "tx": "0x4e9a66da5edf762f6e16ae74800099ef464b949542d94f6b33d7e4ef89dc354b",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "109999999149700000",
+   "contract_after": "99999999149700000",
+   "payee_before": "1861093204926751896720",
+   "payee_after": "1861103204926751896720",
+   "result": {
+    "incident_id": 11,
+    "payout_id": 20,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D3b_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 12,
+   "tx": "0x04c473a5d3517b268c10cb3bcab84ba00f9ce83425b5536dafdf8f89610b949c",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "99999999149700000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "99999999149700000",
+   "contract_after": "0",
+   "payee_before": "1861103204926751896720",
+   "payee_after": "1861203204925901596720",
+   "result": {
+    "incident_id": 12,
+    "payout_id": 21,
+    "returned_to_sponsor_wei": "99999999149700000",
+    "status": "OK"
+   }
+  },
+  {
+   "name": "D8c_close",
+   "kind": "UNCLAIMED_TO_SPONSOR",
+   "incident": 13,
+   "tx": "0xb31cf5a7f715b78806c19ec225384d4837984e6d0bf115fbadb29d15c0c81cf1",
+   "to": "0x11B1745F79E8a5aF25627FD5421fB906925d5d8C",
+   "amount": "10000000000000000",
+   "status": "FINALIZED",
+   "delivered": true,
+   "why": "",
+   "balance_check": "OK",
+   "contract_before": "10000000000000000",
+   "contract_after": "0",
+   "payee_before": "1961193126247151595897",
+   "payee_after": "1961203126247151595897",
+   "result": {
+    "incident_id": 13,
+    "payout_id": 22,
+    "returned_to_sponsor_wei": "10000000000000000",
+    "status": "OK"
+   }
+  }
+ ],
  "incidents": {
   "D1": {
    "incident_id": 1,
@@ -398,6 +1643,87 @@
     "claim_deadline_s",
     "claim_window_s"
    ]
+  },
+  "D8b": {
+   "incident_id": 11,
+   "slug": "aave-wsteth-capo-2026-03",
+   "over": [
+    "title",
+    "protocol",
+    "chain_id",
+    "emitters",
+    "rpcs",
+    "official_list",
+    "official_list_sha256",
+    "price_condition",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D3b": {
+   "incident_id": 12,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "protocol",
+    "template",
+    "emitters",
+    "markets",
+    "collateral_assets",
+    "debt_rates",
+    "formula",
+    "formula_param",
+    "bonus_bps",
+    "from_block",
+    "to_block",
+    "price_condition",
+    "sources",
+    "claim_deadline_s",
+    "claim_window_s",
+    "__terms"
+   ]
+  },
+  "D8c": {
+   "incident_id": 13,
+   "slug": "aave-wsteth-capo-2026-03",
+   "over": [
+    "title",
+    "protocol",
+    "chain_id",
+    "emitters",
+    "rpcs",
+    "official_list",
+    "official_list_sha256",
+    "price_condition",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
   }
+ },
+ "final": {
+  "ledger": {
+   "books_wei": "0",
+   "identity_holds": true,
+   "on_chain_balance_wei": "0",
+   "paid_out_wei": "3489853398098361895",
+   "pools_in_wei": "6340000000000000000",
+   "refunded_out_wei": "2850146601901638105",
+   "refused_in_wei": "10000000000000000",
+   "refused_out_wei": "10000000000000000"
+  },
+  "eth_getBalance": "0",
+  "reconciliation_D1": {
+   "computed_total_src": "391319983337129620193",
+   "diff": 32,
+   "list_entries": 35,
+   "list_total_src": "512192859825188850000",
+   "match": 3,
+   "not_in_list": 0,
+   "total_delta_src": "-120872876488059229807"
+  },
+  "steps": 85,
+  "unexpected": [],
+  "payouts": 22,
+  "payouts_delivered": 22
  }
 }

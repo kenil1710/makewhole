@@ -1,0 +1,16 @@
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+16:33:46 D8_wrong_chain_refused               UNEXPECTED REVERT:DEADLINE_PASSED DEADLINE_PASSED: filings for incident #8 are closed
+16:34:00 D8c_open                             ok  OK >claim_deadline��ɵ5	claim_end��ɵ5incident_idiofficial_list_sha256pool_wei�1000000000
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+  … write fee simulation failed for file_event (Missing or invalid parameters.
+Double check you have provided the correct parameters.
+
+Details: exec)
+16:34:13 D8c_wrong_chain_refused              ok  REVERT:WRONG_CHAIN WRONG_CHAIN: the endpoints serve chain 1, the incident's chain is 8453
+GenLayer RPC error (sim_estimateTransactionFees): execution failed
+16:45:54 D8c_close                            ok  UNCLAIMED_TO_SPONSOR 10000000000000000 0x11B1745F79E8a5aF25627FD5421fB906925d5d8C  
+16:45:58 final {"ledger":{"books_wei":"0","identity_holds":true,"on_chain_balance_wei":"0","paid_out_wei":"3489853398098361895","pools_in_wei":"6340000000000000000","refunded_out_wei":"2850146601901638105","refused_in_wei":"10000000000000000","refused_out_wei":"10000000000000000"},"eth_getBalance":"0","reconciliation_D1":{"computed_total_src":"391319983337129620193","diff":32,"list_entries":35,"list_total_src":"512192859825188850000","match":3,"not_in_list":0,"total_delta_src":"-120872876488059229807"},"steps":85,"unexpected":["D8_wrong_chain_refused"],"payouts":22,"payouts_delivered":22}

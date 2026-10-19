@@ -1,0 +1,20 @@
+GenLayer RPC error (eth_sendRawTransaction): Rate limit exceeded: 30 requests per minute
+  … file_event attempt 1 hit the RPC rate limit, waiting 12s
+GenLayer RPC error (eth_sendRawTransaction): Rate limit exceeded: 30 requests per minute
+  … file_event attempt 2 hit the RPC rate limit, waiting 12s
+{
+ "started": 1792423126,
+ "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
+ "scanned_pages": 4,
+ "discovered": 149,
+ "submitted": 194,
+ "confirmed": 4,
+ "refused": 0,
+ "retried": 0,
+ "accepted_not_final": 194,
+ "errors": [],
+ "finished": 1792426949
+}
+incident 1: found 49 filed 49 eligible 49 paid 0 unclaimed 35 unprocessed 0
+incident 2: found 3 filed 3 eligible 3 paid 0 unclaimed 3 unprocessed 0
+incident 3: found 146 filed 146 eligible 145 paid 0 unclaimed 44 unprocessed 0

@@ -146,7 +146,7 @@ for (const [i, e] of CB.entries()) await file("D4", "file_" + (i + 1), e, "OK");
 await file("D5", "file_1", e0, "OK");
 await file("D6", "file_1", EZ[0], "OK");
 await file("D7", "file_1", EZ.find((e) => e.block === 19725394), "OK");
-await file("D8", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
+if (!S.steps.D8_other_template_from_other_chain_refused) await file("D8", "wrong_chain_refused", e0, "REVERT:WRONG_CHAIN");
 await file("D9", "disagree_inconclusive", CB[0], "REVERT:INCONCLUSIVE");
 await file("D10", "other_market_refused", { tx: "0xe4104d7555a51534384418614f6a12af2364e152d48a2764feb86c5f9b906bfc", log_index: 1006 }, "REVERT:NOT_INCIDENT_MARKET");
 
