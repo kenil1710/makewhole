@@ -43,6 +43,7 @@ export default async function Home() {
                 return (
                   <p className="score" style={{ marginTop: 18 }}>{rec.summary.match} of {rec.summary.list_entries}
                     <small>computed Aave CAPO refunds match the Aave Finance Committee&rsquo;s payout within 1 ppm; {rec.summary.diff - unfiled} differ{unfiled ? `, ${unfiled} have no filing yet` : ""}, {rec.summary.not_in_list} not in its list.</small></p>
+                    <p className="rate-note" style={{ marginTop: 10, maxWidth: "56ch" }}>The rate of 0.034991439125 ETH per wstETH in the frozen terms was taken from the DAO&rsquo;s own payout (the proposal published no formula), so this is a consistency check of one formula across 35 amounts, not an independent derivation.</p>
                 );
               })()}
               {keeper?.last_run && (

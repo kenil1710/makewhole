@@ -279,6 +279,10 @@ class TestDocsMatchCode(unittest.TestCase):
                              capture_output=True, text=True).stdout
         self.assertEqual(out.strip(), "")
 
+    def test_v2_match_pages_disclose_where_the_rate_came_from(self):
+        for f in ("frontend/src/app/page.tsx", "frontend/src/app/explorer/[ref]/reconciliation/page.tsx"):
+            self.assertIn("from the DAO&rsquo;s own payout", (ROOT / f).read_text(), f)
+
     def test_registry_in_docs_is_complete(self):
         d = json.loads((ROOT / "frontend/src/data/rules.json").read_text())
         n = sum(len(m) for t in d["emitters"].values() for m in t.values())

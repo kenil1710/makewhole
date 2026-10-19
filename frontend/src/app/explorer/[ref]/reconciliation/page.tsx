@@ -22,6 +22,7 @@ export default async function Reconciliation({ params }: { params: Promise<{ ref
       <p className="small muted"><Link href={`/explorer/${ref}`}>{inc.title}</Link></p>
       <h1 className="serif">Reconciliation against the sponsor&rsquo;s official list</h1>
       <p className="lede">Code compares each account&rsquo;s computed refund with the amount in the list frozen at creation (sha256 <span className="mono">{rec.sha256}</span>, <a href={rec.source} target="_blank" rel="noreferrer">source</a>). MATCH means within {rec.tolerance_ppb} parts per billion of the listed amount.</p>
+      {r.dep === "c" && r.id === 1 && <p className="rate-note" style={{ marginTop: 10 }}>For the Aave CAPO incident the rate of 0.034991439125 ETH per wstETH was taken from the DAO&rsquo;s own payout (the proposal published no formula): matching is a consistency check of one formula across the list, not an independent derivation.</p>}
       <dl className="facts" style={{ marginTop: 20 }}>
         <div><dt>MATCH</dt><dd className="num">{s.match}</dd></div>
         <div><dt>DIFF</dt><dd className="num">{s.diff}{unfiled ? <small className="muted"> ({unfiled} with no filing yet)</small> : null}</dd></div>

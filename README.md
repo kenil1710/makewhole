@@ -15,7 +15,7 @@ reconciliation against the sponsor's own list, and payouts proven at the recipie
 | **RecoveryGate** (reads the canonical contract; no payable method) | `0x01990f29Dd25604219c63E2b9e94B09957E8B52e` |
 | **RecoveryGate, demo** | `0x7555D03dE33f3fC8C586f0B2AE5Fe3BC1CD9f125` |
 | **Deployed from** | [`b52bb22`](https://github.com/kenil1710/makewhole/tree/b52bb2278495661fa8eb47da9e1bfcc003c2e967) (all four, one commit; `node tools/verify_source.mjs` or [/verify](https://makewhole-ledger.vercel.app/verify)) |
-| **Tests** | `sh test/run_all.sh`: v1's 117 (unchanged) + 325 new (228 contract, 51 meaning, 46 keeper) |
+| **Tests** | `sh test/run_all.sh`: v1's 117 (unchanged) + 327 new (228 contract, 52 meaning, 47 keeper) |
 | **Milestone** | [docs/MILESTONE.md](docs/MILESTONE.md) (BASE proof, every feature with pinned links) · [final check](docs/FINAL_CHECK.md) · [attack round](docs/ATTACK_REPORT_V2.md) · [seeds](docs/SEEDS_V2.md) · [rules](docs/RULES_V2.md) |
 | **v1** (the accepted submission, still on chain, untouched) | [docs/superseded/v1.3/README.md](docs/superseded/v1.3/README.md) |
 
