@@ -9,6 +9,14 @@
    "confirmed": 4,
    "discovered": 149,
    "errors": 0
+  },
+  {
+   "started": 1792427004,
+   "finished": 1792427450,
+   "submitted": 0,
+   "confirmed": 198,
+   "discovered": 0,
+   "errors": 0
   }
  ],
  "incidents": {
@@ -2668,25 +2676,25 @@
     "accounts": 44,
     "paid_accounts": 0,
     "unclaimed_accounts": 44,
-    "contract_filings": 0,
-    "contract_eligible": 0,
+    "contract_filings": 146,
+    "contract_eligible": 145,
     "scan_done": true,
     "unprocessed": []
    }
   }
  },
- "updated_at": "2026-10-19T16:30:28.842Z",
+ "updated_at": "2026-10-19T16:30:50.633Z",
  "last_run": {
-  "started": 1792423126,
+  "started": 1792427004,
   "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
-  "scanned_pages": 4,
-  "discovered": 149,
-  "submitted": 194,
-  "confirmed": 4,
+  "scanned_pages": 0,
+  "discovered": 0,
+  "submitted": 0,
+  "confirmed": 198,
   "refused": 0,
   "retried": 0,
-  "accepted_not_final": 194,
+  "accepted_not_final": 0,
   "errors": [],
-  "finished": 1792426949
+  "finished": 1792427450
  }
 }
