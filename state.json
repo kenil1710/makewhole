@@ -1689,51 +1689,72 @@
     "0x7aaad07bd54690f2bb19c9c9728cceb795d66c6a1d9211b93ea237bb0165bcfd:693": {
      "block": 19722352,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x4679423838b5ee7439108d8522dc8bbc5270e905391db5cf4e9812813b271a59",
+     "submitted_at": 1792425668,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x2b493bd28317389b625cbf6650574b12ce4a22696361a1d0f36803ef68cb6e53:36": {
      "block": 19722353,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0xcd97a144b106d3bb42816ccbc8f85b9224fdc26c836d04927ec318dfd07ef16f",
+     "submitted_at": 1792425686,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x8f0e165f3c03a97426cb73317eb0f1447b0cb902de73944c380186684c3a67c9:57": {
      "block": 19722353,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x3b499ea534b8dae799b7795c042879e5a81d1dd41faab5cb693641e524e545b1",
+     "submitted_at": 1792425702,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x450d5a9d9bd2db9d1cea59913628dabb02aedc298ca0952108265c6f5e02ed3b:79": {
      "block": 19722353,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x2ee6a3a1c9177f5ab9c6c36ed45382c6426e79b0f9b70a319ddce3d54c5a4d37",
+     "submitted_at": 1792425719,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0xeb360517132540d77b6255a3bd5fb24aef53aad89bced6f92e30cc3aa398e486:3": {
      "block": 19722354,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x00a042aa65f197d778a13a2533fae9e1b9d60bf0197ed10d5cf217606d28f7d1",
+     "submitted_at": 1792425736,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0xf9f6cf433ed3ee584335c6f6b112e7f82a5c276eff3da0aa21cac0cd7d381209:11": {
      "block": 19722354,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0xdfc78fdc4d492ee8cea2b6a8d6e51811655c6c865b37f41a0ab8b5c882cedc4d",
+     "submitted_at": 1792425753,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x1f80d2fdd3939f52a9a6cdd007de0db2406a325ab531632b469fc6787f1a3603:19": {
      "block": 19722354,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x202335d41b85ab0c447b47d66146eea65ea9e4d770f241c37b51990af93e524c",
+     "submitted_at": 1792425772,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x8e20ddf2a99e2a81dd61ddc1c699da4491491aac155bbee7247257b525f2ac12:27": {
      "block": 19722354,
@@ -1845,5 +1866,5 @@
    "closed": false
   }
  },
- "updated_at": "2026-10-19T16:01:03.601Z"
+ "updated_at": "2026-10-19T16:03:06.984Z"
 }
