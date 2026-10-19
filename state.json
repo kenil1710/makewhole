@@ -1329,30 +1329,42 @@
     "0x09cd6219aa74506dc4c28dd8acb24bdc4a81aae618b70d5d91bca2a484a4806b:19": {
      "block": 19722338,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0xf1634b52e106ed6d9bc8cd7e1604ba4e977e0fd7ff217953bc017c5af9783436",
+     "submitted_at": 1792424912,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x5a9e73815e314f7472045ef59e48527292e1f922b3ef7b7a7913d12f8dd17773:490": {
      "block": 19722338,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x3991adc7b5e0fe02fcf9c707849f724e3c6206ceb486560774d60067c4e7ed10",
+     "submitted_at": 1792424930,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0xd4e6112bb7229519da093ce14aed552ccc0a1fd214c99c8633e2e1de1c2acf8f:22": {
      "block": 19722339,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0x44fc377eb82fc6b5a0235857e2587143b203cc5e1f3bfeff98b7d210b6118dd1",
+     "submitted_at": 1792425004,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0xaca0c0279ae724b2ab399b5e55bf1eef73416d65926a64f899e104453af3b490:122": {
      "block": 19722339,
      "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423200
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423200,
+     "tx_hash": "0xee555e93bb2125168dc99b1d2cf9ac944919bd3f838a20cae92354126b7861d0",
+     "submitted_at": 1792425021,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x814aac84c349254a59fb61f916dc81d7f940f90b16d5f9df6a9ec0aab585bd7e:5": {
      "block": 19722341,
@@ -1737,5 +1749,5 @@
    "closed": false
   }
  },
- "updated_at": "2026-10-19T15:48:27.884Z"
+ "updated_at": "2026-10-19T15:50:36.440Z"
 }
