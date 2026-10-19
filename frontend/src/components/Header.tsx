@@ -9,12 +9,14 @@ export function Header() {
       <div className="wrap bar">
         <Link href="/" aria-label="MakeWhole home" style={{ textDecoration: "none" }}><Wordmark /></Link>
         <nav aria-label="Main" className="nav">
-          <Link href="/incidents">Incidents</Link>
-          <Link href="/create">Create</Link>
-          <Link href="/file">File a claim</Link>
-          <Link href="/appeals">Appeals</Link>
-          <Link href="/balance">Balance</Link>
-          <Link href="/how-it-works">How it works</Link>
+          <Link href="/eligible">Am I eligible?</Link>
+          <Link href="/explorer">Incidents</Link>
+          <Link href="/claim">Claim</Link>
+          <Link href="/sponsor">Sponsor</Link>
+          <Link href="/keeper">Keeper</Link>
+          <Link href="/gate">Gate</Link>
+          <Link href="/docs">Rules</Link>
+          <Link href="/verify">Verify</Link>
         </nav>
         <div className="bar-end"><ThemeToggle /><WalletButton /></div>
       </div>

@@ -1,85 +1,91 @@
 import Link from "next/link";
-import { incidentBundle } from "@/lib/bundle";
-import { daoPayouts } from "@/lib/dao";
-import { Marks } from "@/components/Marks";
-import { TryIt } from "@/components/TryIt";
-import { HOME_REF, AFC_TX, ethtx } from "@/lib/config";
-import { units } from "@/lib/format";
+import { incidents2, keeperState, reconciliation2, gen } from "@/lib/v2";
+import { LookupForm } from "@/components/v2/LookupForm";
+import { Phase, Tag } from "@/components/v2/Bits";
 
 export const revalidate = 60;
 
-const RATE_NOTE = "Rate 0.034991439125 ETH per wstETH was taken from the DAO's own payout tx (the proposal published no formula); with the raw chain price gap alone, 0 of 35 match.";
-const FINDING = "The AIP said 34 accounts; the AFC payout paid 35.";
-
 export default async function Home() {
-  // A failed read is rethrown so ISR never caches a page without the ledger.
-  const [data, dao] = await Promise.all([incidentBundle("c", 1), daoPayouts()]);
-  const daoN = Object.keys(dao).length;
-  const s = data?.score;
+  let incs: Awaited<ReturnType<typeof incidents2>> = [];
+  let failed = false;
+  try { incs = await incidents2("c"); } catch { failed = true; }
+  const keeper = await keeperState();
+  const capo = incs.find((i) => i.official_list);
+  const rec = capo ? await reconciliation2("c", capo.incident_id).catch(() => null) : null;
+  const now = Math.floor(Date.now() / 1000);
+  const events = incs.reduce((s, i) => s + i.filings, 0);
+  const chains = new Set(incs.map((i) => i.chain));
   return (
     <div className="wrap">
       <section className="hero" aria-labelledby="h">
         <div>
-          <h1 id="h">35 accounts were wrongly liquidated by an oracle bug. Here&rsquo;s how each one gets paid back&nbsp;— proven from chain data.</h1>
+          <h1 id="h">After a protocol incident, every refund computed from the chain itself&nbsp;— and paid.</h1>
           <p className="lede" style={{ marginTop: 20 }}>
-            On 10 March 2026 a misconfigured price cap made Aave value wstETH 2.84% too low for 1,229 blocks. The DAO voted to refund the
-            accounts it liquidated, then paid all 35 in one transaction, with no published per-account formula. MakeWhole recomputes every refund from Ethereum itself.
+            A sponsor freezes the terms of a refund: which contracts, which blocks, which events, which formula. A keeper files every
+            matching liquidation it finds. GenLayer validators read each one from two independent RPCs, code decides what is owed,
+            and the payout goes to the borrower in the log. MakeWhole computes refunds from on-chain events under frozen terms; it does
+            not decide who caused an incident.
           </p>
+          <div style={{ marginTop: 26, maxWidth: 560 }}><LookupForm /></div>
           <div className="actions">
-            <Link className="btn" href={`/incident/${HOME_REF}`}>View the incident</Link>
-            <Link className="btn ghost" href="/file">File a claim</Link>
+            <Link className="btn ghost" href="/explorer">Incident explorer</Link>
+            <Link className="btn ghost" href="/docs">The rules, as the code has them</Link>
           </div>
         </div>
         <div aria-live="polite">
-          {s && daoN ? (
-            <>
-              <p className="score">{s.matched} of {daoN}<small>refund amounts match what the Aave DAO paid, to nine significant digits{s.close ? `; ${s.close} more within 0.01%` : ""}.</small></p>
-              <div style={{ marginTop: 24 }}><Marks rows={data!.rows} daoAll={dao} /></div>
-              <ul className="legend">
-                <li><span className="mark match" /> matches</li>
-                <li><span className="mark close" /> within 0.01%</li>
-                {s.differs > 0 && <li><span className="mark differs" /> differs</li>}
-                {data!.rows.length < daoN && <li><span className="mark pending" /> not yet claimed</li>}
-              </ul>
-              <p className="rate-note" style={{ marginTop: 16, maxWidth: "56ch" }}>{RATE_NOTE}</p>
-              <p className="small muted" style={{ marginTop: 10, maxWidth: "56ch" }}>
-                Compared with the DAO&rsquo;s payout, <a href={ethtx(AFC_TX)} target="_blank" rel="noreferrer">Ethereum transaction 0x687f…0f3f</a>.
-              </p>
-              <p className="finding" style={{ marginTop: 14 }}>{FINDING}</p>
-            </>
-          ) : (
+          {failed ? (
             <p className="notice amber">The ledger couldn&rsquo;t be read from GenLayer just now (Studio Dev may be rate-limiting). Reload in a minute.</p>
+          ) : (
+            <>
+              <p className="score">{events}<small>real liquidation events filed by the keeper across {incs.length} incidents on {chains.size} chain{chains.size === 1 ? "" : "s"}.</small></p>
+              {rec?.summary && (
+                <p className="score" style={{ marginTop: 18 }}>{rec.summary.match} of {rec.summary.list_entries}
+                  <small>computed Aave CAPO refunds match the Aave Finance Committee&rsquo;s payout within 1 ppm; {rec.summary.diff} differ, {rec.summary.not_in_list} not in its list.</small></p>
+              )}
+              {keeper?.last_run && (
+                <p className="small muted" style={{ marginTop: 14 }}>Keeper last ran {new Date(keeper.last_run.finished * 1000).toUTCString()} · <Link href="/keeper">status</Link></p>
+              )}
+            </>
           )}
         </div>
       </section>
 
-      {data && (
-        <section className="section" style={{ borderTop: 0, paddingTop: 8 }} aria-labelledby="rec">
-          <h2 id="rec" className="sr-only">The incident in numbers</h2>
-          <dl className="facts">
-            <div><dt>Liquidation events covered</dt><dd className="num">{data.inc.claims}</dd></div>
-            <div><dt>Accounts</dt><dd className="num">{data.inc.accounts}</dd></div>
-            <div><dt>Recomputed refunds</dt><dd className="num">{units(data.rep.computed_total_src_wei, 18, 4)} ETH</dd></div>
-            <div><dt>Paid by the DAO</dt><dd className="num">{units(data.rep.published_total_src_wei, 18, 4)} ETH</dd></div>
-          </dl>
-        </section>
-      )}
-
-      <section className="section" aria-labelledby="try">
-        <h2 id="try" className="sr-only">Try it yourself</h2>
-        <TryIt />
+      <section className="section" aria-labelledby="inc">
+        <h2 id="inc" className="serif">Real incidents</h2>
+        <p className="section-note">Each one is opened with frozen terms drafted from the protocol&rsquo;s own post-mortem or forum record, and every number below is read from the contract.</p>
+        <div className="scroll-x">
+          <table className="ledger">
+            <thead><tr><th>Incident</th><th>Chain · template</th><th className="r">Events</th><th className="r">Eligible</th><th className="r">Owed</th><th className="r">Pool</th><th className="r">Paid</th><th>Phase</th></tr></thead>
+            <tbody>
+              {incs.map((i) => (
+                <tr key={i.incident_id}>
+                  <td><Link href={`/explorer/c-${i.incident_id}`}>{i.title}</Link></td>
+                  <td>{i.chain} · {i.template.replace("_", " ")}</td>
+                  <td className="r num">{i.filings}</td>
+                  <td className="r num">{i.eligible}</td>
+                  <td className="r num">{gen(i.owed_gen_total_wei, 4)}</td>
+                  <td className="r num">{gen(i.pool_wei, 4)}{i.short && <> <Tag t="DIFF" /></>}</td>
+                  <td className="r num">{gen(i.paid_wei, 4)}</td>
+                  <td><Phase i={i} now={now} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="small muted" style={{ marginTop: 10 }}>Amounts in GEN at 1 ETH = 0.01 GEN. A short pool pays every account the same fraction, whatever the order of claims.</p>
       </section>
 
       <section className="section" aria-labelledby="how">
-        <h2 id="how">How a refund is made whole</h2>
-        <p className="section-note">Four steps, each with a deadline and nobody who can change the rules halfway.</p>
+        <h2 id="how" className="serif">How a refund is decided</h2>
         <ol className="steps">
-          <li><div><h3>The sponsor freezes the terms</h3><p>Chain, pools, event, block range, the formula and its numbers, the plain-language terms and their sha256, two deadlines. The pool is funded in the same transaction. There is no owner and no setter.</p></div></li>
-          <li><div><h3>Anyone files a liquidation</h3><p>Name the Ethereum transaction. Every GenLayer validator reads the receipt itself and they must agree on every field. Code checks the pool, event, collateral and block, then computes the amount. The refund is owed to the borrower in the log, never to whoever filed.</p></div></li>
-          <li><div><h3>Edge cases go to appeal</h3><p>A borrower that is a smart contract has no key on GenLayer. On appeal, code reads the contract&rsquo;s bytecode and decides: a recognised single-owner wallet is paid to its <span className="mono">owner()</span>, a multi-key Safe or a contract with no owner is not, and anything code can&rsquo;t identify is inconclusive with the stake returned.</p></div></li>
-          <li><div><h3>Everyone withdraws</h3><p>After the claim deadline anyone can settle: refunds are credited in full, or pro-rata if the pool is short. Payees withdraw; whatever nobody is owed returns to the sponsor after the appeal deadline.</p></div></li>
+          <li><h3>Frozen terms</h3><p>The sponsor names the template (Aave v3, Compound v3, Morpho Blue), the chain, the official contracts, the block range, filters, a price-source condition and the formula. After the first filing it can only top the pool up or extend the deadline.</p></li>
+          <li><h3>Every event, found and filed</h3><p>The keeper walks the range page by page, reads each page from two endpoints, files every matching event and counts it only once the GenLayer transaction is final and the contract has it.</p></li>
+          <li><h3>Two sources, one answer</h3><p>Validators fetch the receipt from every frozen RPC; it counts only if two return it identically, none disagrees, the block is final, and code&rsquo;s decoder accepts it.</p></li>
+          <li><h3>Paid, and checked</h3><p>Anyone can push a borrower&rsquo;s refund to the borrower&rsquo;s address. After the claim window everything unclaimed goes back to the sponsor. Nothing can stay in the contract.</p></li>
         </ol>
-        <p style={{ marginTop: 20 }}><Link href="/how-it-works">What the model never decides</Link></p>
+        <p className="small" style={{ marginTop: 12 }}>
+          <Link href="/sponsor">Sponsor dashboard</Link> · <Link href="/claim">Claim a refund</Link> · <Link href="/gate">RecoveryGate</Link> · <Link href="/verify">Verify the deployed source</Link> · <Link href="/v1">v1 (the accepted submission)</Link>
+        </p>
       </section>
     </div>
   );

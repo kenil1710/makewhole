@@ -271,3 +271,14 @@ select.input { appearance: auto; }
 fieldset.group { border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px 20px; display: grid; gap: 18px; margin: 0; min-width: 0; }
 fieldset.group legend { font-family: var(--serif); font-size: 1.25rem; padding: 0 6px; }
 .notice .tryit.compact { border: 0; padding: 0; background: none; }
+
+/* v2 */
+.tag:not(.green):not(.red):not(.amber) { color: var(--ink-2); background: var(--paper-2); }
+.lookup { display: grid; gap: 8px; }
+.lookup-label { font-weight: 600; font-size: 0.9375rem; }
+.lookup-row { display: flex; gap: 8px; }
+.lookup-row .input { flex: 1; min-width: 0; }
+.btn.small { padding: 4px 10px; font-size: 0.8125rem; min-height: 0; }
+details > summary { cursor: pointer; font-weight: 600; }
+pre.terms-body { font-family: var(--sans); font-size: 0.875rem; line-height: 1.55; background: var(--sheet); border: 1px solid var(--rule-2); padding: 14px; border-radius: 6px; }
+@media (max-width: 640px) { .lookup-row { flex-direction: column; } }

@@ -4,7 +4,8 @@ import { Newsreader, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { WalletProvider } from "@/components/WalletProvider";
-import { CANONICAL, DEMO, LEDGER, REPO, gladdr } from "@/lib/config";
+import { CANONICAL, REPO, gladdr } from "@/lib/config";
+import { MW2, GATE2 } from "@/lib/v2";
 
 const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader", display: "swap", weight: ["400", "500", "600"], style: ["normal", "italic"] });
 const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-public-sans", display: "swap", weight: ["400", "600", "700"] });
@@ -14,8 +15,8 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://makewhole-ledger.verce
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: { default: "MakeWhole — verifiable refunds after a protocol incident", template: "%s · MakeWhole" },
-  description: "35 accounts were wrongly liquidated by an Aave oracle bug on 10 March 2026. MakeWhole shows how each one gets paid back, proven from Ethereum chain data and settled on GenLayer.",
+  title: { default: "MakeWhole — refunds computed from on-chain liquidations, under frozen terms", template: "%s · MakeWhole" },
+  description: "MakeWhole v2 on GenLayer: frozen incident terms, a keeper that files every matching liquidation on Ethereum, Arbitrum, Base, Optimism and Polygon, two-source verification, pro-rata pools and payouts checked at the recipient.",
   openGraph: { type: "website", siteName: "MakeWhole", images: [{ url: "/og.png", width: 1200, height: 630, alt: "MakeWhole — a public restitution ledger" }] },
   twitter: { card: "summary_large_image", images: ["/og.png"] },
   icons: { icon: [{ url: "/favicon.svg", type: "image/svg+xml" }, { url: "/favicon.ico" }], apple: "/apple-touch-icon.png" },
@@ -39,11 +40,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <footer className="site-footer">
           <div className="wrap cols">
             <span>MakeWhole runs on GenLayer Studio Dev (chain 61997). Amounts are test GEN at 1 ETH = 0.01 GEN.</span>
-            <a href={gladdr(CANONICAL)} target="_blank" rel="noreferrer">Canonical contract</a>
-            <a href={gladdr(DEMO)} target="_blank" rel="noreferrer">Demo contract</a>
-            <a href={gladdr(LEDGER)} target="_blank" rel="noreferrer">RecoveryLedger</a>
+            <a href={gladdr(MW2.c)} target="_blank" rel="noreferrer">MakeWhole v2</a>
+            <a href={gladdr(MW2.d)} target="_blank" rel="noreferrer">v2 demo</a>
+            <a href={gladdr(GATE2.c)} target="_blank" rel="noreferrer">RecoveryGate</a>
             <a href={REPO} target="_blank" rel="noreferrer">Source</a>
-            <Link href="/incidents">All incidents</Link>
+            <Link href="/v1">v1 (accepted)</Link>
+            <a href={gladdr(CANONICAL)} target="_blank" rel="noreferrer">v1 contract</a>
           </div>
         </footer>
       </body>

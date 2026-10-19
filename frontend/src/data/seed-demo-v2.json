@@ -1,0 +1,403 @@
+{
+ "contract": "0x65AD8233033ee9a46366B8671d6C9Df36FB6B117",
+ "gate": "0x7555D03dE33f3fC8C586f0B2AE5Fe3BC1CD9f125",
+ "steps": {
+  "D1_open": {
+   "done": true,
+   "tx": "0x662f63afd01afd447fd0ce9f81b5555f7248522a7c3c463ce85937168cc2d6b2",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id\t\u0014official_list_sha256�\u00042ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c\bpool_wei�\u00015000000000000000000\u0006status\u0014OK\fterms_sha256�\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "result": {
+    "claim_deadline": 1792424808,
+    "claim_end": 1792425228,
+    "incident_id": 1,
+    "official_list_sha256": "2ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c",
+    "pool_wei": "5000000000000000000",
+    "status": "OK",
+    "terms_sha256": "5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f"
+   },
+   "as_expected": true
+  },
+  "D1_amend_before_first_filing": {
+   "done": true,
+   "tx": "0xe5644483eaade165e270eeee06f99fbf98cddbb3b2547040e7e3d5fc34a7f8f5",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "&\u000bincident_id\t\u0006status\u0014OK\fterms_sha256�\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f\rterms_version\u0011",
+   "result": {
+    "incident_id": 1,
+    "status": "OK",
+    "terms_sha256": "5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+    "terms_version": 2
+   },
+   "as_expected": true
+  },
+  "D2_open": {
+   "done": true,
+   "tx": "0xea516f930ab583a77d9b356cddde4ec0d2dc55820aba7884c91c8adac482f716",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline�ǵ5\tclaim_end��ǵ5\u000bincident_id\u0011\u0014official_list_sha256\u0004\bpool_wei�\u000150000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "result": {
+    "claim_deadline": 1792424845,
+    "claim_end": 1792425265,
+    "incident_id": 2,
+    "official_list_sha256": "",
+    "pool_wei": "50000000000000000",
+    "status": "OK",
+    "terms_sha256": "c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973"
+   },
+   "as_expected": true
+  },
+  "D3_open": {
+   "done": true,
+   "tx": "0x58c227f8beb04fc6697a53ecee54d993449472cac5b0603eea7c3018beaa3d2e",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline�ǵ5\tclaim_end��ǵ5\u000bincident_id\u0019\u0014official_list_sha256\u0004\bpool_wei�\u00011000000000000000000\u0006status\u0014OK\fterms_sha256�\u00042b938196670f4fcade9281b01b0364320eb728cd4915bb086c009323e011ca5d",
+   "result": {
+    "claim_deadline": 1792424862,
+    "claim_end": 1792425282,
+    "incident_id": 3,
+    "official_list_sha256": "",
+    "pool_wei": "1000000000000000000",
+    "status": "OK",
+    "terms_sha256": "2b938196670f4fcade9281b01b0364320eb728cd4915bb086c009323e011ca5d"
+   },
+   "as_expected": true
+  },
+  "D4_open": {
+   "done": true,
+   "tx": "0x6938b9a33f60b0e876c293511989130cfbaa993376d2ee2283e610543c214bfb",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id!\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "result": {
+    "claim_deadline": 1792423976,
+    "claim_end": 1792424036,
+    "incident_id": 4,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973"
+   },
+   "as_expected": true
+  },
+  "D5_open": {
+   "done": true,
+   "tx": "0x4a336c709e97d307ab0202f1391a126a545d0f9edea51002be0d86d066356065",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id)\u0014official_list_sha256�\u00042ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u00045f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f",
+   "result": {
+    "claim_deadline": 1792423992,
+    "claim_end": 1792424052,
+    "incident_id": 5,
+    "official_list_sha256": "2ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "5f2e8223ef09160c2461fe0c09235d6a8d133384f0e1abdd1aa3a4725464b56f"
+   },
+   "as_expected": true
+  },
+  "D6_open": {
+   "done": true,
+   "tx": "0x99da45418ed821035c54fe0b3ecff07bd1efed18dfff6b298a062aecac2c65d0",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id1\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u000432f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
+   "result": {
+    "claim_deadline": 1792424005,
+    "claim_end": 1792424065,
+    "incident_id": 6,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "32f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640"
+   },
+   "as_expected": true
+  },
+  "D7_open": {
+   "done": true,
+   "tx": "0x6996c60f3aa3127efb20abb7e9efaad8e1d7db267a578ac2d837d3c089e49f83",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end��ǵ5\u000bincident_id9\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u000432f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640",
+   "result": {
+    "claim_deadline": 1792424019,
+    "claim_end": 1792424079,
+    "incident_id": 7,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "32f2775b58f70047a94a3a166b5c5b88695c2cdbaae536d8c51ed7b8c8d57640"
+   },
+   "as_expected": true
+  },
+  "D8_open": {
+   "done": true,
+   "tx": "0x63c41306e9a34cc38f843b2b8fd831824042fce6671f79732fd2851e8e77d69a",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end�ǵ5\u000bincident_idA\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "result": {
+    "claim_deadline": 1792424034,
+    "claim_end": 1792424094,
+    "incident_id": 8,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973"
+   },
+   "as_expected": true
+  },
+  "D9_open": {
+   "done": true,
+   "tx": "0xfbf90090502349ed1a8732cf83fa7955e80ea23ed0f2eab1d690c6118bb67cc5",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end�ǵ5\u000bincident_idI\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "result": {
+    "claim_deadline": 1792424048,
+    "claim_end": 1792424108,
+    "incident_id": 9,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973"
+   },
+   "as_expected": true
+  },
+  "D10_open": {
+   "done": true,
+   "tx": "0x282843aae016e12e6101eaf8a59e4b45dc0c6e0b9620b81facb0170747304207",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": ">\u000eclaim_deadline��ǵ5\tclaim_end�ǵ5\u000bincident_idQ\u0014official_list_sha256\u0004\bpool_wei�\u000110000000000000000\u0006status\u0014OK\fterms_sha256�\u0004c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973",
+   "result": {
+    "claim_deadline": 1792424064,
+    "claim_end": 1792424124,
+    "incident_id": 10,
+    "official_list_sha256": "",
+    "pool_wei": "10000000000000000",
+    "status": "OK",
+    "terms_sha256": "c0a3c1c6db7a440a3b0a89640f02fbff392edcacadb1fcc63241b26f5e0a4973"
+   },
+   "as_expected": true
+  },
+  "D1_file_1": {
+   "done": true,
+   "tx": "0x682741a2a3d70c72055d9c75ee5f82049eba75522a2c1d556b4c5a3b6c65a956",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower�\u00020x4f962bb0ea0785c539f8ab52a17f1f873ddc355f\tfiling_id\t\u000bincident_id\t\fowed_gen_wei�\u00012494787941017015246\fowed_src_wei�\u0001249478794101701524600\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0x4f962bb0ea0785c539f8ab52a17f1f873ddc355f",
+    "filing_id": 1,
+    "incident_id": 1,
+    "owed_gen_wei": "2494787941017015246",
+    "owed_src_wei": "249478794101701524600",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D1_file_2": {
+   "done": true,
+   "tx": "0x634c8014d9f29cb8e65d6ee136a0b3fe54312174187cc9b87a73e293a72d2681",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower�\u00020x4bacce55f0991cfc4d919f7f50edb8be028e37df\tfiling_id\u0011\u000bincident_id\t\fowed_gen_wei�\u0001877714041173915609\fowed_src_wei�\u000187771404117391560911\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0x4bacce55f0991cfc4d919f7f50edb8be028e37df",
+    "filing_id": 2,
+    "incident_id": 1,
+    "owed_gen_wei": "877714041173915609",
+    "owed_src_wei": "87771404117391560911",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D1_file_3": {
+   "done": true,
+   "tx": "0x96f314c9be7d888080a1c00be84efbab57e976fe8f120f03c251219db1264946",
+   "status": "ACCEPTED",
+   "outcome": "OK",
+   "reason": "F\bborrower�\u00020xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de\tfiling_id\u0019\u000bincident_id\t\fowed_gen_wei�\u0001540697851180365346\fowed_src_wei�\u000154069785118036534682\u0006reason\u0004\u0006status\u0014OK\u0007verdictDELIGIBLE",
+   "result": {
+    "borrower": "0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de",
+    "filing_id": 3,
+    "incident_id": 1,
+    "owed_gen_wei": "540697851180365346",
+    "owed_src_wei": "54069785118036534682",
+    "reason": "",
+    "status": "OK",
+    "verdict": "ELIGIBLE"
+   },
+   "as_expected": true
+  },
+  "D1_dup_refused": {
+   "done": true,
+   "tx": "0xaf7ae2cc34a781ea7c9554533e53f90c096c03294404e7b6e8c6f609d4c54422",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:DUPLICATE",
+   "reason": "DUPLICATE: this event is already filing #1",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_dup_other_spelling_refused": {
+   "done": true,
+   "tx": "0x5ccbb0748e2ced02a5c867cbeac181a7f43c4a8d20bf0b23a075322b3b356ca2",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:DUPLICATE",
+   "reason": "DUPLICATE: this event is already filing #1",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_no_such_log_refused": {
+   "done": true,
+   "tx": "0x7a60f57cde4e91f99102c3d797f37368dd1fc953cdac72811e47b8538f6663c2",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:NO_SUCH_LOG",
+   "reason": "NO_SUCH_LOG: that transaction has no log at index 99999",
+   "result": null,
+   "as_expected": true
+  },
+  "D1_wrong_event_refused": {
+   "done": true,
+   "tx": "0x5cc46f0864c87ea1320a1835be5b0a73292326475418eb10509bdaa4b6caaae2",
+   "status": "ACCEPTED",
+   "outcome": "REVERT:WRONG_EVENT",
+   "reason": "WRONG_EVENT: that log is not a LiquidationCall(address,address,address,uint256,uint256,address,bool) event",
+   "result": null,
+   "as_expected": true
+  }
+ },
+ "payouts": [],
+ "incidents": {
+  "D1": {
+   "incident_id": 1,
+   "slug": "aave-wsteth-capo-2026-03",
+   "over": [
+    "title",
+    "from_block",
+    "to_block",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D2": {
+   "incident_id": 2,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D3": {
+   "incident_id": 3,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "protocol",
+    "template",
+    "emitters",
+    "markets",
+    "collateral_assets",
+    "debt_rates",
+    "formula",
+    "formula_param",
+    "bonus_bps",
+    "from_block",
+    "to_block",
+    "price_condition",
+    "sources",
+    "claim_deadline_s",
+    "claim_window_s",
+    "__terms"
+   ]
+  },
+  "D4": {
+   "incident_id": 4,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "price_condition",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D5": {
+   "incident_id": 5,
+   "slug": "aave-wsteth-capo-2026-03",
+   "over": [
+    "title",
+    "from_block",
+    "to_block",
+    "debt_rates",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D6": {
+   "incident_id": 6,
+   "slug": "morpho-ezeth-2024-04",
+   "over": [
+    "title",
+    "from_block",
+    "to_block",
+    "collateral_assets",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D7": {
+   "incident_id": 7,
+   "slug": "morpho-ezeth-2024-04",
+   "over": [
+    "title",
+    "from_block",
+    "to_block",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D8": {
+   "incident_id": 8,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "rpcs",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D9": {
+   "incident_id": 9,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "rpcs",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  },
+  "D10": {
+   "incident_id": 10,
+   "slug": "morpho-cbeth-base-2025-03",
+   "over": [
+    "title",
+    "from_block",
+    "to_block",
+    "price_condition",
+    "claim_deadline_s",
+    "claim_window_s"
+   ]
+  }
+ }
+}
