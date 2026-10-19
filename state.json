@@ -7,37 +7,49 @@
    "chain_id": 1,
    "title": "Aave v3 wstETH CAPO oracle incident, Ethereum, 10 March 2026",
    "cursors": {
-    "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2": 24628088
+    "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2": 24628088,
+    "0x4e033931ad43597d96d6bcc25c280717730b58b1": 24628088
    },
-   "scan_done": false,
+   "scan_done": true,
    "events": {
     "0x9064b507f16bd8b85fb5aea0185153b01fa23b3205f7153f986e5107ce988a9c:17": {
      "block": 24626860,
      "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423025
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423025,
+     "tx_hash": "0xd82f4c0596d299c485f8dcabff04670e2fcc2bc7761a98fd1f078f0d0c7fffc3",
+     "submitted_at": 1792423041,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x8f47b5e821530e9b9fc2262cde6dbb7427311f13116de995650fd7709df2fa67:14": {
      "block": 24626861,
      "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423025
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423025,
+     "tx_hash": "0x5669fcc46feb81b6f1bc1d43a35a9ae0952ba2769054501d21c00193d2164146",
+     "submitted_at": 1792423068,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0x6b9c0d3292b51fc1612fba7cc26258357b2b705ab2699d2a4f0014c09a9b96cc:37": {
      "block": 24626861,
      "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423025
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423025,
+     "tx_hash": "0x5faa96a6b2ebe8bc3ddf996b43d81e15fe68fa45e295b1f6875d9489035b2d79",
+     "submitted_at": 1792423094,
+     "last_error": "ACCEPTED, waiting for FINALIZED"
     },
     "0xac1cad7fdcab60d1174cd785ac993d36b8230caa5517541b7ee8b7a370fd66fb:79": {
      "block": 24626861,
      "emitter": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
-     "status": "QUEUED",
-     "attempts": 0,
-     "first_seen": 1792423025
+     "status": "SUBMITTED",
+     "attempts": 1,
+     "first_seen": 1792423025,
+     "tx_hash": "0x8cc0b58045670fd583138d92e409153b7d5fdd7669a481ac3c8644671bf4a43a",
+     "submitted_at": 1792423120
     },
     "0x7872defdef7b839d43e79797ce4c4461b9727861db6aa9e72347f8e995812f5f:233": {
      "block": 24626861,
@@ -164,11 +176,233 @@
      "status": "QUEUED",
      "attempts": 0,
      "first_seen": 1792423025
+    },
+    "0x60f3fd66c0f13927ff8b827228dcf209d6f2a5501ec5050e119f0c09300992db:64": {
+     "block": 24626861,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x33fc18a92afeccaa00e1cab0f406b9f03f516b1d38cd15a7d58d8f9094c6c31b:102": {
+     "block": 24626861,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xfdac8cca66fc49bc709ef0eb3471458db1f2833815192c166950910c9e9aeded:128": {
+     "block": 24626861,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xb27dd3350490a750ee92494b0c0d9b33f2ad1cf0cbeadff8dae52104a1ead99b:170": {
+     "block": 24626861,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x83c6cad0319f1b6a4777dd4cfffa2b07c3ffad5dbb6a340f475179a7676bdcb1:186": {
+     "block": 24626861,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xf7b0ff68402cee6f68bb746f91f00503e13d35ef87471df10fb1d66117d49e1e:216": {
+     "block": 24626861,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xc5aa4bf15e6b762bf9e75e33897fa143afe619b47a9789f03e2e532cd620b1f3:14": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x4054c372cb927fa5386a8786d59ec5f09d17be697e4a116c7631361e76174495:38": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x61031c5559992e6a72996aa549fa7d209fb1877913dafcf84a6559ab60fc334c:85": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x66f6d449111cb67ce2fc491f6a6be0c4096d2e468579bf1b348dcb230ce51647:103": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xef7217a8a72b236b3c00640e88e78e66fa8b23a3507e411c617cfb7712289c5a:155": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x3bee9cc474c6bb9d0e03d6ce8b5efe89cf5098d791c35c62cbb0ab504f6f27db:178": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xd7418255899739b2579c4f12ed244ea8e1c670062280e1afea01c8286d5515b5:226": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x047b6265d7ab3def4054bea0f805c65f5e78c58a966a92323f08ad09c3af7186:252": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x31482796d23b1c04b47852f85aabf98b0351d3fdae07f23b1200e8cb41a5f159:297": {
+     "block": 24626862,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x02796db103e92e98f68cfe1e3d9cf712a0edfe67903ac246eba086c32f0f205b:14": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xedacc685c672873fb90b0e5250387261583c2e9b0acdda54873a5a6042ea1a54:58": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xc59881ec4233833ddc7e0eb3b78a4e4654d86a6f79aa7e6ed948e13f2f52a7d6:147": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xffb974f5e9618c5f774a7eeb0ee1f89e7a048cf9d55ec9aa914446981f141c7e:217": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x602afac70192ed1903ceade622731c2430d68974618a211308da3ca0c17c9584:264": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x2b043f918b90e572130d35f41533c38e823a1b5f1a777a441b19912e93c1bb55:308": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xecb8f9bc4fbae98456aed6ce93e9578a0c742c7fe0b0b5a4193ffc24226ea73e:367": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x499fe5661104e3bdd301aae517c32f1fd10b9adc3dcfdbca74db54e8eb711b11:385": {
+     "block": 24626863,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x896a41b851cd5162b2fd9841b7fb7344cf0e40aea6621a9b48e4c7939302c346:14": {
+     "block": 24626864,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xbf9bcadd9dc090cda315bceb565641b1c3296b00b71199d6322b14894d44c0aa:47": {
+     "block": 24626864,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0x90181b3cde4da6b467a7844d58230d2d5d6c21f4f9ff8fa22a6d249e6295e378:160": {
+     "block": 24626864,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
+    },
+    "0xca6082d51fcf0e47f2581d4f9be0092e03f02cd783fd343e73c541df690c080d:249": {
+     "block": 24626864,
+     "emitter": "0x4e033931ad43597d96d6bcc25c280717730b58b1",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423029
     }
    },
    "claim_deadline": 1792440928,
    "closed": false
+  },
+  "2": {
+   "chain_id": 8453,
+   "title": "Morpho Blue cbETH/WETH (94.5% LLTV) Pyth push-feed skew, Base, 2 March 2025",
+   "cursors": {
+    "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb": 27072399
+   },
+   "scan_done": false,
+   "events": {
+    "0x90a2b7fd5d1e54bba73a20150f587d3c96eccdde2c858e8a9ab63976ba383a6c:5": {
+     "block": 27072114,
+     "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423131
+    },
+    "0xe33c71cefae58f1e0b5ae2dd8a6812d4c4364c40a576107e29fa54a2476e6860:14": {
+     "block": 27072214,
+     "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423131
+    },
+    "0x77b2cf6989255f3d1cefef80fb81c6a85047afa08e08235527e120b5dfab348a:16": {
+     "block": 27072248,
+     "emitter": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+     "status": "QUEUED",
+     "attempts": 0,
+     "first_seen": 1792423131
+    }
+   },
+   "claim_deadline": 1792440943,
+   "closed": false
   }
  },
- "updated_at": "2026-10-19T15:17:05.714Z"
+ "updated_at": "2026-10-19T15:18:51.593Z"
 }
