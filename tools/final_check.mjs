@@ -135,13 +135,19 @@ check("milestone package: compare BASE...pin resolves, every file link pinned to
   `compare ${cmp ? cmp[2].slice(0, 7) + "..." + cmp[3].slice(0, 7) : "missing"} (${ahead} commits ahead); ${pinnedLinks.length} pinned links; after the pin: ${after.join(", ") || "nothing"}`);
 
 // 11. the live site is built from the pinned commit's source (Vercel status) and serves it
-let vercel = "";
-try { vercel = JSON.parse(execFileSync("gh", ["api", `repos/kenil1710/makewhole/commits/${pinFull}/status`]).toString()).statuses.filter((x) => x.context === "Vercel").map((x) => x.state).join(","); } catch { /* gh unavailable */ }
+// Vercel builds only the newest commit of a push; after the pin only generated docs change, so the
+// newest built commit from the pin to HEAD carries the pinned source
+let vercel = "", builtAt = "";
+const since = pinFull ? execFileSync("git", ["-C", ROOT, "rev-list", `${pinFull}^..HEAD`]).toString().trim().split("\n") : [];
+for (const h of since) {
+  try { vercel = JSON.parse(execFileSync("gh", ["api", `repos/kenil1710/makewhole/commits/${h}/status`]).toString()).statuses.filter((x) => x.context === "Vercel").map((x) => x.state).join(","); } catch { /* gh unavailable */ }
+  if (vercel) { builtAt = h.slice(0, 7); break; }
+}
 let landing = "";
 try { landing = await (await fetch(SITE + "/", { signal: AbortSignal.timeout(45000) })).text(); } catch { /* checked below */ }
 const marks = ["Every wei has an exit", "taken from the DAO"];
 check("live site: the Vercel build of the pinned commit succeeded and the landing page serves its text", vercel === "success" && marks.every((m) => landing.includes(m)),
-  `Vercel ${vercel || "unknown"} for ${pin}; landing has ${marks.filter((m) => landing.includes(m)).length}/${marks.length} marker sentences`);
+  `Vercel ${vercel || "unknown"} for ${builtAt || pin} (pin ${pin}); landing has ${marks.filter((m) => landing.includes(m)).length}/${marks.length} marker sentences`);
 
 const pass = results.filter((r) => r.ok).length;
 const md = ["# Final check", "", `Run ${new Date().toISOString()} at commit \`${execFileSync("git", ["-C", ROOT, "rev-parse", "HEAD"]).toString().trim()}\` by \`node tools/final_check.mjs\`. Every line is read live or recomputed.`, "",
