@@ -55,7 +55,14 @@ check("every link in README, MILESTONE, SUBMISSION, SEEDS_V2 and every site page
 
 // 5. seeds settled
 const c = connect({ address: v2.MakeWholeV2.address, role: "keeper" });
-const view = async (addr, fn, args = []) => plain(await c.read.readContract({ address: addr, functionName: fn, args }));
+// Studio Dev answers -32006 "Server busy" under load: wait and ask again
+const busy = async (f) => {
+  for (let i = 0; ; i++) {
+    try { return await f(); }
+    catch (e) { if (i >= 12 || !/busy|rate|429/i.test(String(e?.details ?? e?.message ?? e))) throw e; await new Promise((r) => setTimeout(r, 5000 * (i + 1))); }
+  }
+};
+const view = (addr, fn, args = []) => busy(async () => plain(await c.read.readContract({ address: addr, functionName: fn, args })));
 const canon = (await view(v2.MakeWholeV2.address, "get_incidents", [0, 100])).items;
 execFileSync("git", ["-C", ROOT, "fetch", "-q", "origin", "keeper-state"]);
 const ks = JSON.parse(execFileSync("git", ["-C", ROOT, "show", "origin/keeper-state:state.json"]).toString());
@@ -77,7 +84,7 @@ const seedCanon = JSON.parse(read("docs/seed-canonical-v2.json"));
 const payouts = [...(demo.payouts ?? []), ...(seedCanon.payouts ?? [])];
 const notArrived = [];
 for (const p of payouts) {
-  const tx = ser(await c.read.getTransaction({ hash: p.tx }));
+  const tx = ser(await busy(() => c.read.getTransaction({ hash: p.tx })));
   const pd = payoutDelivered(tx, p.to, p.amount);
   if (!pd.ok || p.balance_check !== "OK") notArrived.push(`${p.name}: ${pd.why || p.balance_check}`);
 }
@@ -86,9 +93,9 @@ check("every payout delivered at its recipient (FINALIZED, value effect delivere
   notArrived.length === 0 && payouts.length === contractPayouts, `${payouts.length - notArrived.length}/${payouts.length} proven; contracts record ${contractPayouts} payouts` + (notArrived.length ? "; " + notArrived.join("; ") : ""));
 
 // 7. balances
-const balDemo = await balanceOf(v2.MakeWholeV2Demo.address), balCanon = await balanceOf(v2.MakeWholeV2.address);
+const balDemo = await busy(() => balanceOf(v2.MakeWholeV2Demo.address)), balCanon = await busy(() => balanceOf(v2.MakeWholeV2.address));
 const ledC = await view(v2.MakeWholeV2.address, "get_ledger"), ledD = await view(v2.MakeWholeV2Demo.address, "get_ledger");
-const gates = [await balanceOf(v2.RecoveryGate.address), await balanceOf(v2.RecoveryGateDemo.address)];
+const gates = [await busy(() => balanceOf(v2.RecoveryGate.address)), await busy(() => balanceOf(v2.RecoveryGateDemo.address))];
 check("balances: demo registry eth_getBalance 0; canonical books == eth_getBalance; gates hold nothing",
   balDemo === 0n && BigInt(ledD.books_wei) === 0n && BigInt(ledC.books_wei) === balCanon && ledC.identity_holds && ledD.identity_holds && gates.every((g) => g === 0n),
   `demo ${balDemo} wei; canonical ${balCanon} wei (books ${ledC.books_wei}); gates ${gates.join("/")}`);
