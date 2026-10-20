@@ -676,7 +676,7 @@
     }
    },
    "claim_deadline": 1792440928,
-   "closed": false,
+   "closed": true,
    "coverage": {
     "found": 49,
     "filed": 49,
@@ -2691,7 +2691,7 @@
    }
   }
  },
- "updated_at": "2026-10-19T20:40:16.009Z",
+ "updated_at": "2026-10-20T00:28:21.491Z",
  "last_run": {
   "started": 1792442382,
   "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
