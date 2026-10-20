@@ -1,8 +1,8 @@
 # Final check
 
-Run 2026-10-19T21:24:32.531Z at commit `ddf966f11e9cfc8bd8f143b37049ec18f9976e70` by `node tools/final_check.mjs`. Every line is read live or recomputed.
+Run 2026-10-20T07:03:02.432Z at commit `60ab4ab956cda2a7e728295723685c5bc5d077c0` by `node tools/final_check.mjs`. Every line is read live or recomputed.
 
-**12/12 pass.**
+**14/14 pass.**
 
 | | check | detail |
 |---|---|---|
@@ -16,5 +16,7 @@ Run 2026-10-19T21:24:32.531Z at commit `ddf966f11e9cfc8bd8f143b37049ec18f9976e70
 | PASS | every payout delivered at its recipient (FINALIZED, value effect delivered and not skipped, balances moved by the amount) | 30/30 proven; contracts record 30 payouts |
 | PASS | balances: demo registry eth_getBalance 0; canonical books == eth_getBalance; gates hold nothing | demo 0 wei; canonical 0 wei (books 0); gates 0/0 |
 | PASS | v1 contracts untouched (same balances as at the BASE proof) | MakeWhole (canonical) 5181900000000000000, MakeWhole (demo) 12333800000000000000, RecoveryLedger 0 |
-| PASS | keeper ran: GitHub Actions runs succeeded and the keeper-state branch holds checkpoints for every incident | 2/2 workflow runs succeeded; last state 2026-10-19T20:40:16.009Z; 3 runs recorded |
-| PASS | tests pass: v1 suite unchanged, v2 contract, meaning and keeper suites | v1 117; v2 contract 228, meaning 52, keeper 47; new 327 |
+| PASS | keeper ran: GitHub Actions runs succeeded and the keeper-state branch holds checkpoints for every incident | 5/5 workflow runs succeeded; last state 2026-10-20T06:25:49.577Z; 6 runs recorded |
+| PASS | tests pass: v1 suite unchanged, v2 contract, meaning and keeper suites | v1 117; v2 contract 228, meaning 52, keeper 53; new 333 |
+| PASS | milestone package: compare BASE...pin resolves, every file link pinned to that commit, HEAD differs from it only in MILESTONE.md and FINAL_CHECK.md | compare c143d5a...19dad78 (34 commits ahead); 49 pinned links; after the pin: docs/MILESTONE.md |
+| PASS | live site: the Vercel build of the pinned commit succeeded and the landing page serves its text | Vercel success for 60ab4ab (pin 19dad78); landing has 2/2 marker sentences |
