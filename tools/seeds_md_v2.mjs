@@ -29,6 +29,17 @@ for (const i of incs) {
 const rec = await view(dep.MakeWholeV2.address, "get_reconciliation", [1, 0, 100]);
 L.push("### Reconciliation: Aave CAPO vs the Aave Finance Committee payout", "", `List sha256 \`${rec.sha256}\`, ${rec.summary.list_entries} accounts, tolerance ${rec.tolerance_ppb} ppb. **MATCH ${rec.summary.match}, DIFF ${rec.summary.diff}, NOT_IN_LIST ${rec.summary.not_in_list}.** Listed total ${g(rec.summary.list_total_src, 12)} ETH, computed ${g(rec.summary.computed_total_src, 12)} ETH, delta ${rec.summary.total_delta_src} wei.`, "",
   "| Account | Status | Listed wei | Computed wei | Delta wei |", "|---|---|---|---|---|", ...rec.items.map((r) => `| ${ad(r.borrower)} | ${r.status} | ${r.listed_src} | ${r.computed_src} | ${r.delta_src} |`), "");
+{
+  // Why each DIFF row differs, from the filings themselves: the debt assets of its events.
+  const fs = (await view(dep.MakeWholeV2.address, "get_filings", [1, 0, 100])).items.filter((f) => f.verdict === "ELIGIBLE");
+  const NAME = { "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": "WETH", "0xbe9895146f7af43049ca1c1ae358b0541ea49704": "cbETH", "0xf1c9acdc66974dfb6decb12aa385b9cd01190e38": "osETH" };
+  const debtOf = (b) => [...new Set(fs.filter((f) => f.borrower === b).map((f) => NAME[f.debt_asset] ?? f.debt_asset))];
+  const diff = rec.items.filter((r) => r.status === "DIFF"), match = rec.items.filter((r) => r.status === "MATCH");
+  const nonWeth = fs.filter((f) => f.debt_asset !== "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
+  L.push(`Why the DIFF rows differ: ${diff.map((r) => `${ad(r.borrower)} repaid ${debtOf(r.borrower).join(", ")} debt (${(Number(BigInt(r.delta_src)) * 1e6 / Number(BigInt(r.listed_src))).toFixed(1)} ppm)`).join("; ")}. `
+    + `These are the incident's only ${nonWeth.length} eligible liquidations whose debt is not WETH; the terms value that debt at frozen per-token rates and the DAO's payout implies slightly different ones. `
+    + `All ${match.length} MATCH accounts repaid WETH only: ${match.every((r) => debtOf(r.borrower).every((n) => n === "WETH")) ? "yes" : "NO"}.`, "");
+}
 L.push("### Canonical payouts", "", "| Payout | Kind | To | Amount GEN | Tx | Delivered | Balances |", "|---|---|---|---|---|---|---|",
   ...(C.payouts ?? []).map((p) => `| ${p.name} | ${p.kind} | ${ad(p.to)} | ${g(p.amount, 9)} | ${tx(p.tx)} | ${p.delivered ? "yes" : "NO"} | ${p.balance_check} |`), "");
 L.push(`Canonical contract after settlement: books ${C.final?.ledger?.books_wei ?? "?"} wei, eth_getBalance ${C.final?.eth_getBalance ?? "?"} wei.`, "");

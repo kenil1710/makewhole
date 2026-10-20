@@ -58,6 +58,8 @@ List sha256 `2ec396a9432ef84c211ff7ad64bb590828defaf525255b3abcc8e25152796f3c`, 
 | `0xf82d8c60402200114e2d5a8bdc40b1ef8f8ab0de` | MATCH | 54069785130000000000 | 54069785118036534682 | -11963465318 |
 | `0xfbfa537dde869b0c4738ef98fd9a652c7bf0efbc` | MATCH | 1371583203000000000 | 1371583203067310403 | 67310403 |
 
+Why the DIFF rows differ: `0x1570c1a39779cd31906a2ba854738b7d58fdb367` repaid osETH debt (-37.8 ppm); `0xf07e4924115e2b786a797b2b9545472324ee5b05` repaid cbETH debt (-17.4 ppm). These are the incident's only 2 eligible liquidations whose debt is not WETH; the terms value that debt at frozen per-token rates and the DAO's payout implies slightly different ones. All 33 MATCH accounts repaid WETH only: yes.
+
 ### Canonical payouts
 
 | Payout | Kind | To | Amount GEN | Tx | Delivered | Balances |

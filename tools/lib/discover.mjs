@@ -38,7 +38,7 @@ export const eventKey = (l) => `${String(l.transactionHash).toLowerCase()}:${par
 /**
  * Scan one query from `cursor` until the range (or the finalized head) is
  * covered or `maxPages` pages were read. Each page tries the endpoints in
- * turn and halves the span on a range error. Calls onPage(events, to) after
+ * turn until two have answered and halves the span when fewer than two did. Calls onPage(events, to) after
  * each page so the caller can persist the cursor before moving on.
  * -> { cursor, done, pages }
  */
@@ -60,7 +60,10 @@ export async function scan({ inc, query, cursor, rpcs, finalized, span = 2000, m
         if (answers.length === 2) break;
       } catch (e) { lastErr = e; }
     }
-    if (answers.length > 0) {
+    // A page counts only when two endpoints answered it: with one answer the
+    // span is halved and retried, and in the end the page fails (the cursor
+    // stays put and the next run reads it again).
+    if (answers.length >= 2) {
       const seen = new Map();
       for (const a of answers) for (const l of a) seen.set(eventKey(l), l);
       logs = [...seen.values()];
@@ -70,7 +73,7 @@ export async function scan({ inc, query, cursor, rpcs, finalized, span = 2000, m
     }
     if (logs === null) {
       if (s > 10) { s = Math.max(10, Math.floor(s / 2)); continue; }
-      throw new Error(`getLogs failed for ${page[0]}-${page[1]}: ${String(lastErr?.message ?? lastErr).slice(0, 120)}`);
+      throw new Error(`getLogs failed for ${page[0]}-${page[1]}: ${answers.length} of 2 endpoints answered (${String(lastErr?.message ?? lastErr).slice(0, 120)})`);
     }
     const events = logs.filter((l) => !l.removed).map((l) => ({
       tx: String(l.transactionHash).toLowerCase(), log_index: parseInt(l.logIndex), block: parseInt(l.blockNumber),

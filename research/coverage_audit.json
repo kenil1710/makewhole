@@ -1,0 +1,126 @@
+{
+ "at": "2026-10-20T06:19:53.625Z",
+ "incidents": [
+  {
+   "incident_id": 1,
+   "title": "Aave v3 wstETH CAPO oracle incident, Ethereum, 10 March 2026",
+   "range": [
+    24626860,
+    24628088
+   ],
+   "endpoints": {
+    "https://gateway.tenderly.co/public/mainnet": {
+     "events": 49,
+     "pages": 4,
+     "errors": 0
+    },
+    "https://rpc.mevblocker.io": {
+     "events": 49,
+     "pages": 4,
+     "errors": 0
+    },
+    "https://ethereum-rpc.publicnode.com": {
+     "events": 0,
+     "pages": 0,
+     "errors": 4
+    },
+    "https://eth.drpc.org": {
+     "events": 0,
+     "pages": 0,
+     "errors": 4
+    },
+    "https://eth-pokt.nodies.app": {
+     "events": 0,
+     "pages": 0,
+     "errors": 4
+    }
+   },
+   "rescan_events": 49,
+   "keeper_events": 49,
+   "contract_filings": 49,
+   "missed_by_keeper": [],
+   "not_filed": [],
+   "filed_not_in_rescan": [],
+   "ok": true
+  },
+  {
+   "incident_id": 2,
+   "title": "Morpho Blue cbETH/WETH (94.5% LLTV) Pyth push-feed skew, Base, 2 March 2025",
+   "range": [
+    27071900,
+    27072400
+   ],
+   "endpoints": {
+    "https://base.gateway.tenderly.co": {
+     "events": 3,
+     "pages": 11,
+     "errors": 0
+    },
+    "https://base.drpc.org": {
+     "events": 3,
+     "pages": 11,
+     "errors": 0
+    },
+    "https://mainnet.base.org": {
+     "events": 0,
+     "pages": 0,
+     "errors": 11
+    },
+    "https://base-pokt.nodies.app": {
+     "events": 3,
+     "pages": 11,
+     "errors": 0
+    }
+   },
+   "rescan_events": 3,
+   "keeper_events": 3,
+   "contract_filings": 3,
+   "missed_by_keeper": [],
+   "not_filed": [],
+   "filed_not_in_rescan": [],
+   "ok": true
+  },
+  {
+   "incident_id": 3,
+   "title": "Morpho Blue ezETH/WETH markets, ezETH depeg, Ethereum, 24 April 2024",
+   "range": [
+    19722000,
+    19727000
+   ],
+   "endpoints": {
+    "https://gateway.tenderly.co/public/mainnet": {
+     "events": 146,
+     "pages": 6,
+     "errors": 0
+    },
+    "https://rpc.mevblocker.io": {
+     "events": 146,
+     "pages": 6,
+     "errors": 0
+    },
+    "https://ethereum-rpc.publicnode.com": {
+     "events": 0,
+     "pages": 0,
+     "errors": 6
+    },
+    "https://eth.drpc.org": {
+     "events": 0,
+     "pages": 1,
+     "errors": 5
+    },
+    "https://eth-pokt.nodies.app": {
+     "events": 0,
+     "pages": 1,
+     "errors": 5
+    }
+   },
+   "rescan_events": 146,
+   "keeper_events": 146,
+   "contract_filings": 146,
+   "missed_by_keeper": [],
+   "not_filed": [],
+   "filed_not_in_rescan": [],
+   "ok": true
+  }
+ ]
+}

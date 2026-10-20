@@ -6,13 +6,13 @@ Plain ASCII. Counts are characters, checked by `node tools/submission.mjs`.
 
 MakeWhole v2: refunds from liquidation events on five chains, filed by a keeper, paid on GenLayer
 
-## Description (923 / 1000)
+## Description (942 / 1000)
 
-v2 turns MakeWhole from one Aave refund into an incident engine. Any sponsor freezes terms: template (Aave v3 incl. Spark, Compound v3, Morpho Blue), chain (Ethereum, Arbitrum, Base, Optimism, Polygon), official emitters, block range, filters, price-source condition, formula, deadline, claim window and its own reimbursement list by hash. A keeper on GitHub Actions files every matching event; validators read each receipt from 2+ RPCs that must agree, block final; code decides everything, no model. Payouts are pushed to the borrower in the log, pro-rata independent of claim order, with top-ups, surplus and unclaimed refunds. 3 real incidents, 198 events: Aave CAPO matches the DAO list for 33 of 35 accounts. RecoveryGate never answers favourably on missing data. 22 demo payouts, each proven at the recipient; demo registry balance 0. v1 payouts were found skipped on chain; v2 fixes that. Tests: 117 kept + 327 new.
+v2 turns MakeWhole from one Aave refund into an incident engine. Any sponsor freezes terms: template (Aave v3 incl. Spark, Compound v3, Morpho Blue), chain (Ethereum, Arbitrum, Base, Optimism, Polygon), official emitters, block range, filters, price-source condition, formula, deadline, claim window and its own reimbursement list by hash. A keeper on GitHub Actions files every matching event; validators read each receipt from 2+ RPCs that must agree, block final; code decides everything, no model. Payouts are pushed to the borrower in the log, pro-rata independent of claim order, with top-ups, surplus and unclaimed refunds. 3 real incidents, 198 events: Aave CAPO matches the DAO list for 33 of 35 accounts. RecoveryGate never answers favourably on missing data. 30 payouts (8 real, 22 demo), each proven at the recipient; every v2 registry now holds 0. v1 payouts were found skipped on chain; v2 fixes that. Tests: 117 kept + 333 new.
 
-## Review verification (422 / 500)
+## Review verification (421 / 500)
 
-Open /verify: on-chain code vs files at the deploy commit, byte for byte. docs/MILESTONE.md: BASE proof and every feature with pinned links. Run node tools/final_check.mjs: source, BASE, addresses, links, seeds settled, every payout re-read from chain, balances (demo 0), keeper runs, tests. /keeper shows each event's status; /explorer/c-1/reconciliation shows MATCH/DIFF per account. sh test/run_all.sh runs every suite.
+Open /verify: on-chain code vs files at the deploy commit, byte for byte. docs/MILESTONE.md: BASE proof and every feature with pinned links. Run node tools/final_check.mjs: source, BASE, addresses, links, seeds settled, every payout re-read from chain, balances (all 0), keeper runs, tests. /keeper shows each event's status; /explorer/c-1/reconciliation shows MATCH/DIFF per account. sh test/run_all.sh runs every suite.
 
 ## Links
 

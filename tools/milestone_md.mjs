@@ -21,6 +21,14 @@ function link(f, from, to) {
   return `[\`${f.split("/").pop()}#L${a + 1}${b > a ? "-L" + (b + 1) : ""}\`](${REPO}/blob/${C}/${f}#L${a + 1}${b > a ? "-L" + (b + 1) : ""})`;
 }
 const dep = JSON.parse(readFileSync(ROOT + "deployments.json", "utf8"));
+// test counts, from the runners themselves (run on a checkout of C)
+if (execFileSync("git", ["-C", ROOT, "rev-parse", "HEAD"]).toString().trim() !== C || execFileSync("git", ["-C", ROOT, "status", "--porcelain", "--", "contracts", "test", "tools"]).toString().trim())
+  throw new Error("run on a clean checkout of " + C + " (the test counts are read from the runners)");
+const tout = execFileSync("sh", [ROOT + "test/run_all.sh"], { encoding: "utf8" });
+const [v1n, cn, mn] = [...tout.matchAll(/Ran (\d+) tests/g)].map((m) => Number(m[1]));
+const kn = Number(tout.match(/# pass (\d+)/)?.[1] ?? 0);
+if (/FAILED/.test(tout) || Number(tout.match(/# fail (\d+)/)?.[1] ?? 1) !== 0) throw new Error("tests fail at " + C);
+const v1Base = execFileSync("git", ["-C", ROOT, "show", `${base}:test/test_makewhole.py`]).toString() === at("test/test_makewhole.py");
 const seedC = JSON.parse(readFileSync(ROOT + "docs/seed-canonical-v2.json", "utf8"));
 const seedD = JSON.parse(readFileSync(ROOT + "docs/seed-demo-v2.json", "utf8"));
 const old = readFileSync(ROOT + "docs/MILESTONE.md", "utf8");
@@ -41,7 +49,7 @@ const rows = [
   ["8. Keeper: discovery over all pages with persisted cursors, idempotent, retry queue, FINALIZED + state verified, resume from stored hash, coverage", `${link(K, "export async function runKeeper")} · ${link(DS, "export async function scan")} · ${link("tools/keeper.mjs")} · [workflow](${REPO}/blob/${C}/.github/workflows/keeper.yml) · [keeper-state branch](${REPO}/tree/keeper-state)`],
   ["9. Paginated views exposing every field", `${link(MW, "def get_incidents")} · ${link(MW, "def get_filings")} · ${link(MW, "def find_filings")} · ${link(MW, "def lookup")} · ${link(MW, "def get_payouts")}`],
   ["UI v2: lookup, explorer, sponsor dashboard, claim, reconciliation, keeper, gate, /verify, /docs, JSON APIs, SVG badge", `[frontend/src/app](${REPO}/tree/${C}/frontend/src/app) · https://makewhole-ledger.vercel.app`],
-  ["Tests: 3 new layers", `[test/v2/test_contract.py](${REPO}/blob/${C}/test/v2/test_contract.py) · [test/v2/keeper.test.mjs](${REPO}/blob/${C}/test/v2/keeper.test.mjs) · [test/v2/test_meaning.py](${REPO}/blob/${C}/test/v2/test_meaning.py)`],
+  [`Tests: BASE ${v1n} (v1 suite${v1Base ? ", byte-identical to BASE" : ""}) -> now ${v1n + cn + mn + kn}: ${v1n} v1 + ${cn + mn + kn} new (${cn} contract, ${mn} meaning, ${kn} keeper), \`sh test/run_all.sh\``, `[test/v2/test_contract.py](${REPO}/blob/${C}/test/v2/test_contract.py) · [test/v2/keeper.test.mjs](${REPO}/blob/${C}/test/v2/keeper.test.mjs) · [test/v2/test_meaning.py](${REPO}/blob/${C}/test/v2/test_meaning.py)`],
   ["Attack round", `[docs/ATTACK_REPORT_V2.md](${REPO}/blob/${C}/docs/ATTACK_REPORT_V2.md)`],
   ["Docs generated from code", `${link("tools/rules_md.py")} · [docs/RULES_V2.md](${REPO}/blob/${C}/docs/RULES_V2.md)`],
   ["Source verification and final check", `${link("tools/verify_source.mjs")} · ${link("tools/final_check.mjs")} · [docs/FINAL_CHECK.md](${REPO}/blob/${C}/docs/FINAL_CHECK.md)`],

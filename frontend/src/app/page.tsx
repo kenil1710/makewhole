@@ -22,7 +22,7 @@ export default async function Home() {
           <h1 id="h">After a protocol incident, every refund computed from the chain itself&nbsp;— and paid.</h1>
           <p className="lede" style={{ marginTop: 20 }}>
             A sponsor freezes the terms of a refund: which contracts, which blocks, which events, which formula. A keeper files every
-            matching liquidation it finds. GenLayer validators read each one from two independent RPCs, code decides what is owed,
+            matching liquidation it finds. GenLayer validators read each one from the incident&rsquo;s frozen RPCs, at least two of which must agree, code decides what is owed,
             and the payout goes to the borrower in the log. MakeWhole computes refunds from on-chain events under frozen terms; it does
             not decide who caused an incident.
           </p>
@@ -40,11 +40,11 @@ export default async function Home() {
               <p className="score">{events}<small>real liquidation events filed by the keeper across {incs.length} incidents on {chains.size} chain{chains.size === 1 ? "" : "s"}.</small></p>
               {rec?.summary && (() => {
                 const unfiled = rec.items.filter((x) => x.status === "DIFF" && x.eligible_filings === 0).length;
-                return (
+                return (<>
                   <p className="score" style={{ marginTop: 18 }}>{rec.summary.match} of {rec.summary.list_entries}
                     <small>computed Aave CAPO refunds match the Aave Finance Committee&rsquo;s payout within 1 ppm; {rec.summary.diff - unfiled} differ{unfiled ? `, ${unfiled} have no filing yet` : ""}, {rec.summary.not_in_list} not in its list.</small></p>
                     <p className="rate-note" style={{ marginTop: 10, maxWidth: "56ch" }}>The rate of 0.034991439125 ETH per wstETH in the frozen terms was taken from the DAO&rsquo;s own payout (the proposal published no formula), so this is a consistency check of one formula across 35 amounts, not an independent derivation.</p>
-                );
+                </>);
               })()}
               {keeper?.last_run && (
                 <p className="small muted" style={{ marginTop: 14 }}>Keeper last ran {new Date(keeper.last_run.finished * 1000).toUTCString()} · <Link href="/keeper">status</Link></p>
@@ -83,9 +83,9 @@ export default async function Home() {
         <h2 id="how" className="serif">How a refund is decided</h2>
         <ol className="steps">
           <li><h3>Frozen terms</h3><p>The sponsor names the template (Aave v3, Compound v3, Morpho Blue), the chain, the official contracts, the block range, filters, a price-source condition and the formula. After the first filing it can only top the pool up or extend the deadline.</p></li>
-          <li><h3>Every event, found and filed</h3><p>The keeper walks the range page by page, reads each page from two endpoints, files every matching event and counts it only once the GenLayer transaction is final and the contract has it.</p></li>
+          <li><h3>Every event, found and filed</h3><p>The keeper walks the range page by page, counts a page only when two endpoints answered it, files every matching event and counts it only once the GenLayer transaction is final and the contract has it.</p></li>
           <li><h3>Two sources, one answer</h3><p>Validators fetch the receipt from every frozen RPC; it counts only if two return it identically, none disagrees, the block is final, and code&rsquo;s decoder accepts it.</p></li>
-          <li><h3>Paid, and checked</h3><p>Anyone can push a borrower&rsquo;s refund to the borrower&rsquo;s address. After the claim window everything unclaimed goes back to the sponsor. Nothing can stay in the contract.</p></li>
+          <li><h3>Paid, and checked</h3><p>Anyone can push a borrower&rsquo;s refund to the borrower&rsquo;s address. After the claim window everything unclaimed goes back to the sponsor. Every wei has an exit.</p></li>
         </ol>
         <p className="small" style={{ marginTop: 12 }}>
           <Link href="/sponsor">Sponsor dashboard</Link> · <Link href="/claim">Claim a refund</Link> · <Link href="/gate">RecoveryGate</Link> · <Link href="/verify">Verify the deployed source</Link> · <Link href="/v1">v1 (the accepted submission)</Link>

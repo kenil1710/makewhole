@@ -15,7 +15,7 @@ reconciliation against the sponsor's own list, and payouts proven at the recipie
 | **RecoveryGate** (reads the canonical contract; no payable method) | `0x01990f29Dd25604219c63E2b9e94B09957E8B52e` |
 | **RecoveryGate, demo** | `0x7555D03dE33f3fC8C586f0B2AE5Fe3BC1CD9f125` |
 | **Deployed from** | [`b52bb22`](https://github.com/kenil1710/makewhole/tree/b52bb2278495661fa8eb47da9e1bfcc003c2e967) (all four, one commit; `node tools/verify_source.mjs` or [/verify](https://makewhole-ledger.vercel.app/verify)) |
-| **Tests** | `sh test/run_all.sh`: v1's 117 (unchanged) + 327 new (228 contract, 52 meaning, 47 keeper) |
+| **Tests** | `sh test/run_all.sh`: v1's 117 (unchanged) + 333 new (228 contract, 52 meaning, 53 keeper) |
 | **Milestone** | [docs/MILESTONE.md](docs/MILESTONE.md) (BASE proof, every feature with pinned links) · [final check](docs/FINAL_CHECK.md) · [attack round](docs/ATTACK_REPORT_V2.md) · [seeds](docs/SEEDS_V2.md) · [rules](docs/RULES_V2.md) |
 | **v1** (the accepted submission, still on chain, untouched) | [docs/superseded/v1.3/README.md](docs/superseded/v1.3/README.md) |
 
@@ -49,7 +49,8 @@ GenLayer Studio Dev to the borrower address recorded in each event.
    claims; a top-up raises every entitlement and an already-paid account can be paid the difference.
 4. **Refund (anyone).** `refund_surplus` returns the part of the pool above the total owed to the sponsor after the
    claim deadline; `close` returns everything still held (unclaimed refunds, flooring dust) after the claim window.
-   Books equal `eth_getBalance` after every method; nothing can stay in the contract.
+   Value sent with a refused payable call is kept on the books as the sender's and returned by `withdraw_refused`.
+   `get_ledger` checks the books against their parts and reports the contract's real balance; every wei has an exit.
 5. **Ask (any protocol).** `RecoveryGate.status(incident, account)`: `NO_INCIDENT`, `NOT_ELIGIBLE`, `ELIGIBLE_UNPAID`,
    `PAID` (with `made_whole`), `CLOSED`, or `UNAVAILABLE` when anything is missing or inconsistent, never a favourable
    guess.
@@ -61,8 +62,10 @@ No model is called anywhere in v2: code decides every number and every verdict.
 [`tools/keeper.mjs`](tools/keeper.mjs) runs every hour on [GitHub Actions](.github/workflows/keeper.yml). For every open
 incident it walks the block range with `eth_getLogs` page by page (each page read from two endpoints and merged),
 persisting a cursor per incident and emitter on the [`keeper-state`](https://github.com/kenil1710/makewhole/tree/keeper-state)
-branch, files each event, stores the transaction hash before waiting on it, and counts a filing only when the
-transaction is FINALIZED, executed without error, and `find_filing` returns it. Transient failures go to a retry queue
+branch, files each event, stores the transaction hash before waiting on it, and counts its own filing only when the
+transaction is FINALIZED, executed without error, and `find_filing` returns it. A page counts only when two endpoints
+answered it; an event someone else filed counts once the contract has it, and every run re-checks the state file
+against the contract. A submitted hash that has no final status after 6 hours goes back to the retry queue. Transient failures go to a retry queue
 with backoff; permanent refusals are kept with their reason. Nothing is dropped: the
 [keeper page](https://makewhole-ledger.vercel.app/keeper) lists every event that is not filed and why, and a coverage
 line per incident (found, filed, eligible, paid, unclaimed).

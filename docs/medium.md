@@ -53,8 +53,9 @@ everyone gets the same fraction of what they are owed.
 
 For the Aave incident the official list exists: it is the Finance Committee's payout. I froze it, with its hash, in the
 terms, and the contract compares every computed refund with it. 33 of 35 accounts match within one part per million.
-Two differ by a few thousandths of a percent; both had debt in cbETH or osETH, which I price with Aave's oracle and the
-DAO apparently priced slightly differently. The total computed is 512.19285980 ETH against the DAO's 512.19285983.
+Two differ by a few thousandths of a percent: they are the only two liquidations whose debt was repaid in osETH and
+cbETH rather than WETH, which the terms value at frozen per-token rates, and the DAO's payout implies slightly
+different ones. The total computed is 512.19285980 ETH against the DAO's 512.19285983.
 The page lists every row with its delta, so you don't have to take my summary for it.
 
 ## Paying people, for real this time

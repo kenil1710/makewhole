@@ -24,6 +24,7 @@ export const PER_INCIDENT_SUBMITS = 150;   // per run: no incident can starve th
 export const PERMANENT = ["NOT_INCIDENT_EMITTER", "NOT_INCIDENT_MARKET", "OUT_OF_RANGE", "WRONG_EVENT", "NO_SUCH_LOG",
   "TX_FAILED", "WRONG_CHAIN", "BAD_TX", "BAD_LOG_INDEX", "WRONG_RECEIPT", "LOG_REMOVED"];
 export const CLOSED_FOR_FILING = ["DEADLINE_PASSED", "NO_INCIDENT"];
+export const STUCK_S = 6 * 3600;           // a submitted hash with no final status after this is filed again
 export const BACKOFF_S = [0, 300, 900, 3600, 3 * 3600, 6 * 3600];
 
 export function emptyState() {
@@ -103,7 +104,7 @@ export async function runKeeper({ mw, src, state, opts }) {
           const ck = q.address;
           const cursor = st.cursors[ck] ?? inc.from_block - 1;
           try {
-            const r = await scan({ inc, query: q, cursor, rpcs: opts.logRpcs?.[inc.chain_id] ?? inc.rpcs, finalized: fin,
+            const r = await scan({ inc, query: q, cursor, rpcs: [...new Set([...(opts.logRpcs?.[inc.chain_id] ?? []), ...inc.rpcs])], finalized: fin,
               span: opts.pageSpan?.[inc.chain_id] ?? 2000, maxPages: opts.maxPages ?? 1e9, rpc: src.rpc,
               onMismatch: (m) => run.errors.push(`incident ${iid} ${ck}: log endpoints disagree on ${m.from}-${m.to} (${m.a} vs ${m.b} events); kept the union`),
               onPage: async (events, to) => {
@@ -197,9 +198,15 @@ function schedule(e, why, now) {
 async function settle(mw, iid, k, e, run, now) {
   let t;
   try { t = await mw.tx(e.tx_hash); } catch { t = null; }
-  if (!t) { e.last_error = "transaction not readable yet"; return; }
+  if (!t) {
+    // a hash no node can find after STUCK_S never gets a verdict: file again
+    // (find_filings is asked first, so a filing that did land is not repeated)
+    if (now() - (e.submitted_at ?? now()) >= STUCK_S) { schedule(e, `transaction ${e.tx_hash} not found after ${STUCK_S} s`, now); run.retried++; return; }
+    e.last_error = "transaction not readable yet"; return;
+  }
   if (t.status === "ACCEPTED" && !t.reverted) { run.accepted_not_final++; e.last_error = "ACCEPTED, waiting for FINALIZED"; return; }
   if (t.status !== "FINALIZED" && !["UNDETERMINED", "CANCELED"].includes(t.status) && !(t.status === "ACCEPTED" && t.reverted)) {
+    if (now() - (e.submitted_at ?? now()) >= STUCK_S) { schedule(e, `status ${t.status} after ${STUCK_S} s`, now); run.retried++; return; }
     e.last_error = `status ${t.status}`;
     return;
   }

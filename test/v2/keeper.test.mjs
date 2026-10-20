@@ -2,7 +2,7 @@
 //   node --test test/v2/keeper.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runKeeper, emptyState, classifyFailure, coverage, BACKOFF_S } from "../../tools/lib/keeper_core.mjs";
+import { runKeeper, emptyState, classifyFailure, coverage, BACKOFF_S, STUCK_S } from "../../tools/lib/keeper_core.mjs";
 import { queriesFor, nextPage, scan, TOPICS } from "../../tools/lib/discover.mjs";
 
 const hx = (n) => "0x" + BigInt(n).toString(16);
@@ -210,9 +210,9 @@ test("outage mid-scan keeps the cursor at the last good page and resumes there",
   assert.equal(st.incidents[1].coverage.filed, 40);
 });
 
-test("one endpoint down: the other serves the page", async () => {
+test("one endpoint down: the next two serve the page", async () => {
   const src = fakeSource({ events: evs(10), down: (u) => u === "https://a" });
-  const mw = fakeMW({ incidents: [inc(1)] });
+  const mw = fakeMW({ incidents: [inc(1, { rpcs: ["https://a", "https://b", "https://c"] })] });
   const st = emptyState();
   await run(mw, src, st);
   assert.equal(st.incidents[1].coverage.filed, 10);
@@ -473,9 +473,9 @@ test("scan reports done only when the whole range is final", async () => {
   const src = fakeSource({ events: [] });
   const i = inc(1);
   const [q] = queriesFor(i);
-  const r1 = await scan({ inc: i, query: q, cursor: 999, rpcs: ["https://a"], finalized: 1500, span: 1000, rpc: src.rpc });
+  const r1 = await scan({ inc: i, query: q, cursor: 999, rpcs: ["https://a", "https://b"], finalized: 1500, span: 1000, rpc: src.rpc });
   assert.equal(r1.done, false);
-  const r2 = await scan({ inc: i, query: q, cursor: r1.cursor, rpcs: ["https://a"], finalized: 3000, span: 1000, rpc: src.rpc });
+  const r2 = await scan({ inc: i, query: q, cursor: r1.cursor, rpcs: ["https://a", "https://b"], finalized: 3000, span: 1000, rpc: src.rpc });
   assert.equal(r2.done, true);
   assert.equal(r2.cursor, 1999);
 });
@@ -577,4 +577,84 @@ test("K6: a filing visible in state while our tx is only ACCEPTED is not counted
   assert.equal(st.incidents[1].coverage.submitted, 3);
   await run(mw, src, st);
   assert.equal(st.incidents[1].coverage.filed, 3);
+});
+
+test("K7: a page only one endpoint answered never advances the cursor", async () => {
+  const src = fakeSource({ events: evs(10), down: (u) => u === "https://b" });
+  const mw = fakeMW({ incidents: [inc(1)] });
+  const st = emptyState();
+  const r = await run(mw, src, st);
+  assert.equal(st.incidents[1].cursors[AAVE], undefined);
+  assert.equal(st.incidents[1].scan_done, false);
+  assert.equal(r.discovered, 0);
+  assert.ok(r.errors.some((e) => /1 of 2 endpoints answered/.test(e)));
+});
+
+test("K7: scan with a single endpoint throws instead of trusting it", async () => {
+  const src = fakeSource({ events: evs(5) });
+  const i = inc(1);
+  await assert.rejects(scan({ inc: i, query: queriesFor(i)[0], cursor: 999, rpcs: ["https://a"], finalized: 3000, span: 1000, rpc: src.rpc }), /1 of 2 endpoints/);
+});
+
+test("K7: the keeper's own log endpoints are tried first, the incident's frozen ones after", async () => {
+  const src = fakeSource({ events: evs(4), down: (u) => u === "https://x" });
+  const mw = fakeMW({ incidents: [inc(1)] });
+  const st = emptyState();
+  await run(mw, src, st, { logRpcs: { 1: ["https://x"] } });
+  assert.equal(st.incidents[1].coverage.filed, 4);
+  assert.deepEqual([...new Set(src.calls.map((c) => c[0]))].sort(), ["https://a", "https://b", "https://x"]);
+});
+
+test("K8: a submitted hash no node ever finds is filed again after STUCK_S, once", async () => {
+  const src = fakeSource({ events: evs(2) });
+  const mw = fakeMW({ incidents: [inc(1)] });
+  const lost = new Set();
+  const realSubmit = mw.submit, realTx = mw.tx;
+  mw.submit = async (...a) => { const h = await realSubmit(...a); if (mw.submits.length <= 2) lost.add(h); return h; };
+  mw.tx = async (h) => (lost.has(h) ? null : realTx(h));
+  const st = emptyState();
+  await run(mw, src, st, { t: 1000 });
+  assert.equal(st.incidents[1].coverage.submitted, 2);
+  await run(mw, src, st, { t: 1000 + STUCK_S - 1 });
+  assert.equal(st.incidents[1].coverage.submitted, 2);
+  assert.equal(mw.submits.length, 2);
+  await run(mw, src, st, { t: 1000 + STUCK_S });
+  assert.equal(st.incidents[1].coverage.retry, 2);     // back in the retry queue, with its backoff
+  assert.equal(mw.submits.length, 2);
+  await run(mw, src, st, { t: 1000 + STUCK_S + BACKOFF_S[1] });
+  assert.equal(st.incidents[1].coverage.filed, 2);
+  assert.equal(mw.submits.length, 4);
+});
+
+test("K8: a hash stuck in a non-final status is filed again after STUCK_S; find_filings prevents a double filing", async () => {
+  const src = fakeSource({ events: evs(1) });
+  const mw = fakeMW({ incidents: [inc(1)] });
+  const realTx = mw.tx;
+  let stuck = true;
+  mw.tx = async (h) => (stuck ? { status: "PENDING", ok: false, reverted: false, reason: "" } : realTx(h));
+  const st = emptyState();
+  await run(mw, src, st, { t: 1000 });
+  const ev = Object.values(st.incidents[1].events)[0];
+  assert.equal(ev.status, "SUBMITTED");
+  await run(mw, src, st, { t: 1000 + STUCK_S });
+  assert.equal(ev.status, "RETRY");
+  assert.match(ev.last_error, /status PENDING after/);
+  stuck = false;
+  await run(mw, src, st, { t: 1000 + STUCK_S + BACKOFF_S[1] });
+  assert.equal(mw.submits.length, 2);
+  assert.equal(ev.status, "FILED");
+  assert.equal(mw.store.size, 1);
+});
+
+test("C: an event whose endpoints never answer ends REFUSED with DEADLINE_PASSED, never stuck", async () => {
+  const src = fakeSource({ events: evs(1) });
+  const mw = fakeMW({ incidents: [inc(1, { claim_deadline: 5000 })], refuse: () => "INCONCLUSIVE: fewer than two of the incident's endpoints returned this event identically" });
+  const st = emptyState();
+  for (let t = 1000; t < 5000; t += 1200) await run(mw, src, st, { t });
+  const ev = Object.values(st.incidents[1].events)[0];
+  assert.equal(ev.status, "RETRY");
+  await run(mw, src, st, { t: 1e6 });
+  assert.equal(ev.status, "REFUSED");
+  assert.match(ev.last_error, /DEADLINE_PASSED/);
+  assert.equal(st.incidents[1].coverage.unprocessed.length, 1);
 });

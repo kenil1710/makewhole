@@ -2,7 +2,7 @@
 
 One round across the three layers (contract, keeper, meaning) before deployment. Every finding of severity High or
 Medium was fixed in the commit that carries this report; each finding and each probe has a test named after it
-(`test/v2/test_contract.py::TestAttackRound`, `test/v2/keeper.test.mjs` tests `K1`-`K5`).
+(`test/v2/test_contract.py::TestAttackRound`, `test/v2/keeper.test.mjs` tests `K1`-`K8`). K6-K8 came later, from review of the live keeper and the pre-submission audit; they changed the keeper only, not a contract.
 
 ## Findings
 
@@ -13,6 +13,9 @@ Medium was fixed in the commit that carries this report; each finding and each p
 | A3 | contract | Low | Before the first filing a sponsor could amend the terms to a shorter claim deadline or window. | An amendment may not shorten either (`NOT_LATER`). | `test_A3_amend_cannot_shorten_the_deadline` |
 | K1 | keeper | Medium | Discovery trusted one `eth_getLogs` endpoint per page; an endpoint silently dropping logs would hide events from the keeper (the contract would never see them). | Each page is read from two endpoints and the union is kept; a disagreement is reported in the run's errors. | `K1` |
 | K2 | keeper | Medium | Anyone can open an incident. One incident with thousands of real events would use the whole run and starve every other incident. | At most 150 submissions per incident per run, and incidents with the least work left go first. | `K2` |
+| K6 | keeper | Medium | The keeper's own filing was counted `FILED` as soon as the contract's state showed it, which on GenLayer already happens at ACCEPTED, before the transaction is FINALIZED. | An own filing stays `SUBMITTED` until its transaction is FINALIZED and executed without error; the 198 live events were reset and re-confirmed by Actions run [39285002941](https://github.com/kenil1710/makewhole/actions/runs/39285002941). | `K6` |
+| K7 | keeper | Medium | A `getLogs` page that only ONE endpoint answered was accepted, so on that page one endpoint dropping logs could still hide an event (K1 covered only pages two endpoints answered). | A page counts only when two endpoints answered it; otherwise the span is halved and in the end the page fails with the cursor unmoved. The keeper's log endpoints are tried first and the incident's frozen RPCs after them. An independent re-scan of all three real ranges from every endpoint (`research/coverage_audit.mjs`, `research/coverage_audit.json`) found exactly the 49 / 3 / 146 events the keeper filed. | `K7` (3 tests) |
+| K8 | keeper | Low | A submitted hash that no node ever returned (or that never reached a final status) stayed `SUBMITTED` forever: the event would never be filed again. | After 6 hours without a final status it goes back to the retry queue with backoff; `find_filings` is asked before resubmitting, so a filing that did land is not repeated. An event whose endpoints never answer ends `REFUSED` with `DEADLINE_PASSED` at the deadline and is listed as unprocessed. | `K8` (2 tests), `C: an event whose endpoints never answer…` |
 | K3 | keeper | Low | A stale or edited state file saying `FILED` was believed. | The contract is the source of truth: a `FILED` entry the contract does not have is re-queued. | `K3` |
 
 ## Probes that found nothing to fix

@@ -112,6 +112,29 @@ const allOk = !/FAILED/.test(out) && nodeFail === 0 && counts.length === 3;
 check("tests pass: v1 suite unchanged, v2 contract, meaning and keeper suites", allOk,
   `v1 ${counts[0]}; v2 contract ${counts[1]}, meaning ${counts[2]}, keeper ${node}; new ${counts[1] + counts[2] + node}`);
 
+// 10. the milestone package: pinned commit, compare link, nothing but generated docs after the pin
+const ms = read("docs/MILESTONE.md");
+const pin = ms.match(/Every link is pinned to `([0-9a-f]{7})`/)?.[1] ?? "";
+const pinFull = pin ? execFileSync("git", ["-C", ROOT, "rev-parse", pin]).toString().trim() : "";
+const after = pinFull ? execFileSync("git", ["-C", ROOT, "diff", "--name-only", pinFull, "HEAD"]).toString().trim().split("\n").filter(Boolean) : ["?"];
+const onlyGenerated = after.every((f) => f === "docs/MILESTONE.md" || f === "docs/FINAL_CHECK.md");
+const cmp = ms.match(/Compare: (https:\/\/github\.com\/\S+\/compare\/([0-9a-f]{40})\.\.\.([0-9a-f]{40}))/);
+let cmpOk = false, ahead = 0;
+if (cmp) { try { const j = JSON.parse(execFileSync("gh", ["api", `repos/kenil1710/makewhole/compare/${cmp[2]}...${cmp[3]}`]).toString()); cmpOk = j.status === "ahead"; ahead = j.ahead_by; } catch { /* gh unavailable */ } }
+const pinnedLinks = [...ms.matchAll(/github\.com\/kenil1710\/makewhole\/(?:blob|tree)\/([0-9a-f]{40})\//g)].map((m) => m[1]);
+check("milestone package: compare BASE...pin resolves, every file link pinned to that commit, HEAD differs from it only in MILESTONE.md and FINAL_CHECK.md",
+  cmpOk && cmp[3] === pinFull && pinnedLinks.length > 0 && pinnedLinks.every((h) => h === pinFull || h === dep.v2.commit) && onlyGenerated,
+  `compare ${cmp ? cmp[2].slice(0, 7) + "..." + cmp[3].slice(0, 7) : "missing"} (${ahead} commits ahead); ${pinnedLinks.length} pinned links; after the pin: ${after.join(", ") || "nothing"}`);
+
+// 11. the live site is built from the pinned commit's source (Vercel status) and serves it
+let vercel = "";
+try { vercel = JSON.parse(execFileSync("gh", ["api", `repos/kenil1710/makewhole/commits/${pinFull}/status`]).toString()).statuses.filter((x) => x.context === "Vercel").map((x) => x.state).join(","); } catch { /* gh unavailable */ }
+let landing = "";
+try { landing = await (await fetch(SITE + "/", { signal: AbortSignal.timeout(45000) })).text(); } catch { /* checked below */ }
+const marks = ["Every wei has an exit", "taken from the DAO"];
+check("live site: the Vercel build of the pinned commit succeeded and the landing page serves its text", vercel === "success" && marks.every((m) => landing.includes(m)),
+  `Vercel ${vercel || "unknown"} for ${pin}; landing has ${marks.filter((m) => landing.includes(m)).length}/${marks.length} marker sentences`);
+
 const pass = results.filter((r) => r.ok).length;
 const md = ["# Final check", "", `Run ${new Date().toISOString()} at commit \`${execFileSync("git", ["-C", ROOT, "rev-parse", "HEAD"]).toString().trim()}\` by \`node tools/final_check.mjs\`. Every line is read live or recomputed.`, "",
   `**${pass}/${results.length} pass.**`, "", "| | check | detail |", "|---|---|---|",

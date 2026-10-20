@@ -117,7 +117,7 @@ const waitAccepted = async (hash) => {
 };
 const run = await runKeeper({
   mw, src, state,
-  opts: { save, log: console.log, maxSubmits, waitAccepted, logRpcs, pageSpan: { 1: 5000, 8453: 500, 42161: 5000, 10: 5000, 137: 5000 } },
+  opts: { save, log: console.log, maxSubmits, waitAccepted, logRpcs, pageSpan: { 1: 5000, 8453: 50, 42161: 5000, 10: 5000, 137: 5000 } },
 });
 await save(state, true);
 console.log(JSON.stringify({ ...run, errors: run.errors.slice(0, 10) }, null, 1));

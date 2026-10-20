@@ -13,7 +13,7 @@ export default async function Keeper() {
   return (
     <div className="wrap" style={{ paddingTop: 36 }}>
       <h1 className="serif">Keeper status</h1>
-      <p className="lede">The keeper (<a href={`${REPO}/blob/main/tools/keeper.mjs`}>tools/keeper.mjs</a>, every hour on <a href={`${REPO}/actions/workflows/keeper.yml`}>GitHub Actions</a>) walks each open incident&rsquo;s block range, files every matching event and counts a filing only when its GenLayer transaction is FINALIZED, executed without error, and the contract returns it. Its state lives on the <a href={`${REPO}/tree/keeper-state`}>keeper-state branch</a>; nothing is dropped: an event that is not filed is listed below with the reason.</p>
+      <p className="lede">The keeper (<a href={`${REPO}/blob/main/tools/keeper.mjs`}>tools/keeper.mjs</a>, every hour on <a href={`${REPO}/actions/workflows/keeper.yml`}>GitHub Actions</a>) walks each open incident&rsquo;s block range, counts a page only when two endpoints answered it, files every matching event and counts its own filing only when the GenLayer transaction is FINALIZED, executed without error, and the contract returns it; a hash with no final status after 6 hours goes back to the retry queue. Its state lives on the <a href={`${REPO}/tree/keeper-state`}>keeper-state branch</a>; nothing is dropped: an event that is not filed is listed below with the reason.</p>
       {lr && (
         <dl className="facts" style={{ marginTop: 20 }}>
           <div><dt>Last run</dt><dd className="small">{new Date(lr.finished * 1000).toUTCString()}</dd></div>
