@@ -25,6 +25,14 @@
    "confirmed": 0,
    "discovered": 0,
    "errors": 0
+  },
+  {
+   "started": 1792456100,
+   "finished": 1792456130,
+   "submitted": 0,
+   "confirmed": 0,
+   "discovered": 0,
+   "errors": 0
   }
  ],
  "incidents": {
@@ -744,7 +752,7 @@
     }
    },
    "claim_deadline": 1792440943,
-   "closed": false,
+   "closed": true,
    "coverage": {
     "found": 3,
     "filed": 3,
@@ -2671,7 +2679,7 @@
     }
    },
    "claim_deadline": 1792440959,
-   "closed": false,
+   "closed": true,
    "coverage": {
     "found": 146,
     "filed": 146,
@@ -2691,9 +2699,9 @@
    }
   }
  },
- "updated_at": "2026-10-20T00:28:21.491Z",
+ "updated_at": "2026-10-20T00:28:50.510Z",
  "last_run": {
-  "started": 1792442382,
+  "started": 1792456100,
   "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
   "scanned_pages": 0,
   "discovered": 0,
@@ -2703,6 +2711,6 @@
   "retried": 0,
   "accepted_not_final": 0,
   "errors": [],
-  "finished": 1792442416
+  "finished": 1792456130
  }
 }
