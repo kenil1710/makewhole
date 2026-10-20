@@ -44,7 +44,8 @@ const BROWSER_ONLY = /(^|\.)(etherscan\.io|basescan\.org|arbiscan\.io|polygonsca
 const bad = [], browserOnly = [];
 for (const u of urls) {
   let st = 0;
-  for (let i = 0; i < 3 && st !== 200; i++) {
+  for (let i = 0; i < 4 && st !== 200; i++) {
+    if (i > 0) await new Promise((r) => setTimeout(r, 5000 * i));
     try { st = (await fetch(u, { method: "GET", redirect: "follow", headers: { "user-agent": "Mozilla/5.0 makewhole-final-check" }, signal: AbortSignal.timeout(45000) })).status; } catch { st = -1; }
   }
   if (st !== 200) { if (BROWSER_ONLY.test(new URL(u).host) && st === 403) browserOnly.push(u); else bad.push(`${st} ${u}`); }
@@ -120,7 +121,7 @@ const after = pinFull ? execFileSync("git", ["-C", ROOT, "diff", "--name-only", 
 const onlyGenerated = after.every((f) => f === "docs/MILESTONE.md" || f === "docs/FINAL_CHECK.md");
 const cmp = ms.match(/Compare: (https:\/\/github\.com\/\S+\/compare\/([0-9a-f]{40})\.\.\.([0-9a-f]{40}))/);
 let cmpOk = false, ahead = 0;
-if (cmp) { try { const j = JSON.parse(execFileSync("gh", ["api", `repos/kenil1710/makewhole/compare/${cmp[2]}...${cmp[3]}`]).toString()); cmpOk = j.status === "ahead"; ahead = j.ahead_by; } catch { /* gh unavailable */ } }
+if (cmp) { try { const j = JSON.parse(execFileSync("gh", ["api", `repos/kenil1710/makewhole/compare/${cmp[2]}...${cmp[3]}`, "--jq", "{status, ahead_by}"]).toString()); cmpOk = j.status === "ahead"; ahead = j.ahead_by; } catch { /* gh unavailable */ } }
 const pinnedLinks = [...ms.matchAll(/github\.com\/kenil1710\/makewhole\/(?:blob|tree)\/([0-9a-f]{40})\//g)].map((m) => m[1]);
 check("milestone package: compare BASE...pin resolves, every file link pinned to that commit, HEAD differs from it only in MILESTONE.md and FINAL_CHECK.md",
   cmpOk && cmp[3] === pinFull && pinnedLinks.length > 0 && pinnedLinks.every((h) => h === pinFull || h === dep.v2.commit) && onlyGenerated,
