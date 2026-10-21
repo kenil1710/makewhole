@@ -105,6 +105,14 @@
    "confirmed": 0,
    "discovered": 0,
    "errors": 0
+  },
+  {
+   "started": 1792619530,
+   "finished": 1792619571,
+   "submitted": 0,
+   "confirmed": 0,
+   "discovered": 0,
+   "errors": 0
   }
  ],
  "incidents": {
@@ -2771,9 +2779,9 @@
    }
   }
  },
- "updated_at": "2026-10-21T21:52:11.613Z",
+ "updated_at": "2026-10-21T21:52:51.935Z",
  "last_run": {
-  "started": 1792603571,
+  "started": 1792619530,
   "contract": "0xBb2397667aF1dB87497A6794B36f2e14ECfA394c",
   "scanned_pages": 0,
   "discovered": 0,
@@ -2783,6 +2791,6 @@
   "retried": 0,
   "accepted_not_final": 0,
   "errors": [],
-  "finished": 1792603609
+  "finished": 1792619571
  }
 }
